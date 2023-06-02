@@ -89,7 +89,5 @@ public class LtMastFaq extends BaseClass{
 		return "LtMastFaq [faqId=" + faqId + ", faq=" + faq + ", faqAns=" + faqAns + ", status=" + status
 				+ ", sequenceNo=" + sequenceNo + ", userType=" + userType + "]";
 	}
-
-	
 	
 }
