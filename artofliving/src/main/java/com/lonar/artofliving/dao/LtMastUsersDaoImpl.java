@@ -1,8 +1,77 @@
 package com.lonar.artofliving.dao;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class LtMastUsersDaoImpl implements LtMastUsersDao {
+import com.lonar.artofliving.common.ServiceException;
+import com.lonar.artofliving.model.LtAolUsersMaster;
+import com.lonar.artofliving.model.LtMastLogins;
+import com.lonar.artofliving.repository.LtAolMastRepository;
 
+@Repository
+@PropertySource(value = "classpath:queries/aolUsersQueries.properties", ignoreResourceNotFound = true)
+public class LtMastUsersDaoImpl implements LtMastUsersDao {
+	
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	private Environment env;
+	
+	@Autowired 
+	LtAolMastRepository  ltAolMastRepository;
+	
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+
+	private JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	
+	@Override
+	public LtAolUsersMaster getLtMastUsersByMobileNumber(String mobileNumber) throws ServiceException{
+		String query = env.getProperty("getLtMastUsersByMobileNumber");
+		List<LtAolUsersMaster> list = jdbcTemplate.query(query, new Object[] { mobileNumber.trim() },
+				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		if (list.isEmpty())
+			return null;
+		else
+			return list.get(0);
+	}
+	
+	@Override
+	public LtAolUsersMaster saveLtMastUsers (LtAolUsersMaster ltAolUsersMaster) throws ServiceException{
+		return ltAolMastRepository.save(ltAolUsersMaster);
+	}
+	
+	@Override
+	public LtMastLogins getLoginDetailsByUserId(Long userId) throws ServiceException {
+		String query = env.getProperty("getLoginDetailsByUserId");
+		List<LtMastLogins> list = jdbcTemplate.query(query, new Object[] { userId },
+				new BeanPropertyRowMapper<LtMastLogins>(LtMastLogins.class));
+		if (!list.isEmpty())
+			return list.get(0);
+		else
+			return null;
+	}
+	
+	@Override
+	public LtAolUsersMaster getUserById(Long userId) throws ServiceException {
+		Optional<LtAolUsersMaster> ltMastUsers = ltAolMastRepository.findById(userId);
+		if (ltMastUsers.isPresent()) {
+			return ltMastUsers.get();
+		}
+		return null;
+	}
 }

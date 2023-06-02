@@ -21,19 +21,19 @@ public class LtMastFaq extends BaseClass{
 	private Long faqId;
 	
 	@Column(name= "faq")
-	private Status faq;
+	private String faq;
 	
 	@Column(name= "faq_ans")
-	private Status faqAns;
+	private String faqAns;
 	
 	@Column(name= "status")
-	private Status status;
+	private String status;
 	
 	@Column(name= "sequence_no")
 	private Long sequenceNo;
 	
 	@Column(name= "user_type")
-	private Status userType;
+	private String userType;
 
 	
 	public Long getFaqId() {
@@ -44,27 +44,27 @@ public class LtMastFaq extends BaseClass{
 		this.faqId = faqId;
 	}
 
-	public Status getFaq() {
+	public String getFaq() {
 		return faq;
 	}
 
-	public void setFaq(Status faq) {
+	public void setFaq(String faq) {
 		this.faq = faq;
 	}
 
-	public Status getFaqAns() {
+	public String getFaqAns() {
 		return faqAns;
 	}
 
-	public void setFaqAns(Status faqAns) {
+	public void setFaqAns(String faqAns) {
 		this.faqAns = faqAns;
 	}
 
-	public Status getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -76,20 +76,20 @@ public class LtMastFaq extends BaseClass{
 		this.sequenceNo = sequenceNo;
 	}
 
-	public Status getUserType() {
+	public String getUserType() {
 		return userType;
 	}
 
-	public void setUserType(Status userType) {
+	public void setUserType(String userType) {
 		this.userType = userType;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "LtMastFaq [faqId=" + faqId + ", faq=" + faq + ", faqAns=" + faqAns + ", status=" + status
 				+ ", sequenceNo=" + sequenceNo + ", userType=" + userType + "]";
 	}
-		
+
+	
 	
 }
