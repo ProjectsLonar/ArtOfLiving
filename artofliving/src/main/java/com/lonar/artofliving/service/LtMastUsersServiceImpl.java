@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.LtMastSmsToken;
+import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.repository.LtMastLoginsRepository;
 
@@ -190,7 +193,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		ltMastSmsToken.setSmsType("OTP");
 		ltMastSmsToken.setSmsObject(ltMastLogins.getOtp().toString());
 		ltMastSmsToken.setSendTo(Long.parseLong(mobileNumber));
-		//ltMastLogins.setMobile(mobileNumber);
+		ltMastLogins.setMobileNumber(mobileNumber);
 		ltMastSmsToken.setSendDate(new Date());
 		ltMastSmsToken.setSmsStatus("SENDING");
 		ltMastSmsToken.setUserId(ltMastLogins.getUserId());
@@ -212,6 +215,63 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 		}
 		return status;
+	}
+	
+	
+	@Override
+	public ResponceEntity login(LtMastLogins ltMastLogins, HttpServletResponse response) throws ServiceException {
+		ResponceEntity entity = new ResponceEntity();
+		Status status = new Status();
+		LtAolUsersMaster ltMastUser = ltMastUsersDao.getLtMastUsersByMobileNumber(ltMastLogins.getMobileNumber().toString());
+
+		LtMastLogins ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
+		ltMastLogin.setOtp(1234L);
+		ltMastLogins.setOtp(1234L);
+		
+		if (ltMastLogin != null) {
+			if (ltMastLogin.getOtp().equals(ltMastLogins.getOtp())) {
+				ltMastLogin.setStatus(INPROCESS);
+				ltMastLogin.setLoginDate(new Date());
+				ltMastLogins = ltMastLoginsRepository.save(ltMastLogin);
+				status.setCode(SUCCESS);
+				status.setMessage("Login Success");
+				status.setData(ltMastLogin.getStatus());
+
+				entity.setCode(SUCCESS);
+				entity.setUserId(ltMastLogin.getUserId());
+				entity.setStatus(ltMastUser.getStatus());
+				//entity.setUserName(ltMastUser.getFirstName());
+				entity.setLastLoginId(ltMastLogins.getLoginId());
+				entity.setRole(ltMastUser.getUserName());
+				//entity.setFirstName(ltMastUser.getFirstName());
+				//entity.setLastName(ltMastUser.getLastName());
+				entity.setMobileNumber(ltMastUser.getMobileNumber());
+				//entity.setEmail(ltMastUser.getEmail());
+				
+
+			} else {
+				entity.setCode(FAIL);
+				entity.setMessage("Please Enter Valid OTP");
+			}
+		} else {
+			status.setCode(SUCCESS);
+			status.setMessage("Login Success");
+			status.setData("SUCCESS");
+			entity.setCode(SUCCESS);
+			//entity.setRole(ltMastUser.getUserType());
+			entity.setUserId(ltMastUser.getUserId());
+			//entity.setUserName(ltMastUser.getFirstName());
+			entity.setFirstName(ltMastUser.getUserName());
+			//entity.setLastName(ltMastUser.getLastName());
+			entity.setMobileNumber(ltMastUser.getMobileNumber());
+			//entity.setEmail(ltMastUser.getEmail());
+		}
+
+		if (status.getCode() == SUCCESS) {
+			System.out.println("login success");
+		}
+
+		return entity;
 	}
 	
 }//end of class

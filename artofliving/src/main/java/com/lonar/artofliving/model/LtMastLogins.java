@@ -2,6 +2,7 @@ package com.lonar.artofliving.model;
 
 
 
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -44,6 +46,9 @@ public class LtMastLogins {
 
 	@Column(name = "TOKEN_ID")
 	private Long tokenId;
+	
+	@Transient
+	private String mobileNumber;
 
 	public Long getLoginId() {
 		return loginId;
@@ -109,11 +114,20 @@ public class LtMastLogins {
 		this.tokenId = tokenId;
 	}
 
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "LtMastLogins [loginId=" + loginId + ", userId=" + userId + ", loginDate=" + loginDate + ", ipAddress="
 				+ ipAddress + ", device=" + device + ", otp=" + otp + ", status=" + status + ", tokenId=" + tokenId
-				+ "]";
+				+ ", mobileNumber=" + mobileNumber + "]";
 	}
-	
+
+
 }
