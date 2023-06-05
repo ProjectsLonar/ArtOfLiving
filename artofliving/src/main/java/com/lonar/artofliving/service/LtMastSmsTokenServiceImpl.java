@@ -71,12 +71,12 @@ public class LtMastSmsTokenServiceImpl implements LtMastSmsTokenService,CodeMast
 		if (ltOrganisationSMS != null) {
 
 			 //String mainUrl = ltOrganisationSMS.getSmsUrl().toString();
-			//String mainUrl = ltOrganisationSMS.getSmsUrl().toString();
-			String mainUrl ="https://api.msg91.com/api/sendhttp.php?authkey=331742AH2d0nK8dp85fce5917P1&sender=NNFOTP&mobiles=91"
-							+ltMastSmsToken.getSendTo().toString()+
-				"&message="+ltMastSmsToken.getSmsObject()+" is your NutsnFlakes OTP. Do not share this code with anyone else.&DLT_TE_ID=1207161518623014354"; 
-			//mainUrl = mainUrl.replace("#sendOtp#", ltMastSmsToken.getSmsObject());
-			//mainUrl = mainUrl.replace("#mobileNumber#", ltMastSmsToken.getSendTo().toString());
+			String mainUrl = ltOrganisationSMS.getSmsUrl().toString();
+			//String mainUrl ="https://api.msg91.com/api/sendhttp.php?authkey=331742AH2d0nK8dp85fce5917P1&sender=NNFOTP&mobiles=91"
+				//			+ltMastSmsToken.getSendTo().toString()+
+			//	"&message="+ltMastSmsToken.getSmsObject()+" is your NutsnFlakes OTP. Do not share this code with anyone else.&DLT_TE_ID=1207161518623014354"; 
+			mainUrl = mainUrl.replace("#sendOtp#", ltMastSmsToken.getSmsObject());
+			mainUrl = mainUrl.replace("#mobileNumber#", ltMastSmsToken.getSendTo().toString());
 			StringBuilder sbPostData = new StringBuilder(mainUrl);
 			mainUrl = sbPostData.toString();
 			System.out.println("mainUrl"+mainUrl);
@@ -163,7 +163,7 @@ public class LtMastSmsTokenServiceImpl implements LtMastSmsTokenService,CodeMast
 				} else {
 					status.setCode(FAIL);
 					System.out.println("GET request not worked");
-				}
+  				}
 				System.out.println(response.toString());
 			}catch (Exception e) {
 				// TODO: handle exception
