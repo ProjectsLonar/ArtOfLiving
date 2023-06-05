@@ -13,6 +13,7 @@
 	<artifactId>artofliving</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>artofliving</name>
+	<packaging>war</packaging>
 	<description>aol project for Spring Boot</description>
 	<properties>
 		<spring-cloud.version>Hoxton.RC2</spring-cloud.version>
@@ -117,7 +118,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+	  
 	
 	<dependencyManagement>
 		<dependencies>
@@ -132,6 +133,7 @@
 	</dependencyManagement>
 
 	<build>
+	<finalName>artOfLiving</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
