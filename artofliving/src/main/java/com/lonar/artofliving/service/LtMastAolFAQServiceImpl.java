@@ -3,6 +3,7 @@ package com.lonar.artofliving.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lonar.artofliving.common.ServiceException;
@@ -14,6 +15,7 @@ import com.lonar.artofliving.model.Status;
 @Service
 public class LtMastAolFAQServiceImpl implements LtMastAolFAQService,CodeMaster {
 	
+	@Autowired
 	LtMastAolFAQDao ltMastAolFAQDao;
 
 	@Override
