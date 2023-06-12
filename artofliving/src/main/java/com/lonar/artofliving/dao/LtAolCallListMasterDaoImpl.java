@@ -1,5 +1,6 @@
 package com.lonar.artofliving.dao;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -52,6 +53,25 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 			return list;
 		}
 		return list;
+	}
+
+	@Override
+	public LtAolCallListMaster save(LtAolCallListMaster ltAolCallListMasterUpdate)throws BusinessException, ServiceException, IOException {
+
+		return ltAolCallListMasterRepository.save(ltAolCallListMasterUpdate);
+	}
+
+	@Override
+	public LtAolCallListMaster getLtAolCallList(Long callListId)
+			throws BusinessException, ServiceException, IOException {
+		
+		String query= env.getProperty("getLtAolCallList");
+		List<LtAolCallListMaster> list =jdbcTemplate.query(query, new Object[] {callListId}, 
+				new BeanPropertyRowMapper<LtAolCallListMaster>(LtAolCallListMaster.class));
+		if(!list.isEmpty()) {
+			return list.get(0);
+		}
+			return null;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.lonar.artofliving.dao;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.lonar.artofliving.common.BusinessException;
@@ -11,5 +12,9 @@ public interface LtAolCallListMasterDao {
 
 	
 	List<ResponseDto> getAllCallListById(Long callListId) throws ServiceException, BusinessException;
+
+	LtAolCallListMaster save(LtAolCallListMaster ltAolCallListMasterUpdate) throws BusinessException, ServiceException, IOException;
+
+	LtAolCallListMaster getLtAolCallList(Long callListId) throws BusinessException, ServiceException, IOException;;
 
 }

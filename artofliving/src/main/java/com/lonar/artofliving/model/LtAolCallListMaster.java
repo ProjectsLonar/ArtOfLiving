@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -28,7 +29,7 @@ public class LtAolCallListMaster extends BaseClass{
 	@Column(name= "student_name")
 	private String studentName;
 	
-	@Column(name= "cal_source")
+	@Column(name= "call_source")
 	private String callSource;
 	
 	@Column(name= "gender")
@@ -37,8 +38,8 @@ public class LtAolCallListMaster extends BaseClass{
 	@Column(name= "dob")
 	private Date dob;
 	
-	@Column(name= "note_id")
-	private String noteId;
+	@Column(name= "notes_id")
+	private String notesId;
 	
 	@Column(name= "call_date")
 	private Date callDate;
@@ -46,7 +47,18 @@ public class LtAolCallListMaster extends BaseClass{
 	@Column(name= "assigned_to")
 	private Long assignedTo;
 
+	@Transient
+	Long userId;
 	
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public Long getCallListId() {
 		return callListId;
 	}
@@ -95,12 +107,12 @@ public class LtAolCallListMaster extends BaseClass{
 		this.dob = dob;
 	}
 
-	public String getNoteId() {
-		return noteId;
+	public String getNotesId() {
+		return notesId;
 	}
 
-	public void setNoteId(String noteId) {
-		this.noteId = noteId;
+	public void setNotesId(String notesId) {
+		this.notesId = notesId;
 	}
 
 	public Date getCallDate() {
@@ -123,8 +135,8 @@ public class LtAolCallListMaster extends BaseClass{
 	@Override
 	public String toString() {
 		return "LtAolCallListMaster [callListId=" + callListId + ", mobileNumber=" + mobileNumber + ", studentName="
-				+ studentName + ", callSource=" + callSource + ", gender=" + gender + ", dob=" + dob + ", noteId="
-				+ noteId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + "]";
+				+ studentName + ", callSource=" + callSource + ", gender=" + gender + ", dob=" + dob + ", notesId="
+				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", suerId=" + userId + "]";
 	}
 
 	

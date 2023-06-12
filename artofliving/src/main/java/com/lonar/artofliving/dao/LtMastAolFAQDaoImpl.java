@@ -22,7 +22,7 @@ public class LtMastAolFAQDaoImpl implements LtMastAolFAQDao,CodeMaster {
 
 	@Autowired
 	private Environment env;
-
+    @Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
