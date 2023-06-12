@@ -37,4 +37,15 @@ public class LtAolStudentController implements CodeMaster  {
 	              } 
 	}
 	
+	/*@RequestMapping(value= "/deleteStudentFromQueue", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Status> deleteStudentFromQueue()throws BusinessException, ServiceException{
+		try {return null;
+               //return new ResponseEntity<Status>(ltAolStudentService.deleteStudentFromQueue(), HttpStatus.OK);			
+		}catch(Exception e) {
+			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+		}
+		
+		
+	}*/
+	
 }
