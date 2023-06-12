@@ -109,5 +109,17 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public LtAolUsersMaster deleteUser(Long userId) throws ServiceException {
+	   
+		String query = env.getProperty("deleteUser");
+		int record =jdbcTemplate.update(query, userId, userId, userId);
+		if(record>0) 
+		 { 
+		   return getUserById(userId);
+		 }
+		return null;
+	}
 
 }
