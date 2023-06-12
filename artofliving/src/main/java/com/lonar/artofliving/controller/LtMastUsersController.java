@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtMastLogins;
+import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.service.LtMastUsersService;
@@ -77,5 +77,25 @@ public class LtMastUsersController implements CodeMaster {
 		}
 		return new ResponseEntity<>(responseEntity,null,HttpStatus.NOT_FOUND);
 	}
-		
+	
+	@RequestMapping(value = "/getallactiveroles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Status> getallactiveroles( )throws ServiceException, IOException {
+		try {
+			return new ResponseEntity<Status>(ltMastUsersService.getallactiveroles(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/getallusers", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Status> getallusers(@RequestBody RequestDto requestDto )throws ServiceException, IOException {
+		try {
+			return new ResponseEntity<Status>(ltMastUsersService.getallusers(requestDto), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+		                          
 }

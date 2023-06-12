@@ -1,5 +1,6 @@
 package com.lonar.artofliving.dao;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
+import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.repository.LtAolMastRepository;
 
 @Repository
@@ -74,4 +76,38 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<LtAolUsersMaster> getallactiveroles( )throws ServiceException,IOException{
+		String query = env.getProperty("getallactiveroles");
+		List<LtAolUsersMaster> list = jdbcTemplate.query(query, new Object[] {},
+				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		if (!list.isEmpty())
+			return list;
+		else
+			return null;
+	}
+	
+	@Override
+	public List<LtAolUsersMaster> getallusers(RequestDto requestDto) throws ServiceException {
+		
+		if (requestDto.getLimit() == 0) {
+			requestDto.setLimit(Integer.parseInt(env.getProperty("limit")));
+		}
+
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+
+		String query = env.getProperty("getallusers");
+		List<LtAolUsersMaster> ltMastUserList = jdbcTemplate.query(query,
+				new Object[] {searchField, requestDto.getLimit(), requestDto.getOffset() },
+				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		if (!ltMastUserList.isEmpty()) {
+			return ltMastUserList;
+		}
+		return null;
+	}
+
 }

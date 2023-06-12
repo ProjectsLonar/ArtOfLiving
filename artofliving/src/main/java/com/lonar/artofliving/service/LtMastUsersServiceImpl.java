@@ -20,6 +20,7 @@ import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.LtMastSmsToken;
+import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.repository.LtMastLoginsRepository;
@@ -274,4 +275,44 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		return entity;
 	}
 	
+	@Override
+	public Status getallactiveroles() throws ServiceException, IOException{
+		Status status = new Status();
+		List<LtAolUsersMaster> ltAolUserList = ltMastUsersDao.getallactiveroles( );
+		if (!ltAolUserList.isEmpty()) {
+			status.setCode(RECORD_FOUND);
+			status.setMessage("RECORD_FOUND");
+			status.setData(ltAolUserList);
+
+		} else {
+			status.setCode(RECORD_NOT_FOUND);
+			status.setMessage("RECORD_Not_FOUND");
+			status.setData(ltAolUserList);
+		}
+		return status;
+	}
+	
+	@Override
+	public Status getallusers(RequestDto requestDto) throws ServiceException, IOException {
+		try {
+		Status status= new Status();
+		
+		List<LtAolUsersMaster> ltMastUserList= ltMastUsersDao.getallusers(requestDto);
+		
+		if(ltMastUserList!= null) {
+			status.setCode(RECORD_FOUND);
+			status.setMessage("Record Found Successfully.");
+			status.setData(ltMastUserList);
+		}else {
+			status.setCode(RECORD_NOT_FOUND);
+			status.setMessage("Record Not Found.");
+			status.setData(null);
+		}
+		return status;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 }//end of class
