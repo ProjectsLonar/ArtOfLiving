@@ -99,10 +99,15 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		if (requestDto.getSearchfield() != null) {
 			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
 		}
+		
+		String status = null;
+		if (requestDto.getStatus() != null) {
+			status = "%" + requestDto.getStatus().toUpperCase() + "%";
+		}
 
 		String query = env.getProperty("getallusers");
 		List<LtAolUsersMaster> ltMastUserList = jdbcTemplate.query(query,
-				new Object[] {searchField, requestDto.getLimit(), requestDto.getOffset() },
+				new Object[] {searchField,status, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
 		if (!ltMastUserList.isEmpty()) {
 			return ltMastUserList;
