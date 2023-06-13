@@ -3,6 +3,8 @@ package com.lonar.artofliving.dao;
 import java.io.IOException;
 import java.util.List;
 
+import org.json.JSONException;
+
 import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
@@ -15,6 +17,8 @@ public interface LtAolCallListMasterDao {
 
 	LtAolCallListMaster save(LtAolCallListMaster ltAolCallListMasterUpdate) throws BusinessException, ServiceException, IOException;
 
-	LtAolCallListMaster getLtAolCallList(Long callListId) throws BusinessException, ServiceException, IOException;;
+	LtAolCallListMaster getLtAolCallList(Long callListId) throws BusinessException, ServiceException, IOException;
+	
+	LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException;
 
 }
