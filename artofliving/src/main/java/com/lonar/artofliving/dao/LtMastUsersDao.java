@@ -21,4 +21,6 @@ public interface LtMastUsersDao {
 	List<LtAolUsersMaster> getallactiveroles( )throws ServiceException,IOException;
 	
 	public List<LtAolUsersMaster> getallusers(RequestDto requestDto) throws ServiceException;
+	
+	LtAolUsersMaster deleteUser(Long userId)throws ServiceException;
 }

@@ -1,6 +1,7 @@
 package com.lonar.artofliving.controller;
 
 import java.io.IOException;
+import java.rmi.ServerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.CodeMaster;
+import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
@@ -97,5 +101,29 @@ public class LtMastUsersController implements CodeMaster {
 		}
 		return null;
 	}
-		                          
+		
+    @RequestMapping(value= "/deleteUser/{userId}", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Status> deleteUser(@PathVariable("userId") Long userId) throws ServerException{
+    	try {
+    		return new ResponseEntity<Status>(ltMastUsersService.deleteUser(userId), HttpStatus.OK);
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    		throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+    	}
+    }
+    
+    @RequestMapping(value = "/saveUserDetails", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Status> saveUserDetails(@RequestBody LtAolUsersMaster ltAolUsersMaster )
+			throws ServiceException,IOException {
+		try {
+				return new ResponseEntity<Status>(ltMastUsersService.saveUserDetails(ltAolUsersMaster), HttpStatus.OK);
+		     }
+		catch (Exception e) {
+			e.printStackTrace();
+			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+		}
+		
+		
+	}
 }

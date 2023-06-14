@@ -24,6 +24,7 @@ import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.repository.LtMastLoginsRepository;
+import com.lonar.artofliving.utils.UtilsMaster;
 
 @Service
 public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  { 
@@ -314,5 +315,99 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 			return null;
 		}
 		
+	}
+	
+	@Override
+	public Status deleteUser(Long userId) throws ServiceException, IOException {
+		Status status = new Status();
+		LtAolUsersMaster ltMastUser = ltMastUsersDao.deleteUser(userId);
+		if (ltMastUser != null) 
+		{
+		  status.setCode(DELETE_SUCCESSFULLY);
+	      //status.setData(ltMastUser);
+	      status.setMessage("User Deleted Successfully.");
+	      return status;
+        } 
+		else {
+	        status.setCode(DELETE_FAIL);
+	        //status.setData(null);
+	        status.setMessage("DELETE_FAIL");
+	        return status;
+         }
+      }
+	
+	@Override
+	public Status saveUserDetails(LtAolUsersMaster ltAolUsersMaster) throws ServiceException,IOException{
+		Status status = new Status();
+		if(ltAolUsersMaster!=null) {
+			status = checkDuplicate(ltAolUsersMaster);
+			if (status.getCode() == FAIL) {
+				return status;
+			}
+			if(ltAolUsersMaster.getUserId() == null) {
+				LtAolUsersMaster ltAolUsersMasters =new LtAolUsersMaster();
+				ltAolUsersMasters.setMobileNumber(ltAolUsersMaster.getMobileNumber());
+				ltAolUsersMasters.setUserName(ltAolUsersMaster.getUserName());
+				ltAolUsersMasters.setStatus(ltAolUsersMaster.getStatus());
+				ltAolUsersMasters.setRoleId(ltAolUsersMaster.getRoleId());
+				ltAolUsersMasters.setCreatedBy(ltAolUsersMaster.getCreatedBy());
+				ltAolUsersMasters.setCreationDate(UtilsMaster.getCurrentDateTime());
+				ltAolUsersMasters.setLastUpdatedBy(ltAolUsersMaster.getCreatedBy());
+				ltAolUsersMasters.setLastUpdateLogin(ltAolUsersMaster.getCreatedBy());
+				ltAolUsersMasters.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+				
+				LtAolUsersMaster ltAolUsersMastersUpdated = ltMastUsersDao.saveLtMastUsers(ltAolUsersMasters);
+				if (ltAolUsersMastersUpdated != null) {
+					status.setCode(INSERT_SUCCESSFULLY);
+					status.setData(ltAolUsersMastersUpdated);
+					status.setMessage("User Added Successfully.");
+					return status;
+				} else {
+					status.setCode(INSERT_FAIL);
+					status.setData(null);
+					status.setMessage("Insert Fail.");
+					return status;
+				}
+			}else {
+				LtAolUsersMaster userDetails = ltMastUsersDao.getUserById(ltAolUsersMaster.getUserId());
+				userDetails.setUserName(ltAolUsersMaster.getUserName());
+				userDetails.setRoleId(ltAolUsersMaster.getRoleId());
+				userDetails.setStatus(ltAolUsersMaster.getStatus());
+				userDetails.setLastUpdatedBy(ltAolUsersMaster.getCreatedBy());
+				userDetails.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+				userDetails.setLastUpdateLogin(ltAolUsersMaster.getCreatedBy());
+				
+				LtAolUsersMaster ltAolUsersMastersUpdated = ltMastUsersDao.saveLtMastUsers(userDetails);
+				
+				if (ltAolUsersMastersUpdated != null) {
+					status.setCode(UPDATE_SUCCESSFULLY);
+					status.setData(ltAolUsersMastersUpdated);
+					status.setMessage("User Updated Successfully.");
+					return status;
+				} else {
+					status.setCode(UPDATE_FAIL);
+					status.setData(null);
+					status.setMessage("Update Fail.");
+					return status;
+				}
+			}
+		}
+		
+		return status;
+		
+	}
+	
+	private Status checkDuplicate(LtAolUsersMaster ltAolUsersMaster) throws ServiceException {
+		Status status = new Status();
+		LtAolUsersMaster ltAolUsersMasters = ltMastUsersDao.getLtMastUsersByMobileNumber(ltAolUsersMaster.getMobileNumber());
+		if (ltAolUsersMasters != null) {
+			if (!ltAolUsersMasters.getUserId().equals(ltAolUsersMaster.getUserId())) {
+				status.setCode(FAIL);
+				status.setMessage("Mobile Number Already Exists.");
+				return status;
+			}
+		}
+		status.setCode(SUCCESS);
+		return status;
 	}
 }//end of class

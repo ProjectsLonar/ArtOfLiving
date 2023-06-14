@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -67,6 +68,19 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		
 		String query= env.getProperty("getLtAolCallList");
 		List<LtAolCallListMaster> list =jdbcTemplate.query(query, new Object[] {callListId}, 
+				new BeanPropertyRowMapper<LtAolCallListMaster>(LtAolCallListMaster.class));
+		if(!list.isEmpty()) {
+			return list.get(0);
+		}
+			return null;
+	}
+	
+	
+	@Override
+	public LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException{
+		
+		String query= env.getProperty("getAolCallListByMobileNumber");
+		List<LtAolCallListMaster> list =jdbcTemplate.query(query, new Object[] {mobileNumberList}, 
 				new BeanPropertyRowMapper<LtAolCallListMaster>(LtAolCallListMaster.class));
 		if(!list.isEmpty()) {
 			return list.get(0);

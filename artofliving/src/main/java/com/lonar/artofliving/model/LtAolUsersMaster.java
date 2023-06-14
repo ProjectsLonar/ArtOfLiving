@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -32,6 +33,8 @@ public class LtAolUsersMaster extends BaseClass{
 	@Column(name= "role_id")
 	private Long roleId;
 
+	@Transient
+	private Long createdBy;
 	
 	public Long getUserId() {
 		return userId;
@@ -73,11 +76,18 @@ public class LtAolUsersMaster extends BaseClass{
 		this.roleId = roleId;
 	}
 
-	
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolUsersMaster [userId=" + userId + ", userName=" + userName + ", mobileNumber=" + mobileNumber
-				+ ", status=" + status + ", roleId=" + roleId + "]";
+				+ ", status=" + status + ", roleId=" + roleId + ", createdBy=" + createdBy + "]";
 	}
 	
 		

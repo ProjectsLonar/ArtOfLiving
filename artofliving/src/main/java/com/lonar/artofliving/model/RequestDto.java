@@ -5,6 +5,8 @@ public class RequestDto {
 	private int limit;
 	private int offset;
 	private String searchfield;
+	private String status;
+	
 	public int getLimit() {
 		return limit;
 	}
@@ -23,10 +25,17 @@ public class RequestDto {
 	public void setSearchfield(String searchfield) {
 		this.searchfield = searchfield;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
-		return "RequestDto [limit=" + limit + ", offset=" + offset + ", searchfield=" + searchfield + "]";
+		return "RequestDto [limit=" + limit + ", offset=" + offset + ", searchfield=" + searchfield + ", status="
+				+ status + "]";
 	}
-	
-	
+		
 }
