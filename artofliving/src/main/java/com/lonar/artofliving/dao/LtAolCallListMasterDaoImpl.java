@@ -17,6 +17,8 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolUsersMaster;
+import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.repository.LtAolCallListMasterRepository;
 
 @Repository
@@ -42,12 +44,20 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 	}
 	
 	@Override
-	public List<ResponseDto> getAllCallListById(Long callListId) throws ServiceException, BusinessException {
+	public List<ResponseDto> getAllCallListById(RequestDto requestDto) throws ServiceException, BusinessException {
+		
+		if (requestDto.getLimit() == 0) {
+			requestDto.setLimit(Integer.parseInt(env.getProperty("limit")));
+		}
+
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
 		
 		String query= env.getProperty("getAllCallListById");
-		//List<LtAolCallListMaster> list= jdbcTemplate.query(query, new Object[] {callListId},
-			//	new BeanPropertyRowMapper<LtAolCallListMaster>(LtAolCallListMaster.class));
-		List<ResponseDto> list= jdbcTemplate.query(query, new Object[] {callListId},
+		
+		List<ResponseDto> list= jdbcTemplate.query(query, new Object[] {searchField, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<ResponseDto>(ResponseDto.class));
 		
 		if(!list.isEmpty()) {
@@ -93,5 +103,33 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		
 		return ltAolCallListMasterRepository.deleteById();
 	}*/
+	
+	@Override
+	public List<LtAolCallListMaster> saveAll (List<LtAolCallListMaster> ltAolCallListMaster) throws ServiceException, IOException {
+		// TODO Auto-generated method stub
+		List<LtAolCallListMaster> list = (List<LtAolCallListMaster>) ltAolCallListMasterRepository.saveAll(ltAolCallListMaster);
+		return list;
+	}
+
+	@Override
+	public List<ResponseDto> getMyQueueList(RequestDto requestDto) throws ServiceException, BusinessException{
+		if (requestDto.getLimit() == 0) {
+			requestDto.setLimit(Integer.parseInt(env.getProperty("limit")));
+		}
+
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+
+		String query = env.getProperty("getMyQueueList");
+		List<ResponseDto> ltMastMyQueueList = jdbcTemplate.query(query,
+				new Object[] {requestDto.getUserId(),searchField, requestDto.getLimit(), requestDto.getOffset() },
+				new BeanPropertyRowMapper<ResponseDto>(ResponseDto.class));
+		if (!ltMastMyQueueList.isEmpty()) {
+			return ltMastMyQueueList;
+		}
+		return null;
+	}
 	
 }

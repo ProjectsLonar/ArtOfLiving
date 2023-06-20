@@ -21,6 +21,7 @@ public interface CodeMaster {
 	public static final int SUBMIT_FOR_APPROVAL = 15; 
 	public static final int RECORD_FOUND = 16;
 	public static final int RECORD_NOT_FOUND = 17;
+	public static final int FILE_DOWNLOAD = 18;
 	
 
 	public static final int EXCEPTION = 500; // Exception

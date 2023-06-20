@@ -17,6 +17,7 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.AssignedOrderDto;
 import com.lonar.artofliving.model.CodeMaster;
+import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.service.LtAolCallListService;
 
@@ -27,11 +28,11 @@ public class LtAolCallListMastController implements CodeMaster {
 	@Autowired
 	private LtAolCallListService ltAolCallListMasterService;
 	
-	@RequestMapping(value="/getAllCallListById/{callListId}", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE) 
-	public ResponseEntity<Status> getAllCallListById(@PathVariable("callListId") Long callListId) 
+	@RequestMapping(value="/getAllCallListById", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<Status> getAllCallListById(@RequestBody RequestDto requestDto) 
 			throws ServiceException, BusinessException{
 		try {
-			return new ResponseEntity<Status>(ltAolCallListMasterService.getAllCallListById(callListId), HttpStatus.OK);
+			return new ResponseEntity<Status>(ltAolCallListMasterService.getAllCallListById(requestDto), HttpStatus.OK);
 		}catch(Exception e){
 			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
 		}
@@ -40,5 +41,16 @@ public class LtAolCallListMastController implements CodeMaster {
 	@RequestMapping(value = "/saveAssignedTo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Status> saveAssignedToVersion1(@RequestBody AssignedOrderDto assignedOrderDto) throws ServiceException, IOException, JSONException  {
 		return new ResponseEntity<Status>(ltAolCallListMasterService.saveAssignedTo(assignedOrderDto), HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value="/getMyQueueList", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<Status> getMyQueueList(@RequestBody RequestDto requestDto) 
+			throws ServiceException, BusinessException{
+		try {
+			return new ResponseEntity<Status>(ltAolCallListMasterService.getMyQueueList(requestDto), HttpStatus.OK);
+		}catch(Exception e){
+			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+		}
 	}
 }
