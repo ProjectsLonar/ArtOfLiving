@@ -21,4 +21,6 @@ public interface LtAolCallListMasterDao {
 	
 	LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException;
 
+	//LtAolCallListMaster deleteStudentFromQueue()throws ServiceException;
+
 }

@@ -102,7 +102,7 @@ public class LtMastUsersController implements CodeMaster {
 		return null;
 	}
 		
-    @RequestMapping(value= "/deleteUser/{userId}", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= "/deleteUser/{userId}", method= RequestMethod.DELETE, produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Status> deleteUser(@PathVariable("userId") Long userId) throws ServerException{
     	try {
     		return new ResponseEntity<Status>(ltMastUsersService.deleteUser(userId), HttpStatus.OK);
