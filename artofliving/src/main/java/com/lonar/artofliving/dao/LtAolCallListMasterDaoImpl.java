@@ -87,5 +87,11 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		}
 			return null;
 	}
+
+	/*@Override
+	public LtAolCallListMaster deleteStudentFromQueue() throws ServiceException {
+		
+		return ltAolCallListMasterRepository.deleteById();
+	}*/
 	
 }
