@@ -6,6 +6,7 @@ public class RequestDto {
 	private int offset;
 	private String searchfield;
 	private String status;
+	private int userId;
 	
 	public int getLimit() {
 		return limit;
@@ -32,10 +33,16 @@ public class RequestDto {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	@Override
 	public String toString() {
 		return "RequestDto [limit=" + limit + ", offset=" + offset + ", searchfield=" + searchfield + ", status="
-				+ status + "]";
+				+ status + ", userId=" + userId + "]";
 	}
-		
+			
 }
