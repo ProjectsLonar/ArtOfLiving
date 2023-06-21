@@ -57,12 +57,15 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			Status status =new Status();
 			List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
 			if(responseDto!= null) {
-				status.setMessage("RECORD_FOUND");
+				status.setCode(RECORD_FOUND);
+				status.setMessage("Record Found.");
 				status.setData(responseDto);
 				return status;
-			}
-		status.setMessage("RECORD_NOT_Found");
+			}else {
+			status.setCode(RECORD_NOT_FOUND);
+		status.setMessage("Record Not Found.");
 		status.setData(null);
+			}
 		return status;
 	}
 	
@@ -594,12 +597,16 @@ public Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOE
 	Status status =new Status();
 	List<ResponseDto> responseDto= ltAolCallListMasterDao.getMyQueueList(requestDto);
 	if(responseDto!= null) {
-		status.setMessage("RECORD_FOUND");
+		status.setCode(RECORD_FOUND);
+		status.setMessage("Record Found Successfully.");
 		status.setData(responseDto);
 		return status;
 	}
-status.setMessage("RECORD_NOT_Found");
+	else {	
+status.setCode(RECORD_NOT_FOUND);
+status.setMessage("Record Not Found.");
 status.setData(null);
+	}
 return status;
 }
 }
