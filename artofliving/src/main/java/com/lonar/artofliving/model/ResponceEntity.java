@@ -7,7 +7,7 @@ public class ResponceEntity {
 	private Object data;
 	private Long userId;
 	
-	private String role;
+	private Long role;
 	private String status;
 	private Long lastLoginId; 
 	private String firstName;
@@ -65,10 +65,10 @@ public class ResponceEntity {
 		this.userId = userId;
 	}
 
-	public String getRole() {
+	public Long getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Long role) {
 		this.role = role;
 	}
 	public String getStatus() {

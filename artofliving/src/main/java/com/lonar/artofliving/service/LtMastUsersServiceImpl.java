@@ -244,7 +244,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				entity.setStatus(ltMastUser.getStatus());
 				//entity.setUserName(ltMastUser.getFirstName());
 				entity.setLastLoginId(ltMastLogins.getLoginId());
-				entity.setRole(ltMastUser.getUserName());
+				entity.setRole(ltMastUser.getRoleId());
 				//entity.setFirstName(ltMastUser.getFirstName());
 				//entity.setLastName(ltMastUser.getLastName());
 				entity.setMobileNumber(ltMastUser.getMobileNumber());
