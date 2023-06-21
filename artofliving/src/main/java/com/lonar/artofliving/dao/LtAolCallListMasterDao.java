@@ -22,6 +22,7 @@ public interface LtAolCallListMasterDao {
 	
 	LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException;
 
+
 	List<LtAolCallListMaster> saveAll (List<LtAolCallListMaster> ltAolCallListMaster) throws ServiceException, IOException;
 	
 	List<ResponseDto> getMyQueueList(RequestDto requestDto) throws ServiceException, BusinessException;

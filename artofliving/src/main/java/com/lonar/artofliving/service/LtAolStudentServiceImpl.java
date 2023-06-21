@@ -87,4 +87,22 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 		return null;
 		
 	}
+
+/*	@Override
+	public Status deleteStudentFromQueue() throws ServiceException, BusinessException, IOException {
+		try {
+		Status status = new Status();
+		LtAolCallListMaster ltAolCallListMaster = ltAolCallListMasterDao.deleteStudentFromQueue();
+		if(ltAolCallListMaster!= null) 
+		{
+			status.setMessage("Student Deleted Successfully");
+			status.setData(ltAolCallListMaster);
+			return status;
+		}else {
+			   status.setMessage("Delete Fail");
+			   return status;
+		      }
+		}catch(Exception e) {e.printStackTrace();}
+		return null;
+	}*/
 }

@@ -12,4 +12,6 @@ public interface LtAolStudentService {
 
 	Status addStudent(LtAolCallListMaster ltAolCallListMaster)throws ServiceException,BusinessException, IOException;
 
+	//Status deleteStudentFromQueue()throws ServiceException, BusinessException, IOException;
+
 }
