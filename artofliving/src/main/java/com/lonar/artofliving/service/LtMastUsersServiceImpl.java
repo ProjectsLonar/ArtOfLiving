@@ -242,10 +242,10 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				entity.setCode(SUCCESS);
 				entity.setUserId(ltMastLogin.getUserId());
 				entity.setStatus(ltMastUser.getStatus());
-				//entity.setUserName(ltMastUser.getFirstName());
+				entity.setUserName(ltMastUser.getUserName());
 				entity.setLastLoginId(ltMastLogins.getLoginId());
-				entity.setRole(ltMastUser.getUserName());
-				//entity.setFirstName(ltMastUser.getFirstName());
+				entity.setRole(ltMastUser.getRole());
+				entity.setRoleId(ltMastUser.getRoleId());
 				//entity.setLastName(ltMastUser.getLastName());
 				entity.setMobileNumber(ltMastUser.getMobileNumber());
 				//entity.setEmail(ltMastUser.getEmail());
@@ -260,10 +260,11 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 			status.setMessage("Login Success");
 			status.setData("SUCCESS");
 			entity.setCode(SUCCESS);
-			//entity.setRole(ltMastUser.getUserType());
+			entity.setRole(ltMastUser.getRole());
+			entity.setRoleId(ltMastUser.getRoleId());
 			entity.setUserId(ltMastUser.getUserId());
-			//entity.setUserName(ltMastUser.getFirstName());
-			entity.setFirstName(ltMastUser.getUserName());
+			entity.setUserName(ltMastUser.getUserName());
+			//entity.setFirstName(ltMastUser.getUserName());
 			//entity.setLastName(ltMastUser.getLastName());
 			entity.setMobileNumber(ltMastUser.getMobileNumber());
 			//entity.setEmail(ltMastUser.getEmail());
