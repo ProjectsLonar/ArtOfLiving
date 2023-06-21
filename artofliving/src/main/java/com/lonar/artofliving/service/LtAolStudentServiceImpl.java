@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dao.LtAolCallListMasterDao;
-import com.lonar.artofliving.dto.RequestDto;
+import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.utils.UtilsMaster;
 
 @Service
-public class LtAolStudentServiceImpl implements LtAolStudentService {
+public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 
 	@Autowired
 	LtAolCallListMasterDao ltAolCallListMasterDao;
@@ -49,7 +49,8 @@ public class LtAolStudentServiceImpl implements LtAolStudentService {
 				ltAolCallListMasterUpdate = ltAolCallListMasterDao.save(ltAolCallListMasterUpdate);
 				
 				if(ltAolCallListMasterUpdate !=  null) {
-					status.setMessage("Student Updated Successfully");
+					status.setCode(UPDATE_SUCCESSFULLY);
+					status.setMessage("Student Updated Successfully.");
 					status.setData(ltAolCallListMasterUpdate);
 					return status;
 				}
@@ -71,10 +72,12 @@ public class LtAolStudentServiceImpl implements LtAolStudentService {
 			       ltAolCallListMasterUpdate = ltAolCallListMasterDao.save(ltAolCallListMasterUpdate);
 			 
 			 if(ltAolCallListMasterUpdate != null) {
+				 status.setCode(INSERT_SUCCESSFULLY);
 				 status.setMessage("Student Added Successfully");
 				 status.setData(ltAolCallListMasterUpdate);
 				 return status;
 			 }else {
+				 status.setCode(INSERT_FAIL);
 				 status.setMessage("Unable to add Student");
 				 status.setData(null);
 				 return status;
