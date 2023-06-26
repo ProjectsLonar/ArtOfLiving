@@ -17,6 +17,7 @@ import com.lonar.artofliving.common.Validation;
 import com.lonar.artofliving.dao.LtMastSmsTokenDao;
 import com.lonar.artofliving.dao.LtMastUsersDao;
 import com.lonar.artofliving.model.CodeMaster;
+import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.LtMastSmsToken;
@@ -280,7 +281,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 	@Override
 	public Status getallactiveroles() throws ServiceException, IOException{
 		Status status = new Status();
-		List<LtAolUsersMaster> ltAolUserList = ltMastUsersDao.getallactiveroles( );
+		List<LtAolRolesMaster> ltAolUserList = ltMastUsersDao.getallactiveroles( );
 		if (!ltAolUserList.isEmpty()) {
 			status.setCode(RECORD_FOUND);
 			status.setMessage("RECORD_FOUND");

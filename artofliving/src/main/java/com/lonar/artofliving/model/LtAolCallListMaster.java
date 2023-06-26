@@ -58,6 +58,9 @@ public class LtAolCallListMaster extends BaseClass{
 	
 	@Column(name= "pin_code")
 	private String pinCode;
+	
+	@Column(name= "status")
+	private String status;
 
 	@Transient
 	Long userId;
@@ -176,13 +179,21 @@ public class LtAolCallListMaster extends BaseClass{
 		this.pinCode = pinCode;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolCallListMaster [callListId=" + callListId + ", mobileNumber=" + mobileNumber + ", studentName="
 				+ studentName + ", callSource=" + callSource + ", gender=" + gender + ", dob=" + dob + ", notesId="
 				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", email=" + email + ", address="
-				+ address + ", city=" + city + ", pinCode=" + pinCode + ", userId=" + userId + "]";
+				+ address + ", city=" + city + ", pinCode=" + pinCode + ", status=" + status + ", userId=" + userId
+				+ "]";
 	}
-
 	
 }
