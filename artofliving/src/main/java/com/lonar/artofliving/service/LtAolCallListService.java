@@ -20,5 +20,7 @@ public interface LtAolCallListService {
 	public Status uploadMasterCallingList(Long userId,MultipartFile file) throws ServiceException, IOException;
 	
 	Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOException;
+	
+	Status getAllCourses(RequestDto requestDto) throws ServiceException, IOException;
 
 }

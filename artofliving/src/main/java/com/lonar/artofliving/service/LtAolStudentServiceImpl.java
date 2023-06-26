@@ -73,12 +73,12 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			 
 			 if(ltAolCallListMasterUpdate != null) {
 				 status.setCode(INSERT_SUCCESSFULLY);
-				 status.setMessage("Student Added Successfully");
+				 status.setMessage("Student Added Successfully.");
 				 status.setData(ltAolCallListMasterUpdate);
 				 return status;
 			 }else {
 				 status.setCode(INSERT_FAIL);
-				 status.setMessage("Unable to add Student");
+				 status.setMessage("Unable To Add Student.");
 				 status.setData(null);
 				 return status;
 			 }

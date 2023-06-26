@@ -17,7 +17,7 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.LtAolCallListMaster;
-import com.lonar.artofliving.model.LtAolUsersMaster;
+import com.lonar.artofliving.model.LtAolProductMaster;
 import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.repository.LtAolCallListMasterRepository;
 
@@ -132,4 +132,25 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		return null;
 	}
 	
+	
+	@Override
+	public List<LtAolProductMaster> getAllCourses(RequestDto requestDto) throws ServiceException, BusinessException{
+		if (requestDto.getLimit() == 0) {
+			requestDto.setLimit(Integer.parseInt(env.getProperty("limit")));
+		}
+
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+
+		String query = env.getProperty("getAllCourses");
+		List<LtAolProductMaster> allCoursesList = jdbcTemplate.query(query,
+				new Object[] {searchField, requestDto.getLimit(), requestDto.getOffset() },
+				new BeanPropertyRowMapper<LtAolProductMaster>(LtAolProductMaster.class));
+		if (!allCoursesList.isEmpty()) {
+			return allCoursesList;
+		}
+		return null;
+	}
 }
