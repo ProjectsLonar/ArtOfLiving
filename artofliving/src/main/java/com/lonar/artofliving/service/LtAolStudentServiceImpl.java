@@ -30,14 +30,18 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			{
 			  LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getLtAolCallList(ltAolCallListMaster.getCallListId());
 			
-				ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMaster.getMobileNumber());
+				ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMasters.getMobileNumber());
 				ltAolCallListMasterUpdate.setStudentName(ltAolCallListMaster.getStudentName());
-				ltAolCallListMasterUpdate.setCallSource(ltAolCallListMaster.getCallSource());
+				ltAolCallListMasterUpdate.setCallSource("Mobile");
+				ltAolCallListMasterUpdate.setAddress(ltAolCallListMaster.getAddress());
+				ltAolCallListMasterUpdate.setCity(ltAolCallListMaster.getCity());
+				ltAolCallListMasterUpdate.setPinCode(ltAolCallListMaster.getPinCode());
+				ltAolCallListMasterUpdate.setEmail(ltAolCallListMaster.getEmail());
 				ltAolCallListMasterUpdate.setGender(ltAolCallListMaster.getGender());
 				ltAolCallListMasterUpdate.setDob(ltAolCallListMaster.getDob());
-				ltAolCallListMasterUpdate.setNotesId(ltAolCallListMaster.getNotesId());
-				ltAolCallListMasterUpdate.setCallDate(ltAolCallListMaster.getCallDate());
-				ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
+				ltAolCallListMasterUpdate.setNotesId(ltAolCallListMasters.getNotesId());
+				ltAolCallListMasterUpdate.setCallDate(ltAolCallListMasters.getCallDate());
+				//ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
 				if(ltAolCallListMasters.getCreatedBy()!=  null) {
 					ltAolCallListMasterUpdate.setCreatedBy(ltAolCallListMasters.getCreatedBy());
 				}
@@ -57,11 +61,15 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			}else {		
 				     ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMaster.getMobileNumber());
 				     ltAolCallListMasterUpdate.setStudentName(ltAolCallListMaster.getStudentName());
-			         ltAolCallListMasterUpdate.setCallSource(ltAolCallListMaster.getCallSource());
+			         ltAolCallListMasterUpdate.setCallSource("Mobile");
+			         ltAolCallListMasterUpdate.setAddress(ltAolCallListMaster.getAddress());
+						ltAolCallListMasterUpdate.setCity(ltAolCallListMaster.getCity());
+						ltAolCallListMasterUpdate.setPinCode(ltAolCallListMaster.getPinCode());
+						ltAolCallListMasterUpdate.setEmail(ltAolCallListMaster.getEmail());
 			         ltAolCallListMasterUpdate.setGender(ltAolCallListMaster.getGender());
 			         ltAolCallListMasterUpdate.setDob(ltAolCallListMaster.getDob());
-			         ltAolCallListMasterUpdate.setNotesId(ltAolCallListMaster.getNotesId());
-			         ltAolCallListMasterUpdate.setCallDate(ltAolCallListMaster.getCallDate());
+			        // ltAolCallListMasterUpdate.setNotesId(ltAolCallListMaster.getNotesId());
+			        // ltAolCallListMasterUpdate.setCallDate(ltAolCallListMaster.getCallDate());
 			         //ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
 			         ltAolCallListMasterUpdate.setCreatedBy(ltAolCallListMaster.getUserId());
 			         ltAolCallListMasterUpdate.setCreationDate(UtilsMaster.getCurrentDateTime());

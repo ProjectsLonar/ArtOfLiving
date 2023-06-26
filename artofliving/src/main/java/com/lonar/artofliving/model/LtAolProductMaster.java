@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -21,7 +22,7 @@ public class LtAolProductMaster extends BaseClass{
 	@Column(name= "product_id")
 	private Long productId;
 	
-	@Column(name= "producttype_id")
+	@Column(name= "product_type_id")
 	private Long productTypeId;
 	
 	@Column(name= "product_name")
@@ -33,6 +34,9 @@ public class LtAolProductMaster extends BaseClass{
 	@Column(name= "status")
 	private String status;
 
+	
+	@Transient
+	private String productType;
 	
 	public Long getProductId() {
 		return productId;
@@ -74,11 +78,20 @@ public class LtAolProductMaster extends BaseClass{
 		this.status = status;
 	}
 
-	
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolProductMaster [productId=" + productId + ", productTypeId=" + productTypeId + ", productName="
-				+ productName + ", productDescription=" + productDescription + ", status=" + status + "]";
+				+ productName + ", productDescription=" + productDescription + ", status=" + status + ", productType="
+				+ productType + "]";
 	}
 	
 	

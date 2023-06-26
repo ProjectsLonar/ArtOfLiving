@@ -17,7 +17,7 @@ public class LtAolProductTypeMaster extends BaseClass{
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name= "producttype_id")
+	@Column(name= "product_type_id")
 	private Long productTypeId;
 	
 	@Column(name= "product_type")
