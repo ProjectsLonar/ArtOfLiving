@@ -1,12 +1,13 @@
 package com.lonar.artofliving.model;
 
+
 public class Status {
 	private int code;
 	private String message;
 	private Object data;
 	private Long recordCount;
 	private Long totalCount;
-	private Long allRecordsCount;
+	//private Long allRecordsCount;
 	
 	
 	public int getCode() {
@@ -40,16 +41,12 @@ public class Status {
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
-	public Long getAllRecordsCount() {
-		return allRecordsCount;
-	}
-	public void setAllRecordsCount(Long allRecordsCount) {
-		this.allRecordsCount = allRecordsCount;
-	}
 	@Override
 	public String toString() {
 		return "Status [code=" + code + ", message=" + message + ", data=" + data + ", recordCount=" + recordCount
-				+ ", totalCount=" + totalCount + ", allRecordsCount=" + allRecordsCount + "]";
+				+ ", totalCount=" + totalCount + "]";
 	}
+	
+
 		
 }

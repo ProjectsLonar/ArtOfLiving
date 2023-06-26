@@ -9,7 +9,9 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolCallNotes;
 import com.lonar.artofliving.model.LtAolProductMaster;
+import com.lonar.artofliving.model.LtAolUserProducts;
 import com.lonar.artofliving.model.RequestDto;
 
 public interface LtAolCallListMasterDao {
@@ -29,4 +31,14 @@ public interface LtAolCallListMasterDao {
 	List<ResponseDto> getMyQueueList(RequestDto requestDto) throws ServiceException, BusinessException;
 	
 	List<LtAolProductMaster> getAllCourses(RequestDto requestDto) throws ServiceException, BusinessException;
+	
+	LtAolUserProducts saveCourseDetails (LtAolUserProducts ltAolUserProducts)throws ServiceException, IOException;
+	
+	LtAolUserProducts getCourseListAgainstId (Long userCourseId)throws ServiceException, IOException;
+	
+	LtAolCallNotes saveNote (LtAolCallNotes ltAolCallNotes)throws ServiceException, IOException;
+	
+	LtAolCallNotes getNoteAgainstId (Long callNoteId)throws ServiceException, IOException;
+	
+	List<LtAolUserProducts> getAllCoursesAgainstListId(Long callListId) throws ServiceException, BusinessException;
 }

@@ -39,8 +39,11 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 				ltAolCallListMasterUpdate.setEmail(ltAolCallListMaster.getEmail());
 				ltAolCallListMasterUpdate.setGender(ltAolCallListMaster.getGender());
 				ltAolCallListMasterUpdate.setDob(ltAolCallListMaster.getDob());
-				//ltAolCallListMasterUpdate.setNotesId(ltAolCallListMasters.getNotesId());
-				ltAolCallListMasterUpdate.setCallDate(ltAolCallListMasters.getCallDate());
+				/*
+				 * if(ltAolCallListMasters.getNotesId() !=null) {
+				 * ltAolCallListMasterUpdate.setNotesId(ltAolCallListMasters.getNotesId()); }
+				 */
+				//ltAolCallListMasterUpdate.setCallDate(ltAolCallListMasters.getCallDate());
 				ltAolCallListMasterUpdate.setStatus(ltAolCallListMaster.getStatus());
 				//ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
 				if(ltAolCallListMasters.getCreatedBy()!=  null) {

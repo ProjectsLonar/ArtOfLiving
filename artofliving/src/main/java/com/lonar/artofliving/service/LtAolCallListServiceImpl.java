@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +35,9 @@ import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.AssignedOrderDto;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolCallNotes;
 import com.lonar.artofliving.model.LtAolProductMaster;
+import com.lonar.artofliving.model.LtAolUserProducts;
 import com.lonar.artofliving.model.LtMasterCallingListErrorDto;
 import com.lonar.artofliving.model.LtMasterCallingListRequestDto;
 import com.lonar.artofliving.model.RequestDto;
@@ -56,16 +60,23 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		
 			Status status =new Status();
 			List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
+			if(requestDto.getCallListId() !=null ) {
+				List<LtAolUserProducts> listOfCourses =  ltAolCallListMasterDao.getAllCoursesAgainstListId(requestDto.getCallListId());
+				
+				responseDto.get(0).setCoursesList(listOfCourses);
+			}
 			if(responseDto!= null) {
 				status.setCode(RECORD_FOUND);
 				status.setMessage("Record Found.");
 				status.setData(responseDto);
+				status.setRecordCount((long)responseDto.size());
 				return status;
 			}else {
 			status.setCode(RECORD_NOT_FOUND);
 		status.setMessage("Record Not Found.");
 		status.setData(null);
 			}
+			
 		return status;
 	}
 	
@@ -600,11 +611,13 @@ public Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOE
 		status.setCode(RECORD_FOUND);
 		status.setMessage("Record Found Successfully.");
 		status.setData(responseDto);
+		status.setRecordCount((long) responseDto.size());
 		return status;
 	}
 	else {	
 status.setCode(RECORD_NOT_FOUND);
 status.setMessage("Record Not Found.");
+status.setRecordCount((long)0);
 status.setData(null);
 	}
 return status;
@@ -629,4 +642,91 @@ status.setData(null);
 	}
 return status;
 }
+
+@Override
+public Status saveCourseDetails (LtAolUserProducts ltAolUserProducts)throws ServiceException, IOException{
+	Status status = new Status();
+	if(ltAolUserProducts.getUserCourseId() == null) {
+	ltAolUserProducts.setCreatedBy(ltAolUserProducts.getUserId());
+	ltAolUserProducts.setCreationDate(UtilsMaster.getCurrentDateTime());
+	ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
+	ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
+	ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+	
+	LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
+	if (ltAolUserProductsUpdated.getUserCourseId() != null) {
+		status.setCode(INSERT_SUCCESSFULLY);
+		status.setMessage("Course Details Added Successfully.");
+		status.setData(ltAolUserProductsUpdated);
+
+	} else {
+		status.setCode(INSERT_FAIL);
+		status.setMessage("Unable To Add Details.");
+	}
+	}else {
+		LtAolUserProducts ltAolUserProduct = ltAolCallListMasterDao.getCourseListAgainstId(ltAolUserProducts.getUserCourseId());
+		
+		ltAolUserProducts.setCreatedBy(ltAolUserProduct.getCreatedBy());
+		ltAolUserProducts.setCreationDate(ltAolUserProduct.getCreationDate());
+		ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
+		ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
+		ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+		LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
+		if (ltAolUserProductsUpdated.getUserCourseId() != null) {
+			status.setCode(UPDATE_SUCCESSFULLY);
+			status.setMessage("Course Details Update Successfully.");
+			status.setData(ltAolUserProductsUpdated);
+
+		} else {
+			status.setCode(UPDATE_FAIL);
+			status.setMessage("Unable To Update Details.");
+		}
+	}
+	return status;
+}
+
+@Override
+public Status saveNote (LtAolCallNotes ltAolCallNotes)throws ServiceException, IOException{
+	Status status = new Status();
+	if(ltAolCallNotes.getCallNoteId() == null) {
+		ltAolCallNotes.setCreatedBy(ltAolCallNotes.getUserId());
+		ltAolCallNotes.setCreationDate(UtilsMaster.getCurrentDateTime());
+		ltAolCallNotes.setLastUpdatedBy(ltAolCallNotes.getUserId());
+		ltAolCallNotes.setLastUpdateLogin(ltAolCallNotes.getUserId());
+		ltAolCallNotes.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+	
+		LtAolCallNotes ltAolCallNotesUpdated = ltAolCallListMasterDao.saveNote(ltAolCallNotes);
+	if (ltAolCallNotesUpdated.getCallNoteId() != null) {
+		status.setCode(INSERT_SUCCESSFULLY);
+		status.setMessage("Note Added Successfully.");
+		status.setData(ltAolCallNotesUpdated);
+
+	} else {
+		status.setCode(INSERT_FAIL);
+		status.setMessage("Unable To Add Note.");
+	}
+	}else {
+		LtAolCallNotes ltAolCallNote = ltAolCallListMasterDao.getNoteAgainstId(ltAolCallNotes.getCallNoteId());
+		
+		ltAolCallNotes.setCreatedBy(ltAolCallNote.getCreatedBy());
+		ltAolCallNotes.setCreationDate(ltAolCallNote.getCreationDate());
+		ltAolCallNotes.setLastUpdatedBy(ltAolCallNotes.getUserId());
+		ltAolCallNotes.setLastUpdateLogin(ltAolCallNotes.getUserId());
+		ltAolCallNotes.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+		LtAolCallNotes ltAolCallNotesUpdated = ltAolCallListMasterDao.saveNote(ltAolCallNotes);
+		if (ltAolCallNotes.getCallNoteId() != null) {
+			status.setCode(UPDATE_SUCCESSFULLY);
+			status.setMessage("Course Details Update Successfully.");
+			status.setData(ltAolCallNotesUpdated);
+
+		} else {
+			status.setCode(UPDATE_FAIL);
+			status.setMessage("Unable To Update Details.");
+		}
+	}
+	return status;
+}
+
+
+
 }
