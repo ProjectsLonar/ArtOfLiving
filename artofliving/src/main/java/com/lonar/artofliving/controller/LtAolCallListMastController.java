@@ -53,4 +53,15 @@ public class LtAolCallListMastController implements CodeMaster {
 			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
 		}
 	}
+	
+	
+	@RequestMapping(value="/getAllCourses", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<Status> getAllCourses(@RequestBody RequestDto requestDto) 
+			throws ServiceException, BusinessException{
+		try {
+			return new ResponseEntity<Status>(ltAolCallListMasterService.getAllCourses(requestDto), HttpStatus.OK);
+		}catch(Exception e){
+			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+		}
+	}
 }

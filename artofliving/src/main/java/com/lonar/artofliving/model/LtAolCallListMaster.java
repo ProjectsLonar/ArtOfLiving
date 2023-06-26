@@ -46,6 +46,21 @@ public class LtAolCallListMaster extends BaseClass{
 	
 	@Column(name= "assigned_to")
 	private Long assignedTo;
+	
+	@Column(name= "email")
+	private String email;
+	
+	@Column(name= "address")
+	private String address;
+	
+	@Column(name= "city")
+	private String city;
+	
+	@Column(name= "pin_code")
+	private String pinCode;
+	
+	@Column(name= "status")
+	private String status;
 
 	@Transient
 	Long userId;
@@ -132,12 +147,53 @@ public class LtAolCallListMaster extends BaseClass{
 	}
 
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolCallListMaster [callListId=" + callListId + ", mobileNumber=" + mobileNumber + ", studentName="
 				+ studentName + ", callSource=" + callSource + ", gender=" + gender + ", dob=" + dob + ", notesId="
-				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", suerId=" + userId + "]";
+				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", email=" + email + ", address="
+				+ address + ", city=" + city + ", pinCode=" + pinCode + ", status=" + status + ", userId=" + userId
+				+ "]";
 	}
-
 	
 }

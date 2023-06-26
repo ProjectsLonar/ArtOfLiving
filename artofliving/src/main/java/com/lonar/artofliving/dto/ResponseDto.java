@@ -15,6 +15,7 @@ public class ResponseDto {
 	private Date dob;
 	private String course_name;
 	private String status;
+	private String  callListId;
 	
 	
 	public String getStudent_name() {
@@ -62,11 +63,17 @@ public class ResponseDto {
 		this.dob = dob;
 	}
 	
-	
+	public String getCallListId() {
+		return callListId;
+	}
+	public void setCallListId(String callListId) {
+		this.callListId = callListId;
+	}
 	@Override
 	public String toString() {
 		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
-				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status + "]";
+				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status
+				+ ", callListId=" + callListId + "]";
 	}
 	
 		

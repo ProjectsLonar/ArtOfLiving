@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.lonar.artofliving.common.ServiceException;
+import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.RequestDto;
@@ -78,10 +79,10 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 	}
 	
 	@Override
-	public List<LtAolUsersMaster> getallactiveroles( )throws ServiceException,IOException{
+	public List<LtAolRolesMaster> getallactiveroles( )throws ServiceException,IOException{
 		String query = env.getProperty("getallactiveroles");
-		List<LtAolUsersMaster> list = jdbcTemplate.query(query, new Object[] {},
-				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		List<LtAolRolesMaster> list = jdbcTemplate.query(query, new Object[] {},
+				new BeanPropertyRowMapper<LtAolRolesMaster>(LtAolRolesMaster.class));
 		if (!list.isEmpty())
 			return list;
 		else

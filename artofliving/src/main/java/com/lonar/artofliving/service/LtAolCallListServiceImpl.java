@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -34,6 +33,7 @@ import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.AssignedOrderDto;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolProductMaster;
 import com.lonar.artofliving.model.LtMasterCallingListErrorDto;
 import com.lonar.artofliving.model.LtMasterCallingListRequestDto;
 import com.lonar.artofliving.model.RequestDto;
@@ -596,6 +596,26 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 public Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOException{
 	Status status =new Status();
 	List<ResponseDto> responseDto= ltAolCallListMasterDao.getMyQueueList(requestDto);
+	if(responseDto!= null) {
+		status.setCode(RECORD_FOUND);
+		status.setMessage("Record Found Successfully.");
+		status.setData(responseDto);
+		return status;
+	}
+	else {	
+status.setCode(RECORD_NOT_FOUND);
+status.setMessage("Record Not Found.");
+status.setData(null);
+	}
+return status;
+}
+
+
+
+@Override
+public Status getAllCourses(RequestDto requestDto) throws ServiceException, IOException{
+	Status status =new Status();
+	List<LtAolProductMaster> responseDto= ltAolCallListMasterDao.getAllCourses(requestDto);
 	if(responseDto!= null) {
 		status.setCode(RECORD_FOUND);
 		status.setMessage("Record Found Successfully.");
