@@ -41,4 +41,8 @@ public interface LtAolCallListMasterDao {
 	LtAolCallNotes getNoteAgainstId (Long callNoteId)throws ServiceException, IOException;
 	
 	List<LtAolUserProducts> getAllCoursesAgainstListId(Long callListId) throws ServiceException, BusinessException;
+	
+	Long getCallListCount(RequestDto requestDto) throws ServiceException, BusinessException;
+	
+	Long getMyQueueListCount(RequestDto requestDto) throws ServiceException, BusinessException;
 }

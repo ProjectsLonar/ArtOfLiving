@@ -60,6 +60,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		
 			Status status =new Status();
 			List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
+			Long totalCount = ltAolCallListMasterDao.getCallListCount(requestDto);
 			if(requestDto.getCallListId() !=null ) {
 				List<LtAolUserProducts> listOfCourses =  ltAolCallListMasterDao.getAllCoursesAgainstListId(requestDto.getCallListId());
 				
@@ -70,6 +71,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 				status.setMessage("Record Found.");
 				status.setData(responseDto);
 				status.setRecordCount((long)responseDto.size());
+				status.setTotalCount(totalCount);
 				return status;
 			}else {
 			status.setCode(RECORD_NOT_FOUND);
@@ -607,11 +609,14 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 public Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOException{
 	Status status =new Status();
 	List<ResponseDto> responseDto= ltAolCallListMasterDao.getMyQueueList(requestDto);
+	
+	Long totalCount = ltAolCallListMasterDao.getMyQueueListCount(requestDto); 
 	if(responseDto!= null) {
 		status.setCode(RECORD_FOUND);
 		status.setMessage("Record Found Successfully.");
 		status.setData(responseDto);
 		status.setRecordCount((long) responseDto.size());
+		status.setTotalCount(totalCount);
 		return status;
 	}
 	else {	
