@@ -12,9 +12,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtMastFaq;
+import com.lonar.artofliving.model.RequestDto;
 
 @Repository
 @PropertySource(value = "classpath:queries/ltAolFaqQueries.properties", ignoreResourceNotFound = true)
@@ -47,6 +49,14 @@ public class LtMastAolFAQDaoImpl implements LtMastAolFAQDao,CodeMaster {
 		}
 		return null;
 		
+	}
+	
+	@Override
+	public Long getFaqCount(String userType) throws ServiceException, BusinessException{
+		Long totalCount;
+		String sql = env.getProperty("getFaqCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {"%"+userType.toUpperCase()+"%"}, Long.class);
+		return totalCount;
 	}
 	
 }

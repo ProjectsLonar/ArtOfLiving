@@ -634,10 +634,13 @@ return status;
 public Status getAllCourses(RequestDto requestDto) throws ServiceException, IOException{
 	Status status =new Status();
 	List<LtAolProductMaster> responseDto= ltAolCallListMasterDao.getAllCourses(requestDto);
+	Long totalCount = ltAolCallListMasterDao.getAllCoursesTotalCount(requestDto);
 	if(responseDto!= null) {
 		status.setCode(RECORD_FOUND);
 		status.setMessage("Record Found Successfully.");
 		status.setData(responseDto);
+		status.setRecordCount((long)responseDto.size());
+		status.setTotalCount(totalCount);
 		return status;
 	}
 	else {	

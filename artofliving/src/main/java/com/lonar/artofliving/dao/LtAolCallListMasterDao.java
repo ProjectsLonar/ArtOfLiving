@@ -45,4 +45,6 @@ public interface LtAolCallListMasterDao {
 	Long getCallListCount(RequestDto requestDto) throws ServiceException, BusinessException;
 	
 	Long getMyQueueListCount(RequestDto requestDto) throws ServiceException, BusinessException;
+	
+	Long getAllCoursesTotalCount(RequestDto requestDto) throws ServiceException, BusinessException;
 }

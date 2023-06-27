@@ -3,6 +3,7 @@ package com.lonar.artofliving.dao;
 import java.io.IOException;
 import java.util.List;
 
+import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
@@ -24,4 +25,8 @@ public interface LtMastUsersDao {
 	public List<LtAolUsersMaster> getallusers(RequestDto requestDto) throws ServiceException;
 	
 	LtAolUsersMaster deleteUser(Long userId)throws ServiceException;
+	
+	 Long getAllActiveRolesCount( ) throws ServiceException, BusinessException ;
+	 
+	 Long getAllUsersCount( RequestDto requestDto) throws ServiceException, BusinessException;
 }
