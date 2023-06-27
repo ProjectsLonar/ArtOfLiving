@@ -23,15 +23,19 @@ public class LtMastAolFAQServiceImpl implements LtMastAolFAQService,CodeMaster {
 		Status status = new Status();
 
 		List<LtMastFaq> list = ltMastAolFAQDao.getAllFAQ(userType);
-System.out.println("faqlist"+list);
+		Long totalCount = ltMastAolFAQDao.getFaqCount(userType);
+		//System.out.println("faqlist"+list);
 		if (list.isEmpty()) {
 			status.setCode(FAIL);
 			status.setMessage("Records Not Found.");
+			
 			return status;
 		}
 		status.setCode(SUCCESS);
 		status.setMessage("Records Found.");
 		status.setData(list);
+		status.setRecordCount((long)list.size());
+		status.setTotalCount(totalCount);
 
 		return status;
 	}

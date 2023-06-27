@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
@@ -127,5 +128,32 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		 }
 		return null;
 	}
+	
+	@Override
+	public Long getAllActiveRolesCount( ) throws ServiceException, BusinessException{
+		Long totalCount;
+		String sql = env.getProperty("getAllActiveRolesCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] { }, Long.class);
+		return totalCount;
+	}
 
+	
+	@Override
+	public Long getAllUsersCount( RequestDto requestDto) throws ServiceException, BusinessException{
+		Long totalCount;
+		
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+		
+		String status = null;
+		if (requestDto.getStatus() != null) {
+			status = "%" + requestDto.getStatus().toUpperCase() + "%";
+		}
+
+		String sql = env.getProperty("getAllUsersCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {searchField,status }, Long.class);
+		return totalCount;
+	}
 }

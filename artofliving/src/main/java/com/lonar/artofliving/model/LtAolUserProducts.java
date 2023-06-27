@@ -41,6 +41,9 @@ public class LtAolUserProducts extends BaseClass{
 	@Transient
 	private Long userId;
 	
+	@Transient 
+	private String productName;
+	
 	public Long getUserCourseId() {
 		return userCourseId;
 	}
@@ -96,12 +99,22 @@ public class LtAolUserProducts extends BaseClass{
 	public void setCallListId(Long callListId) {
 		this.callListId = callListId;
 	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "LtAolUserProducts [userCourseId=" + userCourseId + ", userId=" + userId + ", productId=" + productId
 				+ ", status=" + status + ", effectiveDate=" + effectiveDate + ", placeName=" + placeName
 				+ ", callListId=" + callListId + "]";
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 

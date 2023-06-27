@@ -30,7 +30,8 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			{
 			  LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getLtAolCallList(ltAolCallListMaster.getCallListId());
 			
-				ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMasters.getMobileNumber());
+			  ltAolCallListMasterUpdate.setCallListId(ltAolCallListMaster.getCallListId());
+				ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMaster.getMobileNumber());
 				ltAolCallListMasterUpdate.setStudentName(ltAolCallListMaster.getStudentName());
 				ltAolCallListMasterUpdate.setCallSource("Mobile");
 				ltAolCallListMasterUpdate.setAddress(ltAolCallListMaster.getAddress());

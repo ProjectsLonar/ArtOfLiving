@@ -208,4 +208,37 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		}
 		return list;
 	}
+	
+	
+	
+	@Override
+	public Long getCallListCount(RequestDto requestDto) throws ServiceException, BusinessException {
+			Long totalCount;
+			String sql = env.getProperty("getCallListCount");
+			totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getCallListId()}, Long.class);
+			return totalCount;
+		
+	}
+
+	@Override
+	public Long getMyQueueListCount(RequestDto requestDto) throws ServiceException, BusinessException{
+		Long totalCount;
+		String sql = env.getProperty("getMyQueueListCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getCallListId()}, Long.class);
+		return totalCount;
+	}
+	
+	@Override
+	public Long getAllCoursesTotalCount(RequestDto requestDto) throws ServiceException, BusinessException{
+		Long totalCount;
+		
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+		
+		String sql = env.getProperty("getAllCoursesTotalCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {searchField}, Long.class);
+		return totalCount;
+	}
 }

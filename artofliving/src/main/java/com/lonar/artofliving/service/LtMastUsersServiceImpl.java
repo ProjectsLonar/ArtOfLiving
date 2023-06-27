@@ -287,10 +287,13 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 	public Status getallactiveroles() throws ServiceException, IOException{
 		Status status = new Status();
 		List<LtAolRolesMaster> ltAolUserList = ltMastUsersDao.getallactiveroles( );
+		Long totalCount = ltMastUsersDao.getAllActiveRolesCount();
 		if (!ltAolUserList.isEmpty()) {
 			status.setCode(RECORD_FOUND);
 			status.setMessage("RECORD_FOUND");
 			status.setData(ltAolUserList);
+			status.setRecordCount((long)ltAolUserList.size());
+			status.setTotalCount(totalCount);
 
 		} else {
 			status.setCode(RECORD_NOT_FOUND);
@@ -306,11 +309,13 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		Status status= new Status();
 		
 		List<LtAolUsersMaster> ltMastUserList= ltMastUsersDao.getallusers(requestDto);
-		
+		Long totalCount = ltMastUsersDao.getAllUsersCount(requestDto);
 		if(ltMastUserList!= null) {
 			status.setCode(RECORD_FOUND);
 			status.setMessage("Record Found Successfully.");
 			status.setData(ltMastUserList);
+			status.setRecordCount((long)ltMastUserList.size());
+			status.setTotalCount(totalCount);
 		}else {
 			status.setCode(RECORD_NOT_FOUND);
 			status.setMessage("Record Not Found.");
