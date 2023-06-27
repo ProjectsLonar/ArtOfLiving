@@ -1,9 +1,11 @@
 package com.lonar.artofliving.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.lonar.artofliving.model.LtAolUserProducts;
 
 @JsonInclude(Include.NON_NULL)
 public class ResponseDto {
@@ -15,7 +17,9 @@ public class ResponseDto {
 	private Date dob;
 	private String course_name;
 	private String status;
-	private String  callListId;
+	private Long  callListId;
+	private Long callNoteId;
+	private List<LtAolUserProducts> coursesList;
 	
 	
 	public String getStudent_name() {
@@ -62,19 +66,34 @@ public class ResponseDto {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-	
-	public String getCallListId() {
+	public Long getCallListId() {
 		return callListId;
 	}
-	public void setCallListId(String callListId) {
+	public void setCallListId(Long callListId) {
 		this.callListId = callListId;
+	}
+	public Long getCallNoteId() {
+		return callNoteId;
+	}
+	public void setCallNoteId(Long callNoteId) {
+		this.callNoteId = callNoteId;
+	}
+	public List<LtAolUserProducts> getCoursesList() {
+		return coursesList;
+	}
+	public void setCoursesList(List<LtAolUserProducts> coursesList) {
+		this.coursesList = coursesList;
 	}
 	@Override
 	public String toString() {
 		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
 				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status
-				+ ", callListId=" + callListId + "]";
+				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", coursesList=" + coursesList + "]";
 	}
+	
+
+	
+
 	
 		
 }
