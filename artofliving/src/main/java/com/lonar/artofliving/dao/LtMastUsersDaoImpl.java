@@ -109,7 +109,7 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 
 		String query = env.getProperty("getallusers");
 		List<LtAolUsersMaster> ltMastUserList = jdbcTemplate.query(query,
-				new Object[] {searchField,status, requestDto.getLimit(), requestDto.getOffset() },
+				new Object[] {requestDto.getUserId(),searchField,status, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
 		if (!ltMastUserList.isEmpty()) {
 			return ltMastUserList;
@@ -153,7 +153,7 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		}
 
 		String sql = env.getProperty("getAllUsersCount");
-		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {searchField,status }, Long.class);
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getUserId(),searchField,status }, Long.class);
 		return totalCount;
 	}
 }
