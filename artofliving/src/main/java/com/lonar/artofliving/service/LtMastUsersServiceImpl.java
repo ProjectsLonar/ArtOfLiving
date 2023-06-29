@@ -164,7 +164,8 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 		if (ltMastLogins.getLoginId() != null) {
 			if (ltMastUser.getMobileNumber() != null) {
-				status = sendMessage(ltMastLogins, ltMastUser.getMobileNumber());
+				//status = sendMessage(ltMastLogins, ltMastUser.getMobileNumber());
+				status.setCode(SUCCESS);
 			}
 
 			if (status.getCode() == SUCCESS)
