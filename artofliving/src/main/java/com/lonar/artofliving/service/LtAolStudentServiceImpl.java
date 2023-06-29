@@ -80,7 +80,7 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			         ltAolCallListMasterUpdate.setCreatedBy(ltAolCallListMaster.getUserId());
 			         ltAolCallListMasterUpdate.setCreationDate(UtilsMaster.getCurrentDateTime());
 			         ltAolCallListMasterUpdate.setLastUpdateLogin(ltAolCallListMaster.getUserId());
-			         ltAolCallListMasterUpdate.setLastUpdatedBy(ltAolCallListMaster.getCreatedBy());
+			         ltAolCallListMasterUpdate.setLastUpdatedBy(ltAolCallListMaster.getUserId());
 			         ltAolCallListMasterUpdate.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 			     }
 			       ltAolCallListMasterUpdate = ltAolCallListMasterDao.save(ltAolCallListMasterUpdate);
