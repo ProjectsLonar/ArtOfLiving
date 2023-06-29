@@ -19,6 +19,13 @@ public class ResponseDto {
 	private String status;
 	private Long  callListId;
 	private Long callNoteId;
+	private String callSource;
+	private String notesId;
+	private Long assignedTo;
+	private String email;
+	private String address;
+	private String city;
+	private String pinCode;
 	private List<LtAolUserProducts> coursesList;
 	
 	
@@ -84,11 +91,55 @@ public class ResponseDto {
 	public void setCoursesList(List<LtAolUserProducts> coursesList) {
 		this.coursesList = coursesList;
 	}
+	public String getCallSource() {
+		return callSource;
+	}
+	public void setCallSource(String callSource) {
+		this.callSource = callSource;
+	}
+	public String getNotesId() {
+		return notesId;
+	}
+	public void setNotesId(String notesId) {
+		this.notesId = notesId;
+	}
+	public Long getAssignedTo() {
+		return assignedTo;
+	}
+	public void setAssignedTo(Long assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getPinCode() {
+		return pinCode;
+	}
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
 	@Override
 	public String toString() {
 		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
 				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status
-				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", coursesList=" + coursesList + "]";
+				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", callSource=" + callSource
+				+ ", notesId=" + notesId + ", assignedTo=" + assignedTo + ", email=" + email + ", address=" + address
+				+ ", city=" + city + ", pinCode=" + pinCode + ", coursesList=" + coursesList + "]";
 	}
 	
 
