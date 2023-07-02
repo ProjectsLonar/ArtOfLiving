@@ -93,6 +93,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 				if(ltAolCallListMaster !=null) {
 					if((ltAolCallListMaster.getAssignedTo() == null) || (ltAolCallListMaster.getAssignedTo() == 0) ) {
 						ltAolCallListMaster.setAssignedTo(assignedOrderDto.getAssignedTo());
+						ltAolCallListMaster.setStatus("Assigned");
 						ltAolCallListMaster.setLastUpdatedBy(assignedOrderDto.getUserId());
 						ltAolCallListMaster.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 						ltAolCallListMaster.setLastUpdateLogin(assignedOrderDto.getUserId());
@@ -107,8 +108,9 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			for(String mobileNumberList: assignedOrderDto.getMobileNumber()) {
 				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
 				if(ltAolCallListMaster !=null) {
-					if((ltAolCallListMaster.getAssignedTo() != null) || (ltAolCallListMaster.getAssignedTo() != 0) ) {
+					if((ltAolCallListMaster.getAssignedTo() != null)  ) {
 						ltAolCallListMaster.setAssignedTo(null);
+						ltAolCallListMaster.setStatus("New Contact");
 						ltAolCallListMaster.setLastUpdatedBy(assignedOrderDto.getUserId());
 						ltAolCallListMaster.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 						ltAolCallListMaster.setLastUpdateLogin(assignedOrderDto.getUserId());
