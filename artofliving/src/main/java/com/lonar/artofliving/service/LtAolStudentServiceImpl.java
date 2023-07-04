@@ -135,7 +135,7 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 				status.setCode(FAIL);
 				status.setMessage("Mobile Number Already Exists.");
 				return status;
-			}
+			}		
 		}
 		status.setCode(SUCCESS);
 		return status;
