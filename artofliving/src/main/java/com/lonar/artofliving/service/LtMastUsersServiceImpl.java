@@ -227,12 +227,24 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		ResponceEntity entity = new ResponceEntity();
 		Status status = new Status();
 		LtAolUsersMaster ltMastUser = ltMastUsersDao.getLtMastUsersByMobileNumber(ltMastLogins.getMobileNumber().toString());
+		
+		LtMastLogins ltMastLogin = null;
+		
+		if(ltMastUser !=null) {
 
-		LtMastLogins ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
-		ltMastLogin.setOtp(1234L);
-		ltMastLogins.setOtp(1234L);
+			if(ltMastUser.getStatus().equalsIgnoreCase(INACTIVE)) {
+				entity.setCode(FAIL);
+				entity.setMessage("User Is Inactive.");
+				return entity;
+			}else {
+		 ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
+			}
+		}
+		
 		
 		if (ltMastLogin != null) {
+			ltMastLogin.setOtp(1234L);
+			ltMastLogins.setOtp(1234L);
 			if (ltMastLogin.getOtp().equals(ltMastLogins.getOtp())) {
 				ltMastLogin.setStatus(INPROCESS);
 				ltMastLogin.setLoginDate(new Date());
@@ -255,7 +267,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 			} else {
 				entity.setCode(FAIL);
-				entity.setMessage("Please Enter Valid OTP");
+				entity.setMessage("Please Enter Valid OTP.");
 			}
 		} else {
 			status.setCode(SUCCESS);
