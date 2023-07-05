@@ -104,13 +104,15 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		
 		String status = null;
 		if (requestDto.getStatus() != null) {
-			status = "%" + requestDto.getStatus().toUpperCase() + "%";
+			status = requestDto.getStatus().toUpperCase();
 		}
 
+		//System.out.println("status"+status+requestDto.getUserId()+searchField+requestDto.getLimit()+requestDto.getOffset() );
 		String query = env.getProperty("getallusers");
 		List<LtAolUsersMaster> ltMastUserList = jdbcTemplate.query(query,
 				new Object[] {requestDto.getUserId(),searchField,status, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		//System.out.println("list   "+ltMastUserList);
 		if (!ltMastUserList.isEmpty()) {
 			return ltMastUserList;
 		}
@@ -149,7 +151,7 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		
 		String status = null;
 		if (requestDto.getStatus() != null) {
-			status = "%" + requestDto.getStatus().toUpperCase() + "%";
+			status = requestDto.getStatus().toUpperCase();
 		}
 
 		String sql = env.getProperty("getAllUsersCount");

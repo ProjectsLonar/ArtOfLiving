@@ -2,6 +2,7 @@ package com.lonar.artofliving.service;
 
 import java.io.IOException;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dao.LtAolCallListMasterDao;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.utils.UtilsMaster;
 
@@ -24,6 +26,11 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 		try {
 		       Status status =new Status();
 		       if(ltAolCallListMaster!=null) {
+		    	   status = checkDuplicate(ltAolCallListMaster);
+					if (status.getCode() == FAIL) {
+						return status;
+					}
+		    	   
 			   LtAolCallListMaster ltAolCallListMasterUpdate = new LtAolCallListMaster();
 		    
 			if(ltAolCallListMaster.getCallListId()!= null) 
@@ -119,4 +126,18 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 		}catch(Exception e) {e.printStackTrace();}
 		return null;
 	}*/
+	
+	private Status checkDuplicate(LtAolCallListMaster ltAolCallListMaster) throws ServiceException, JSONException, IOException {
+		Status status = new Status();
+		LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(ltAolCallListMaster.getMobileNumber());
+		if (ltAolCallListMasters != null) {
+			if (!ltAolCallListMasters.getCallListId().equals(ltAolCallListMaster.getCallListId())) {
+				status.setCode(FAIL);
+				status.setMessage("Mobile Number Already Exists.");
+				return status;
+			}		
+		}
+		status.setCode(SUCCESS);
+		return status;
+	}
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.lonar.artofliving.model.LtAolUserProducts;
 
-@JsonInclude(Include.NON_NULL)
+//@JsonInclude(Include.NON_NULL)
 public class ResponseDto {
 
 	private String student_name;
@@ -26,6 +26,7 @@ public class ResponseDto {
 	private String address;
 	private String city;
 	private String pinCode;
+	private String userName;
 	private List<LtAolUserProducts> coursesList;
 	
 	
@@ -133,6 +134,8 @@ public class ResponseDto {
 	public void setPinCode(String pinCode) {
 		this.pinCode = pinCode;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
@@ -140,6 +143,12 @@ public class ResponseDto {
 				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", callSource=" + callSource
 				+ ", notesId=" + notesId + ", assignedTo=" + assignedTo + ", email=" + email + ", address=" + address
 				+ ", city=" + city + ", pinCode=" + pinCode + ", coursesList=" + coursesList + "]";
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 
