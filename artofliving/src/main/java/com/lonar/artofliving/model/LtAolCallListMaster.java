@@ -65,6 +65,12 @@ public class LtAolCallListMaster extends BaseClass{
 	@Transient
 	Long userId;
 	
+	@Transient
+	String colorCode;
+	
+	@Column(name= "status_id")
+	private Long statusId;
+	
 	
 	public Long getUserId() {
 		return userId;
@@ -186,6 +192,23 @@ public class LtAolCallListMaster extends BaseClass{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
 
 	@Override
 	public String toString() {
@@ -193,7 +216,9 @@ public class LtAolCallListMaster extends BaseClass{
 				+ studentName + ", callSource=" + callSource + ", gender=" + gender + ", dob=" + dob + ", notesId="
 				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", email=" + email + ", address="
 				+ address + ", city=" + city + ", pinCode=" + pinCode + ", status=" + status + ", userId=" + userId
-				+ "]";
+				+ ", colorCode=" + colorCode + ", statusId=" + statusId + "]";
 	}
+
+	
 	
 }

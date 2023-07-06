@@ -3,8 +3,7 @@ package com.lonar.artofliving.dto;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.lonar.artofliving.model.LtAolCallNotes;
 import com.lonar.artofliving.model.LtAolUserProducts;
 
 //@JsonInclude(Include.NON_NULL)
@@ -28,6 +27,9 @@ public class ResponseDto {
 	private String pinCode;
 	private String userName;
 	private List<LtAolUserProducts> coursesList;
+	private Long statusId;
+	private String colorCode;
+	private List<LtAolCallNotes> notesHistoryList;
 	
 	
 	public String getStudent_name() {
@@ -135,25 +137,39 @@ public class ResponseDto {
 		this.pinCode = pinCode;
 	}
 	
-	
-	@Override
-	public String toString() {
-		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
-				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status
-				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", callSource=" + callSource
-				+ ", notesId=" + notesId + ", assignedTo=" + assignedTo + ", email=" + email + ", address=" + address
-				+ ", city=" + city + ", pinCode=" + pinCode + ", coursesList=" + coursesList + "]";
-	}
 	public String getUserName() {
 		return userName;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getColorCode() {
+		return colorCode;
+	}
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+	public List<LtAolCallNotes> getNotesHistoryList() {
+		return notesHistoryList;
+	}
+	public void setNotesHistoryList(List<LtAolCallNotes> notesHistoryList) {
+		this.notesHistoryList = notesHistoryList;
+	}
+	@Override
+	public String toString() {
+		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
+				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status
+				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", callSource=" + callSource
+				+ ", notesId=" + notesId + ", assignedTo=" + assignedTo + ", email=" + email + ", address=" + address
+				+ ", city=" + city + ", pinCode=" + pinCode + ", userName=" + userName + ", coursesList=" + coursesList
+				+ ", statusId=" + statusId + ", colorCode=" + colorCode + ", notesHistoryList=" + notesHistoryList
+				+ "]";
+	}
 	
-
-	
-
-	
-		
 }

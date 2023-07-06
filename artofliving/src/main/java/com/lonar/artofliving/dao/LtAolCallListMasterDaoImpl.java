@@ -72,7 +72,7 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		
 		List<ResponseDto> list= jdbcTemplate.query(query, new Object[] {requestDto.getCallListId(),searchField, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<ResponseDto>(ResponseDto.class));
-		
+		//System.out.println("list"+list);
 		if(!list.isEmpty()) {
 			return list;
 		}
@@ -215,8 +215,14 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 	@Override
 	public Long getCallListCount(RequestDto requestDto) throws ServiceException, BusinessException {
 			Long totalCount;
+			
+			String searchField = null;
+			if (requestDto.getSearchfield() != null) {
+				searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+			} 
+			
 			String sql = env.getProperty("getCallListCount");
-			totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getCallListId()}, Long.class);
+			totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getCallListId(),searchField}, Long.class);
 			return totalCount;
 		
 	}
@@ -266,5 +272,16 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		return totalCount;
 	}
 	
-	
+	@Override
+	public List<LtAolCallNotes> getAllNOtesAgainstNoteId(Long callListId) throws ServiceException, BusinessException{
+		String query= env.getProperty("getAllNOtesAgainstNoteId");
+		
+		List<LtAolCallNotes> list= jdbcTemplate.query(query, new Object[] {callListId},
+				new BeanPropertyRowMapper<LtAolCallNotes>(LtAolCallNotes.class));
+		
+		if(!list.isEmpty()) {
+			return list;
+		}
+		return list;
+	}	
 }
