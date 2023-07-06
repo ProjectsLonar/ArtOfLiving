@@ -28,5 +28,7 @@ public interface LtAolCallListService {
 	Status saveCourseDetails (LtAolUserProducts ltAolUserProducts)throws ServiceException, IOException;
 	
 	Status saveNote (LtAolCallNotes ltAolCallNotes)throws ServiceException, IOException;
+	
+	Status getAllStatus() throws ServiceException, IOException;
 
 }

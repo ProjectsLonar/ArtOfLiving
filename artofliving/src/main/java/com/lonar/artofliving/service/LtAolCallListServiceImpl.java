@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,6 +34,7 @@ import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.AssignedOrderDto;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolCallListStatus;
 import com.lonar.artofliving.model.LtAolCallNotes;
 import com.lonar.artofliving.model.LtAolProductMaster;
 import com.lonar.artofliving.model.LtAolUserProducts;
@@ -62,6 +61,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			Status status =new Status();
 			List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
 			Long totalCount = ltAolCallListMasterDao.getCallListCount(requestDto);
+
 			if(requestDto.getCallListId() !=null ) {
 				List<LtAolUserProducts> listOfCourses =  ltAolCallListMasterDao.getAllCoursesAgainstListId(requestDto.getCallListId());
 				
@@ -752,5 +752,28 @@ public Status saveNote (LtAolCallNotes ltAolCallNotes)throws ServiceException, I
  * (status.getCode() == FAIL) { errorList.add(status.getMessage());
  * status.setData(errorList); } return status; }
  */
+
+
+
+@Override
+public Status getAllStatus() throws ServiceException, IOException{
+	Status status =new Status();
+	List<LtAolCallListStatus> responseDto= ltAolCallListMasterDao.getAllStatus();
+	Long totalCount = ltAolCallListMasterDao.getAllStatusTotalCount();
+	if(responseDto!= null) {
+		status.setCode(RECORD_FOUND);
+		status.setMessage("Record Found Successfully.");
+		status.setData(responseDto);
+		status.setRecordCount((long)responseDto.size());
+		status.setTotalCount(totalCount);
+		return status;
+	}
+	else {	
+status.setCode(RECORD_NOT_FOUND);
+status.setMessage("Record Not Found.");
+status.setData(null);
+	}
+return status;
+}
 
 }
