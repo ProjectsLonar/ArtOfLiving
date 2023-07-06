@@ -75,4 +75,15 @@ public class LtAolCallListMastController implements CodeMaster {
 	public ResponseEntity<Status> saveNote(@RequestBody LtAolCallNotes ltAolCallNotes) throws ServiceException, IOException, JSONException  {
 		return new ResponseEntity<Status>(ltAolCallListMasterService.saveNote(ltAolCallNotes), HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(value="/getAllStatus", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<Status> getAllStatus() throws ServiceException, BusinessException{
+		try {
+			return new ResponseEntity<Status>(ltAolCallListMasterService.getAllStatus(), HttpStatus.OK);
+		}catch(Exception e){
+			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+		}
+	}
 }
+

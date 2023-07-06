@@ -18,6 +18,7 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.LtAolCallListMaster;
+import com.lonar.artofliving.model.LtAolCallListStatus;
 import com.lonar.artofliving.model.LtAolCallNotes;
 import com.lonar.artofliving.model.LtAolProductMaster;
 import com.lonar.artofliving.model.LtAolUserProducts;
@@ -241,4 +242,29 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {searchField}, Long.class);
 		return totalCount;
 	}
+	
+	
+	@Override
+	public List<LtAolCallListStatus> getAllStatus() throws ServiceException, BusinessException{
+		
+		String query = env.getProperty("getAllStatus");
+		List<LtAolCallListStatus> allstatuslist = jdbcTemplate.query(query,
+				new Object[] { },
+				new BeanPropertyRowMapper<LtAolCallListStatus>(LtAolCallListStatus.class));
+		if (!allstatuslist.isEmpty()) {
+			return allstatuslist;
+		}
+		return null;
+	}
+	
+	@Override
+	public Long getAllStatusTotalCount() throws ServiceException, BusinessException{
+		Long totalCount;
+		
+		String sql = env.getProperty("getAllStatusTotalCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {}, Long.class);
+		return totalCount;
+	}
+	
+	
 }
