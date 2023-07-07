@@ -53,5 +53,7 @@ public interface LtAolCallListMasterDao {
 	
 	Long getAllStatusTotalCount() throws ServiceException, BusinessException;
 	
+	List<LtAolCallNotes> getAllNOtesAgainstNoteId(Long callListId) throws ServiceException, BusinessException;
+	
 	
 }

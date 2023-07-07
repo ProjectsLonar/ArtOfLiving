@@ -61,11 +61,19 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			Status status =new Status();
 			List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
 			Long totalCount = ltAolCallListMasterDao.getCallListCount(requestDto);
+//System.out.println("responseDto"+responseDto);
 
+//System.out.println("count"+totalCount);
 			if(requestDto.getCallListId() !=null ) {
 				List<LtAolUserProducts> listOfCourses =  ltAolCallListMasterDao.getAllCoursesAgainstListId(requestDto.getCallListId());
 				
 				responseDto.get(0).setCoursesList(listOfCourses);
+				//System.out.println("responseDto addres course" +responseDto);
+				List<LtAolCallNotes> listOfNotes = ltAolCallListMasterDao.getAllNOtesAgainstNoteId(requestDto.getCallListId());
+				
+				responseDto.get(0).setNotesHistoryList(listOfNotes);
+				//System.out.println("responseDto addes note" +responseDto);
+				
 			}
 			if(responseDto!= null) {
 				status.setCode(RECORD_FOUND);
