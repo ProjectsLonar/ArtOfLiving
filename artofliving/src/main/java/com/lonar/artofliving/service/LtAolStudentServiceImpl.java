@@ -26,19 +26,15 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 		try {
 		       Status status =new Status();
 		       if(ltAolCallListMaster!=null) {
-		    	   status = checkDuplicate(ltAolCallListMaster);
-					if (status.getCode() == FAIL) {
-						return status;
-					}
-		    	   
+		    	   		    	   
 			   LtAolCallListMaster ltAolCallListMasterUpdate = new LtAolCallListMaster();
 		    
 			if(ltAolCallListMaster.getCallListId()!= null) 
 			{
 			  LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getLtAolCallList(ltAolCallListMaster.getCallListId());
 			
-			  ltAolCallListMasterUpdate.setCallListId(ltAolCallListMaster.getCallListId());
-				ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMaster.getMobileNumber());
+			  ltAolCallListMasterUpdate.setCallListId(ltAolCallListMasters.getCallListId());
+				ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMasters.getMobileNumber());
 				ltAolCallListMasterUpdate.setStudentName(ltAolCallListMaster.getStudentName());
 				ltAolCallListMasterUpdate.setCallSource("Mobile");
 				ltAolCallListMasterUpdate.setAddress(ltAolCallListMaster.getAddress());
@@ -70,7 +66,11 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 					status.setData(ltAolCallListMasterUpdate);
 					return status;
 				}
-			}else {		
+			}else {
+				     status = checkDuplicate(ltAolCallListMaster);
+				     if (status.getCode() == FAIL) {
+					   return status;
+				      }
 				     ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMaster.getMobileNumber());
 				     ltAolCallListMasterUpdate.setStudentName(ltAolCallListMaster.getStudentName());
 			         ltAolCallListMasterUpdate.setCallSource("Mobile");
