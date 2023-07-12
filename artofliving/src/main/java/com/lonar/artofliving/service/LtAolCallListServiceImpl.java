@@ -107,7 +107,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		List<LtAolCallListMaster> ltAolCallList = new ArrayList<LtAolCallListMaster>();
 		//assigned 
 		if(assignedOrderDto.getAssignedTo() !=null) {	
-			for(String mobileNumberList: assignedOrderDto.getMobileNumber()) {
+			for(Long mobileNumberList: assignedOrderDto.getMobileNumber()) {
 				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
 				if(ltAolCallListMaster !=null) {
 					if((ltAolCallListMaster.getAssignedTo() == null) || (ltAolCallListMaster.getAssignedTo() == 0) ) {
@@ -124,7 +124,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		}//unassigned
 		else {
 			
-			for(String mobileNumberList: assignedOrderDto.getMobileNumber()) {
+			for(Long mobileNumberList: assignedOrderDto.getMobileNumber()) {
 				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
 				if(ltAolCallListMaster !=null) {
 					if((ltAolCallListMaster.getAssignedTo() != null)  ) {
@@ -322,7 +322,8 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 					} else {
 
 						if (!row.getCell(0).toString().isEmpty()) {
-							ltMastCallingListData.setMobileNumber(row.getCell(0).toString());
+							ltMastCallingListData.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
+							
 						}
 						if (!row.getCell(1).toString().isEmpty()) {
 							ltMastCallingListData.setStudentName(row.getCell(1).toString());
@@ -342,7 +343,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						}
 					
 						if (!row.getCell(7).toString().isEmpty()) {
-							ltMastCallingListData.setPinCode(row.getCell(7).toString());
+							ltMastCallingListData.setPinCode(new Double(row.getCell(7).getNumericCellValue()).longValue());
 						}
 						
 						try {
@@ -352,7 +353,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 									ltMastCallingListData.setDob(UtilsMaster.convertDate(row.getCell(2).getDateCellValue()));
 								} else {
 									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-									Date startDate = sdf.parse(row.getCell(1).toString());
+									Date startDate = sdf.parse(row.getCell(2).toString());
 									ltMastCallingListData.setDob(UtilsMaster.convertDate(startDate));
 
 								}
@@ -371,8 +372,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						
 					}
 					exceptionField = "";
-					if ((ltMastCallingListData.getMobileNumber() != null)
-							&& (!ltMastCallingListData.getMobileNumber().isEmpty())) {
+					if (ltMastCallingListData.getMobileNumber() != null) {
 						//status = checkListAgainstMobileNumber(ltMastCallingListData);
 
 						if (status.getCode() == FAIL) {
@@ -404,6 +404,8 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 							ltMastCallingListData.setLastUpdatedBy(userId);
 							ltMastCallingListData.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 							ltMastCallingListData.setLastUpdateLogin(userId);
+							ltMastCallingListData.setCallSource("Excel");
+							ltMastCallingListData.setStatus("New Contact");
 							ltMastPriceList.add(ltMastCallingListData);
 							status.setCode(SUCCESS);
 							status.setData(ltMastPriceList);
