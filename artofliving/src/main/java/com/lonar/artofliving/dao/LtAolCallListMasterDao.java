@@ -20,6 +20,8 @@ public interface LtAolCallListMasterDao {
 	
 	List<ResponseDto> getAllCallListById(RequestDto requestDto) throws ServiceException, BusinessException;
 
+	List<ResponseDto> getAllCallListByIdExceptAdmin(RequestDto requestDto) throws ServiceException, BusinessException;
+	
 	LtAolCallListMaster save(LtAolCallListMaster ltAolCallListMasterUpdate) throws BusinessException, ServiceException, IOException;
 
 	LtAolCallListMaster getLtAolCallList(Long callListId) throws BusinessException, ServiceException, IOException;
@@ -44,6 +46,8 @@ public interface LtAolCallListMasterDao {
 	List<LtAolUserProducts> getAllCoursesAgainstListId(Long callListId) throws ServiceException, BusinessException;
 	
 	Long getCallListCount(RequestDto requestDto) throws ServiceException, BusinessException;
+
+	Long getCallListCountExceptAdmin(RequestDto requestDto) throws ServiceException, BusinessException;
 	
 	Long getMyQueueListCount(RequestDto requestDto) throws ServiceException, BusinessException;
 	

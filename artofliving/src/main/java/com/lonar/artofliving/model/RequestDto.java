@@ -8,6 +8,7 @@ public class RequestDto {
 	private String status;
 	private Long userId;
 	private Long callListId;
+	private String role;
 	public int getLimit() {
 		return limit;
 	}
@@ -47,10 +48,17 @@ public class RequestDto {
 	public void setCallListId(Long callListId) {
 		this.callListId = callListId;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	@Override
 	public String toString() {
 		return "RequestDto [limit=" + limit + ", offset=" + offset + ", searchfield=" + searchfield + ", status="
-				+ status + ", userId=" + userId + ", callListId=" + callListId + "]";
+				+ status + ", userId=" + userId + ", callListId=" + callListId + ", role=" + role + "]";
 	}
 	
 }
