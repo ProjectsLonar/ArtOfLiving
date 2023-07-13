@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lonar.artofliving.common.ServiceException;
+import com.lonar.artofliving.common.Validation;
 import com.lonar.artofliving.dao.LtAolCallListMasterDao;
 import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.AssignedOrderDto;
@@ -406,6 +407,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 							ltMastCallingListData.setLastUpdateLogin(userId);
 							ltMastCallingListData.setCallSource("Excel");
 							ltMastCallingListData.setStatus("New Contact");
+							ltMastCallingListData.setStatusId(1l);
 							ltMastPriceList.add(ltMastCallingListData);
 							status.setCode(SUCCESS);
 							status.setData(ltMastPriceList);
@@ -546,6 +548,17 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 				status.setMessage("Mobile Number Is Empty.");
 				errorList.add(status.getMessage());
 			}
+			
+			if (Validation.validatePhoneNumber(row.getCell(0).toString())) {
+
+				if (row.getCell(0).toString() != null) {
+					//user = ltMastUsersDao.getLtMastUsersByMobileNumber(row.getCell(0).toString()r);
+				} else {
+					status.setCode(FAIL);
+					status.setMessage("Enter Valid Mobile Number. ");
+					return status;
+				}
+		}
 
 			/*
 			 * if (row.getCell(1).toString().isEmpty()) { status.setCode(FAIL);

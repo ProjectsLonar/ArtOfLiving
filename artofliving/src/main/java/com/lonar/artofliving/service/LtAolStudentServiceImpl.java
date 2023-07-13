@@ -49,6 +49,7 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 				 */
 				//ltAolCallListMasterUpdate.setCallDate(ltAolCallListMasters.getCallDate());
 				ltAolCallListMasterUpdate.setStatus(ltAolCallListMaster.getStatus());
+				ltAolCallListMasterUpdate.setStatusId(ltAolCallListMaster.getStatusId());
 				//ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
 				if(ltAolCallListMasters.getCreatedBy()!=  null) {
 					ltAolCallListMasterUpdate.setCreatedBy(ltAolCallListMasters.getCreatedBy());
@@ -81,6 +82,7 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			         ltAolCallListMasterUpdate.setGender(ltAolCallListMaster.getGender());
 			         ltAolCallListMasterUpdate.setDob(ltAolCallListMaster.getDob());
 			         ltAolCallListMasterUpdate.setStatus("New Contact");
+			         ltAolCallListMasterUpdate.setStatusId(1L);
 			        // ltAolCallListMasterUpdate.setNotesId(ltAolCallListMaster.getNotesId());
 			        // ltAolCallListMasterUpdate.setCallDate(ltAolCallListMaster.getCallDate());
 			         //ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
