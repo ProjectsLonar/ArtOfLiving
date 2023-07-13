@@ -100,7 +100,7 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 	
 	
 	@Override
-	public LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException{
+	public LtAolCallListMaster getAolCallListByMobileNumber(Long mobileNumberList) throws ServiceException,IOException, JSONException{
 		
 		String query= env.getProperty("getAolCallListByMobileNumber");
 		List<LtAolCallListMaster> list =jdbcTemplate.query(query, new Object[] {mobileNumberList}, 
@@ -283,5 +283,44 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 			return list;
 		}
 		return list;
-	}	
+	}
+	
+	@Override
+	public List<ResponseDto> getAllCallListByIdExceptAdmin(RequestDto requestDto) throws ServiceException, BusinessException {
+		
+		if (requestDto.getLimit() == 0) {
+			requestDto.setLimit(Integer.parseInt(env.getProperty("limit")));
+		}
+
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+		
+		
+		String query= env.getProperty("getAllCallListByIdExceptAdmin");
+		
+		List<ResponseDto> list= jdbcTemplate.query(query, new Object[] {requestDto.getCallListId(),searchField,requestDto.getUserId(), requestDto.getLimit(), requestDto.getOffset() },
+				new BeanPropertyRowMapper<ResponseDto>(ResponseDto.class));
+		//System.out.println("list"+list);
+		if(!list.isEmpty()) {
+			return list;
+		}
+		return list;
+	}
+	
+	@Override
+	public Long getCallListCountExceptAdmin(RequestDto requestDto) throws ServiceException, BusinessException {
+			Long totalCount;
+			
+			String searchField = null;
+			if (requestDto.getSearchfield() != null) {
+				searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+			} 
+			
+			String sql = env.getProperty("getCallListCountExceptAdmin");
+			totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getCallListId(),searchField,requestDto.getUserId() }, Long.class);
+			return totalCount;
+		
+	}
 }
