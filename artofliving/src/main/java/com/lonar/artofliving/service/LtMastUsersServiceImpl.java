@@ -17,6 +17,7 @@ import com.lonar.artofliving.common.Validation;
 import com.lonar.artofliving.dao.LtMastSmsTokenDao;
 import com.lonar.artofliving.dao.LtMastUsersDao;
 import com.lonar.artofliving.model.CodeMaster;
+import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.LtMastSmsToken;
@@ -163,7 +164,8 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 		if (ltMastLogins.getLoginId() != null) {
 			if (ltMastUser.getMobileNumber() != null) {
-				status = sendMessage(ltMastLogins, ltMastUser.getMobileNumber());
+				//status = sendMessage(ltMastLogins, ltMastUser.getMobileNumber());
+				status.setCode(SUCCESS);
 			}
 
 			if (status.getCode() == SUCCESS)
@@ -225,12 +227,24 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		ResponceEntity entity = new ResponceEntity();
 		Status status = new Status();
 		LtAolUsersMaster ltMastUser = ltMastUsersDao.getLtMastUsersByMobileNumber(ltMastLogins.getMobileNumber().toString());
+		
+		LtMastLogins ltMastLogin = null;
+		
+		if(ltMastUser !=null) {
 
-		LtMastLogins ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
-		ltMastLogin.setOtp(1234L);
-		ltMastLogins.setOtp(1234L);
+			if(ltMastUser.getStatus().equalsIgnoreCase(INACTIVE)) {
+				entity.setCode(FAIL);
+				entity.setMessage("User Is Inactive.");
+				return entity;
+			}else {
+		 ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
+			}
+		}
+		
 		
 		if (ltMastLogin != null) {
+			ltMastLogin.setOtp(1234L);
+			ltMastLogins.setOtp(1234L);
 			if (ltMastLogin.getOtp().equals(ltMastLogins.getOtp())) {
 				ltMastLogin.setStatus(INPROCESS);
 				ltMastLogin.setLoginDate(new Date());
@@ -242,10 +256,15 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				entity.setCode(SUCCESS);
 				entity.setUserId(ltMastLogin.getUserId());
 				entity.setStatus(ltMastUser.getStatus());
-				//entity.setUserName(ltMastUser.getFirstName());
+				entity.setUserName(ltMastUser.getUserName());
 				entity.setLastLoginId(ltMastLogins.getLoginId());
-				entity.setRole(ltMastUser.getUserName());
+
+				//entity.setRole(ltMastUser.getRoleId());
 				//entity.setFirstName(ltMastUser.getFirstName());
+
+				entity.setRole(ltMastUser.getRole());
+				entity.setRoleId(ltMastUser.getRoleId());
+
 				//entity.setLastName(ltMastUser.getLastName());
 				entity.setMobileNumber(ltMastUser.getMobileNumber());
 				//entity.setEmail(ltMastUser.getEmail());
@@ -253,17 +272,18 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 			} else {
 				entity.setCode(FAIL);
-				entity.setMessage("Please Enter Valid OTP");
+				entity.setMessage("Please Enter Valid OTP.");
 			}
 		} else {
 			status.setCode(SUCCESS);
 			status.setMessage("Login Success");
 			status.setData("SUCCESS");
 			entity.setCode(SUCCESS);
-			//entity.setRole(ltMastUser.getUserType());
+			entity.setRole(ltMastUser.getRole());
+			entity.setRoleId(ltMastUser.getRoleId());
 			entity.setUserId(ltMastUser.getUserId());
-			//entity.setUserName(ltMastUser.getFirstName());
-			entity.setFirstName(ltMastUser.getUserName());
+			entity.setUserName(ltMastUser.getUserName());
+			//entity.setFirstName(ltMastUser.getUserName());
 			//entity.setLastName(ltMastUser.getLastName());
 			entity.setMobileNumber(ltMastUser.getMobileNumber());
 			//entity.setEmail(ltMastUser.getEmail());
@@ -279,11 +299,14 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 	@Override
 	public Status getallactiveroles() throws ServiceException, IOException{
 		Status status = new Status();
-		List<LtAolUsersMaster> ltAolUserList = ltMastUsersDao.getallactiveroles( );
+		List<LtAolRolesMaster> ltAolUserList = ltMastUsersDao.getallactiveroles( );
+		Long totalCount = ltMastUsersDao.getAllActiveRolesCount();
 		if (!ltAolUserList.isEmpty()) {
 			status.setCode(RECORD_FOUND);
 			status.setMessage("RECORD_FOUND");
 			status.setData(ltAolUserList);
+			status.setRecordCount((long)ltAolUserList.size());
+			status.setTotalCount(totalCount);
 
 		} else {
 			status.setCode(RECORD_NOT_FOUND);
@@ -299,11 +322,13 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		Status status= new Status();
 		
 		List<LtAolUsersMaster> ltMastUserList= ltMastUsersDao.getallusers(requestDto);
-		
+		Long totalCount = ltMastUsersDao.getAllUsersCount(requestDto);
 		if(ltMastUserList!= null) {
 			status.setCode(RECORD_FOUND);
 			status.setMessage("Record Found Successfully.");
 			status.setData(ltMastUserList);
+			status.setRecordCount((long)ltMastUserList.size());
+			status.setTotalCount(totalCount);
 		}else {
 			status.setCode(RECORD_NOT_FOUND);
 			status.setMessage("Record Not Found.");

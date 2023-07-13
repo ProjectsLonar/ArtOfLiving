@@ -13,7 +13,9 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
+import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.RequestDto;
@@ -78,10 +80,10 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 	}
 	
 	@Override
-	public List<LtAolUsersMaster> getallactiveroles( )throws ServiceException,IOException{
+	public List<LtAolRolesMaster> getallactiveroles( )throws ServiceException,IOException{
 		String query = env.getProperty("getallactiveroles");
-		List<LtAolUsersMaster> list = jdbcTemplate.query(query, new Object[] {},
-				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		List<LtAolRolesMaster> list = jdbcTemplate.query(query, new Object[] {},
+				new BeanPropertyRowMapper<LtAolRolesMaster>(LtAolRolesMaster.class));
 		if (!list.isEmpty())
 			return list;
 		else
@@ -102,13 +104,15 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		
 		String status = null;
 		if (requestDto.getStatus() != null) {
-			status = "%" + requestDto.getStatus().toUpperCase() + "%";
+			status = requestDto.getStatus().toUpperCase();
 		}
 
+		//System.out.println("status"+status+requestDto.getUserId()+searchField+requestDto.getLimit()+requestDto.getOffset() );
 		String query = env.getProperty("getallusers");
 		List<LtAolUsersMaster> ltMastUserList = jdbcTemplate.query(query,
-				new Object[] {searchField,status, requestDto.getLimit(), requestDto.getOffset() },
+				new Object[] {requestDto.getUserId(),searchField,status, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<LtAolUsersMaster>(LtAolUsersMaster.class));
+		//System.out.println("list   "+ltMastUserList);
 		if (!ltMastUserList.isEmpty()) {
 			return ltMastUserList;
 		}
@@ -126,5 +130,32 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		 }
 		return null;
 	}
+	
+	@Override
+	public Long getAllActiveRolesCount( ) throws ServiceException, BusinessException{
+		Long totalCount;
+		String sql = env.getProperty("getAllActiveRolesCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] { }, Long.class);
+		return totalCount;
+	}
 
+	
+	@Override
+	public Long getAllUsersCount( RequestDto requestDto) throws ServiceException, BusinessException{
+		Long totalCount;
+		
+		String searchField = null;
+		if (requestDto.getSearchfield() != null) {
+			searchField = "%" + requestDto.getSearchfield().toUpperCase() + "%";
+		}
+		
+		String status = null;
+		if (requestDto.getStatus() != null) {
+			status = requestDto.getStatus().toUpperCase();
+		}
+
+		String sql = env.getProperty("getAllUsersCount");
+		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getUserId(),searchField,status }, Long.class);
+		return totalCount;
+	}
 }

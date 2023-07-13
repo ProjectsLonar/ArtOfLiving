@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -31,6 +32,8 @@ public class LtAolCallNotes extends BaseClass{
 	@Column(name= "note_date")
 	private Date noteDate;
 
+	@Transient
+	private Long userId;
 	
 	public Long getCallNoteId() {
 		return callNoteId;
@@ -64,12 +67,18 @@ public class LtAolCallNotes extends BaseClass{
 		this.noteDate = noteDate;
 	}
 
-	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolCallNotes [callNoteId=" + callNoteId + ", callListId=" + callListId + ", note=" + note
-				+ ", noteDate=" + noteDate + "]";
+				+ ", noteDate=" + noteDate + ", userId=" + userId + "]";
 	}
-	
 		
 }

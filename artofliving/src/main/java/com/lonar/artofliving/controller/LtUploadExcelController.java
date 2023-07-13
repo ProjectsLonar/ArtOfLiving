@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lonar.artofliving.common.BusinessException;
@@ -14,6 +15,9 @@ import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.service.LtAolCallListService;
 
+
+@RestController
+@RequestMapping(value = "/excelUpload")
 public class LtUploadExcelController implements CodeMaster {
 	
 	@Autowired

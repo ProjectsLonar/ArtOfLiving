@@ -1,18 +1,28 @@
 package com.lonar.artofliving.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class ResponceEntity {
 
 	private Integer code;
 	private  String message;
 	private Object data;
 	private Long userId;
+
 	
+	//private Long role;
+
 	private String role;
+	private Long roleId;
+
 	private String status;
 	private Long lastLoginId; 
 	private String firstName;
 	private String lastName;
 	private String mobileNumber;
+	private String userName;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -84,5 +94,25 @@ public class ResponceEntity {
 	public void setLastLoginId(Long lastLoginId) {
 		this.lastLoginId = lastLoginId;
 	}
+	public Long getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	@Override
+	public String toString() {
+		return "ResponceEntity [code=" + code + ", message=" + message + ", data=" + data + ", userId=" + userId
+				+ ", role=" + role + ", roleId=" + roleId + ", status=" + status + ", lastLoginId=" + lastLoginId
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", mobileNumber=" + mobileNumber
+				+ ", userName=" + userName + ", email=" + email + "]";
+	}
+
 	
 }

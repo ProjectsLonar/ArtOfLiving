@@ -24,7 +24,7 @@ public class LtAolCallListMaster extends BaseClass{
 	private Long callListId;
 	
 	@Column(name= "mobile_number")
-	private String mobileNumber;
+	private Long mobileNumber;
 	
 	@Column(name= "student_name")
 	private String studentName;
@@ -46,9 +46,30 @@ public class LtAolCallListMaster extends BaseClass{
 	
 	@Column(name= "assigned_to")
 	private Long assignedTo;
+	
+	@Column(name= "email")
+	private String email;
+	
+	@Column(name= "address")
+	private String address;
+	
+	@Column(name= "city")
+	private String city;
+	
+	@Column(name= "pin_code")
+	private Long pinCode;
+	
+	@Column(name= "status")
+	private String status;
 
 	@Transient
 	Long userId;
+	
+	@Transient
+	String colorCode;
+	
+	@Column(name= "status_id")
+	private Long statusId;
 	
 	
 	public Long getUserId() {
@@ -67,11 +88,11 @@ public class LtAolCallListMaster extends BaseClass{
 		this.callListId = callListId;
 	}
 
-	public String getMobileNumber() {
+	public Long getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(String mobileNumber) {
+	public void setMobileNumber(Long mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
@@ -132,12 +153,72 @@ public class LtAolCallListMaster extends BaseClass{
 	}
 
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public Long getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(Long pinCode) {
+		this.pinCode = pinCode;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolCallListMaster [callListId=" + callListId + ", mobileNumber=" + mobileNumber + ", studentName="
 				+ studentName + ", callSource=" + callSource + ", gender=" + gender + ", dob=" + dob + ", notesId="
-				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", suerId=" + userId + "]";
+				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", email=" + email + ", address="
+				+ address + ", city=" + city + ", pinCode=" + pinCode + ", status=" + status + ", userId=" + userId
+				+ ", colorCode=" + colorCode + ", statusId=" + statusId + "]";
 	}
 
+	
 	
 }

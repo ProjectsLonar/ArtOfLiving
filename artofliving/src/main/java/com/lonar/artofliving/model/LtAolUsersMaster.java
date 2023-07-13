@@ -36,6 +36,9 @@ public class LtAolUsersMaster extends BaseClass{
 	@Transient
 	private Long createdBy;
 	
+	@Transient
+	private String role;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -84,11 +87,19 @@ public class LtAolUsersMaster extends BaseClass{
 		this.createdBy = createdBy;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
 		return "LtAolUsersMaster [userId=" + userId + ", userName=" + userName + ", mobileNumber=" + mobileNumber
-				+ ", status=" + status + ", roleId=" + roleId + ", createdBy=" + createdBy + "]";
+				+ ", status=" + status + ", roleId=" + roleId + ", createdBy=" + createdBy + ", role=" + role + "]";
 	}
 	
-		
+	
 }

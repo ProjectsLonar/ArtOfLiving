@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -22,8 +23,8 @@ public class LtAolUserProducts extends BaseClass{
 	@Column(name= "user_course_id")
 	private Long userCourseId;
 	
-	@Column(name= "user_id")
-	private Long userId;
+	@Column(name= "call_list_id")
+	private Long callListId;
 	
 	@Column(name= "product_id")
 	private Long productId;
@@ -33,7 +34,15 @@ public class LtAolUserProducts extends BaseClass{
 	
 	@Column(name= "effective_date")
 	private Date effectiveDate;
-
+	
+	@Column(name= "place_name")
+	private String placeName;
+	
+	@Transient
+	private Long userId;
+	
+	@Transient 
+	private String productName;
 	
 	public Long getUserCourseId() {
 		return userCourseId;
@@ -75,12 +84,39 @@ public class LtAolUserProducts extends BaseClass{
 		this.effectiveDate = effectiveDate;
 	}
 
+	public String getPlaceName() {
+		return placeName;
+	}
+
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+	public Long getCallListId() {
+		return callListId;
+	}
+
+	public void setCallListId(Long callListId) {
+		this.callListId = callListId;
+	}
 	
+	
+
 	@Override
 	public String toString() {
 		return "LtAolUserProducts [userCourseId=" + userCourseId + ", userId=" + userId + ", productId=" + productId
-				+ ", status=" + status + ", effectiveDate=" + effectiveDate + "]";
+				+ ", status=" + status + ", effectiveDate=" + effectiveDate + ", placeName=" + placeName
+				+ ", callListId=" + callListId + "]";
 	}
-	
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+
 	
 }

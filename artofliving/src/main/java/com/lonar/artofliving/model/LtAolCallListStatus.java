@@ -11,36 +11,28 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name= "lt_aol_product_type_master")
+@Table(name= "lt_aol_status_master")
 @JsonInclude(Include.NON_NULL)
-public class LtAolProductTypeMaster extends BaseClass{
+public class LtAolCallListStatus extends BaseClass {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name= "product_type_id")
-	private Long productTypeId;
+	@Column(name= "status_id")
+	private Long statusId;
 	
-	@Column(name= "product_type")
-	private String productType;
 	
 	@Column(name= "status")
 	private String status;
-
 	
-	public Long getProductTypeId() {
-		return productTypeId;
+	@Column(name= "color_code")
+	private String colorCode;
+
+	public Long getStatusId() {
+		return statusId;
 	}
 
-	public void setProductTypeId(Long productTypeId) {
-		this.productTypeId = productTypeId;
-	}
-
-	public String getProductType() {
-		return productType;
-	}
-
-	public void setProductType(String productType) {
-		this.productType = productType;
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
 
 	public String getStatus() {
@@ -51,12 +43,21 @@ public class LtAolProductTypeMaster extends BaseClass{
 		this.status = status;
 	}
 
-	
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+
 	@Override
 	public String toString() {
-		return "LtAolProductTypeMaster [productTypeId=" + productTypeId + ", productType=" + productType + ", status="
-				+ status + "]";
+		return "ColorCode [statusId=" + statusId + ", status=" + status + ", colorCode=" + colorCode + "]";
 	}
 	
 	
+	
+	
+
 }

@@ -1,11 +1,12 @@
 package com.lonar.artofliving.dto;
 
 import java.util.Date;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.lonar.artofliving.model.LtAolCallNotes;
+import com.lonar.artofliving.model.LtAolUserProducts;
 
-@JsonInclude(Include.NON_NULL)
+//@JsonInclude(Include.NON_NULL)
 public class ResponseDto {
 
 	private String student_name;
@@ -15,6 +16,20 @@ public class ResponseDto {
 	private Date dob;
 	private String course_name;
 	private String status;
+	private Long  callListId;
+	private Long callNoteId;
+	private String callSource;
+	private String notesId;
+	private Long assignedTo;
+	private String email;
+	private String address;
+	private String city;
+	private String pinCode;
+	private String userName;
+	private List<LtAolUserProducts> coursesList;
+	private Long statusId;
+	private String colorCode;
+	private List<LtAolCallNotes> notesHistoryList;
 	
 	
 	public String getStudent_name() {
@@ -61,13 +76,100 @@ public class ResponseDto {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
+	public Long getCallListId() {
+		return callListId;
+	}
+	public void setCallListId(Long callListId) {
+		this.callListId = callListId;
+	}
+	public Long getCallNoteId() {
+		return callNoteId;
+	}
+	public void setCallNoteId(Long callNoteId) {
+		this.callNoteId = callNoteId;
+	}
+	public List<LtAolUserProducts> getCoursesList() {
+		return coursesList;
+	}
+	public void setCoursesList(List<LtAolUserProducts> coursesList) {
+		this.coursesList = coursesList;
+	}
+	public String getCallSource() {
+		return callSource;
+	}
+	public void setCallSource(String callSource) {
+		this.callSource = callSource;
+	}
+	public String getNotesId() {
+		return notesId;
+	}
+	public void setNotesId(String notesId) {
+		this.notesId = notesId;
+	}
+	public Long getAssignedTo() {
+		return assignedTo;
+	}
+	public void setAssignedTo(Long assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getPinCode() {
+		return pinCode;
+	}
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
 	
-	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getColorCode() {
+		return colorCode;
+	}
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
+	}
+	public List<LtAolCallNotes> getNotesHistoryList() {
+		return notesHistoryList;
+	}
+	public void setNotesHistoryList(List<LtAolCallNotes> notesHistoryList) {
+		this.notesHistoryList = notesHistoryList;
+	}
 	@Override
 	public String toString() {
 		return "ResponseDto [student_name=" + student_name + ", gender=" + gender + ", mobile_number=" + mobile_number
-				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status + "]";
+				+ ", note=" + note + ", dob=" + dob + ", course_name=" + course_name + ", status=" + status
+				+ ", callListId=" + callListId + ", callNoteId=" + callNoteId + ", callSource=" + callSource
+				+ ", notesId=" + notesId + ", assignedTo=" + assignedTo + ", email=" + email + ", address=" + address
+				+ ", city=" + city + ", pinCode=" + pinCode + ", userName=" + userName + ", coursesList=" + coursesList
+				+ ", statusId=" + statusId + ", colorCode=" + colorCode + ", notesHistoryList=" + notesHistoryList
+				+ "]";
 	}
 	
-		
 }
