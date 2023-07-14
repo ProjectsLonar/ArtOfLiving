@@ -72,7 +72,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			}
 			//List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
 			 
-//System.out.println("responseDto"+responseDto);
+ //System.out.println("responseDto"+responseDto);
 
 //System.out.println("count"+totalCount);
 			if(requestDto.getCallListId() !=null ) {
@@ -307,7 +307,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 					// System.out.println("-->"+status);
 					if (status.getCode() == FAIL) {
 						// System.out.println(row.getRowNum());
-						errorList.addAll((List<String>) status.getData());
+						///errorList.addAll((List<String>) status.getData());
 						excelLtMasterCallingListRequestDto = getErrorMasterCallingListData(row);
 						exceptionField = "";
 //						if (!excelLtMasterCallingListRequestDto.getProductCode().isEmpty())
@@ -550,15 +550,19 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			}
 			
 			if (Validation.validatePhoneNumber(row.getCell(0).toString())) {
-
-				if (row.getCell(0).toString() != null) {
-					//user = ltMastUsersDao.getLtMastUsersByMobileNumber(row.getCell(0).toString()r);
-				} else {
-					status.setCode(FAIL);
-					status.setMessage("Enter Valid Mobile Number. ");
-					return status;
-				}
+				System.out.println("valid mobile number.");
+		}else {
+			//System.out.println("hi in else");
+			status.setCode(FAIL);
+			status.setMessage("Enter Valid Mobile Number. ");
+			errorList.add(status.getMessage());
+			//return status;
 		}
+			
+			 status = checkDuplicate(new Double(row.getCell(0).getNumericCellValue()).longValue());
+		     if (status.getCode() == FAIL) {
+			   return status;
+		      }
 
 			/*
 			 * if (row.getCell(1).toString().isEmpty()) { status.setCode(FAIL);
@@ -795,6 +799,20 @@ status.setMessage("Record Not Found.");
 status.setData(null);
 	}
 return status;
+}
+
+private Status checkDuplicate(Long mobileNumber) throws ServiceException, JSONException, IOException {
+	Status status = new Status();
+	LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
+	if (ltAolCallListMasters != null) {
+		if (!ltAolCallListMasters.getMobileNumber().equals(mobileNumber)) {
+			status.setCode(FAIL);
+			status.setMessage("Mobile Number Already Exists.");
+			return status;
+		}		
+	}
+	status.setCode(SUCCESS);
+	return status;
 }
 
 }
