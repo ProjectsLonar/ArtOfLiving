@@ -108,7 +108,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		List<LtAolCallListMaster> ltAolCallList = new ArrayList<LtAolCallListMaster>();
 		//assigned 
 		if(assignedOrderDto.getAssignedTo() !=null) {	
-			for(Long mobileNumberList: assignedOrderDto.getMobileNumber()) {
+			for(String mobileNumberList: assignedOrderDto.getMobileNumber()) {
 				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
 				if(ltAolCallListMaster !=null) {
 					if((ltAolCallListMaster.getAssignedTo() == null) || (ltAolCallListMaster.getAssignedTo() == 0) ) {
@@ -125,7 +125,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		}//unassigned
 		else {
 			
-			for(Long mobileNumberList: assignedOrderDto.getMobileNumber()) {
+			for(String mobileNumberList: assignedOrderDto.getMobileNumber()) {
 				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
 				if(ltAolCallListMaster !=null) {
 					if((ltAolCallListMaster.getAssignedTo() != null)  ) {
@@ -323,7 +323,8 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 					} else {
 
 						if (!row.getCell(0).toString().isEmpty()) {
-							ltMastCallingListData.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
+							Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
+							ltMastCallingListData.setMobileNumber(mobileNumber.toString());
 							
 						}
 						if (!row.getCell(1).toString().isEmpty()) {
@@ -344,7 +345,8 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						}
 					
 						if (!row.getCell(7).toString().isEmpty()) {
-							ltMastCallingListData.setPinCode(new Double(row.getCell(7).getNumericCellValue()).longValue());
+							Long PinCode = (new Double(row.getCell(7).getNumericCellValue()).longValue());
+							ltMastCallingListData.setPinCode(PinCode.toString());
 						}
 						
 						try {
@@ -549,7 +551,10 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 				errorList.add(status.getMessage());
 			}
 			
-			if (Validation.validatePhoneNumber(row.getCell(0).toString())) {
+			//System.out.println("mobile number"+row.getCell(0).toString());
+			Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
+			System.out.println("mobileNo."+mobileNumber);
+			if (Validation.validatePhoneNumber(mobileNumber.toString())) {
 				System.out.println("valid mobile number.");
 		}else {
 			//System.out.println("hi in else");
@@ -559,7 +564,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			//return status;
 		}
 			
-			 status = checkDuplicate(new Double(row.getCell(0).getNumericCellValue()).longValue());
+			 status = checkDuplicate(mobileNumber.toString());
 		     if (status.getCode() == FAIL) {
 			   return status;
 		      }
@@ -801,11 +806,13 @@ status.setData(null);
 return status;
 }
 
-private Status checkDuplicate(Long mobileNumber) throws ServiceException, JSONException, IOException {
+private Status checkDuplicate(String mobileNumber) throws ServiceException, JSONException, IOException {
 	Status status = new Status();
+	System.out.println("mobileNumber in checkduplicate"+mobileNumber);
 	LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
+	System.out.println("ltAolCallListMasters"+ltAolCallListMasters);
 	if (ltAolCallListMasters != null) {
-		if (!ltAolCallListMasters.getMobileNumber().equals(mobileNumber)) {
+		if (ltAolCallListMasters.getMobileNumber().equals(mobileNumber)) {
 			status.setCode(FAIL);
 			status.setMessage("Mobile Number Already Exists.");
 			return status;

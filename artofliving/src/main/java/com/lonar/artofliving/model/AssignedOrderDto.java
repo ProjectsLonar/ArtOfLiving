@@ -3,17 +3,17 @@ package com.lonar.artofliving.model;
 import java.util.List;
 
 public class AssignedOrderDto {
-	List<Long> mobileNumber;
+	List<String> mobileNumber;
 	 
 	 private Long assignedTo;
 
 	 private Long userId;
 
-	public List<Long> getMobileNumber() {
+	public List<String> getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(List<Long> mobileNumber) {
+	public void setMobileNumber(List<String> mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
