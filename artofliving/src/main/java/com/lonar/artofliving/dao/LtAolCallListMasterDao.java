@@ -26,7 +26,7 @@ public interface LtAolCallListMasterDao {
 
 	LtAolCallListMaster getLtAolCallList(Long callListId) throws BusinessException, ServiceException, IOException;
 	
-	LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException;
+	LtAolCallListMaster getAolCallListByMobileNumber(Long mobileNumberList) throws ServiceException,IOException, JSONException;
 
 
 	List<LtAolCallListMaster> saveAll (List<LtAolCallListMaster> ltAolCallListMaster) throws ServiceException, IOException;

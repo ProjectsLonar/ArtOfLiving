@@ -100,7 +100,7 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 	
 	
 	@Override
-	public LtAolCallListMaster getAolCallListByMobileNumber(String mobileNumberList) throws ServiceException,IOException, JSONException{
+	public LtAolCallListMaster getAolCallListByMobileNumber(Long mobileNumberList) throws ServiceException,IOException, JSONException{
 		
 		String query= env.getProperty("getAolCallListByMobileNumber");
 		List<LtAolCallListMaster> list =jdbcTemplate.query(query, new Object[] {mobileNumberList}, 

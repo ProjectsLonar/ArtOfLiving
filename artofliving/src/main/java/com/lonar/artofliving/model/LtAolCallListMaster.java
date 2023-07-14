@@ -24,7 +24,7 @@ public class LtAolCallListMaster extends BaseClass{
 	private Long callListId;
 	
 	@Column(name= "mobile_number")
-	private String mobileNumber;
+	private Long mobileNumber;
 	
 	@Column(name= "student_name")
 	private String studentName;
@@ -57,7 +57,7 @@ public class LtAolCallListMaster extends BaseClass{
 	private String city;
 	
 	@Column(name= "pin_code")
-	private String pinCode;
+	private Long pinCode;
 	
 	@Column(name= "status")
 	private String status;
@@ -197,22 +197,7 @@ public class LtAolCallListMaster extends BaseClass{
 		this.colorCode = colorCode;
 	}
 
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
-
-	public String getPinCode() {
-		return pinCode;
-	}
-
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "LtAolCallListMaster [callListId=" + callListId + ", mobileNumber=" + mobileNumber + ", studentName="
@@ -220,6 +205,22 @@ public class LtAolCallListMaster extends BaseClass{
 				+ notesId + ", callDate=" + callDate + ", assignedTo=" + assignedTo + ", email=" + email + ", address="
 				+ address + ", city=" + city + ", pinCode=" + pinCode + ", status=" + status + ", userId=" + userId
 				+ ", colorCode=" + colorCode + ", statusId=" + statusId + "]";
+	}
+
+	public Long getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(Long mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public Long getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(Long pinCode) {
+		this.pinCode = pinCode;
 	}
 
 
