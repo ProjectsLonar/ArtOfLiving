@@ -9,6 +9,7 @@ public class RequestDto {
 	private Long userId;
 	private Long callListId;
 	private String role;
+	private Long mobileNumber;
 	public int getLimit() {
 		return limit;
 	}
@@ -55,10 +56,18 @@ public class RequestDto {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "RequestDto [limit=" + limit + ", offset=" + offset + ", searchfield=" + searchfield + ", status="
 				+ status + ", userId=" + userId + ", callListId=" + callListId + ", role=" + role + "]";
+	}
+	public Long getMobileNumber() {
+		return mobileNumber;
+	}
+	public void setMobileNumber(Long mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 	
 }

@@ -60,6 +60,32 @@ public class UtilsMaster {
 			}}
 			return strDate;
 			}
+		
+		
+		public static String convertCustomDateFormat(String strDate,String parsDateFormate,String strFormatter)
+		{
+			DateFormat formatter = new SimpleDateFormat(parsDateFormate);
+			Date date;
+			String newDate;
+			if(strDate!=null)
+			{
+			try {
+				date = (Date)formatter.parse(strDate);
+				newDate=new SimpleDateFormat(strFormatter).format(date);
+				return newDate;
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return strDate;
+			}}
+			return strDate;
+			}
+		
+		
+		
+		
+		
 }
 	
 

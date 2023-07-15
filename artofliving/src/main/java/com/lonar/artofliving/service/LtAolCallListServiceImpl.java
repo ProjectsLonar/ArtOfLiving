@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,6 +34,7 @@ import com.lonar.artofliving.common.Validation;
 import com.lonar.artofliving.dao.LtAolCallListMasterDao;
 import com.lonar.artofliving.dto.ResponseDto;
 import com.lonar.artofliving.model.AssignedOrderDto;
+import com.lonar.artofliving.model.CallListReport;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
 import com.lonar.artofliving.model.LtAolCallListStatus;
@@ -47,72 +48,72 @@ import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.utils.UtilsMaster;
 
 @Service
-public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster {
+public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaster {
 
 	@Autowired
 	private LtAolCallListMasterDao ltAolCallListMasterDao;
-	
+
 	String reportDateTime = new SimpleDateFormat("yyyyMMdd_HHmmssSSS").format(Calendar.getInstance().getTime());
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	@Override
 	public Status getAllCallListById(RequestDto requestDto) throws ServiceException, IOException {
-		
-			Status status =new Status();
-			
-			List<ResponseDto> responseDto = null;
-			Long totalCount = (long) 0;
-			if(requestDto.getRole().equalsIgnoreCase("Admin")) {
-				responseDto = ltAolCallListMasterDao.getAllCallListById(requestDto);
-				totalCount = ltAolCallListMasterDao.getCallListCount(requestDto);
-			}else {
-			 responseDto= ltAolCallListMasterDao.getAllCallListByIdExceptAdmin(requestDto);
-			 totalCount = ltAolCallListMasterDao.getCallListCountExceptAdmin(requestDto);
-			}
-			//List<ResponseDto> responseDto= ltAolCallListMasterDao.getAllCallListById(requestDto);
-			 
- //System.out.println("responseDto"+responseDto);
 
-//System.out.println("count"+totalCount);
-			if(requestDto.getCallListId() !=null ) {
-				List<LtAolUserProducts> listOfCourses =  ltAolCallListMasterDao.getAllCoursesAgainstListId(requestDto.getCallListId());
-				
-				responseDto.get(0).setCoursesList(listOfCourses);
-				//System.out.println("responseDto addres course" +responseDto);
-				List<LtAolCallNotes> listOfNotes = ltAolCallListMasterDao.getAllNOtesAgainstNoteId(requestDto.getCallListId());
-				
-				responseDto.get(0).setNotesHistoryList(listOfNotes);
-				//System.out.println("responseDto addes note" +responseDto);
-				
-			}
-			if(responseDto!= null) {
-				status.setCode(RECORD_FOUND);
-				status.setMessage("Record Found.");
-				status.setData(responseDto);
-				status.setRecordCount((long)responseDto.size());
-				status.setTotalCount(totalCount);
-				return status;
-			}else {
+		Status status = new Status();
+
+		List<ResponseDto> responseDto = null;
+		Long totalCount = (long) 0;
+		if (requestDto.getRole().equalsIgnoreCase("Admin")) {
+			responseDto = ltAolCallListMasterDao.getAllCallListById(requestDto);
+			totalCount = ltAolCallListMasterDao.getCallListCount(requestDto);
+		} else {
+			responseDto = ltAolCallListMasterDao.getAllCallListByIdExceptAdmin(requestDto);
+			totalCount = ltAolCallListMasterDao.getCallListCountExceptAdmin(requestDto);
+		}
+		
+		if (requestDto.getCallListId() != null) {
+			List<LtAolUserProducts> listOfCourses = ltAolCallListMasterDao
+					.getAllCoursesAgainstListId(requestDto.getCallListId());
+
+			responseDto.get(0).setCoursesList(listOfCourses);
+			// System.out.println("responseDto addres course" +responseDto);
+			List<LtAolCallNotes> listOfNotes = ltAolCallListMasterDao
+					.getAllNOtesAgainstNoteId(requestDto.getCallListId());
+
+			responseDto.get(0).setNotesHistoryList(listOfNotes);
+			// System.out.println("responseDto addes note" +responseDto);
+
+		}
+		if (responseDto != null) {
+			status.setCode(RECORD_FOUND);
+			status.setMessage("Record Found.");
+			status.setData(responseDto);
+			status.setRecordCount((long) responseDto.size());
+			status.setTotalCount(totalCount);
+			return status;
+		} else {
 			status.setCode(RECORD_NOT_FOUND);
-		status.setMessage("Record Not Found.");
-		status.setData(null);
-			}
-			
+			status.setMessage("Record Not Found.");
+			status.setData(null);
+		}
+
 		return status;
 	}
-	
+
 	@Override
-	public Status saveAssignedTo(AssignedOrderDto assignedOrderDto) throws ServiceException,IOException, JSONException {
+	public Status saveAssignedTo(AssignedOrderDto assignedOrderDto)
+			throws ServiceException, IOException, JSONException {
 		Status status = new Status();
 		List<LtAolCallListMaster> ltAolCallList = new ArrayList<LtAolCallListMaster>();
-		//assigned 
-		if(assignedOrderDto.getAssignedTo() !=null) {	
-			for(Long mobileNumberList: assignedOrderDto.getMobileNumber()) {
-				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
-				if(ltAolCallListMaster !=null) {
-					if((ltAolCallListMaster.getAssignedTo() == null) || (ltAolCallListMaster.getAssignedTo() == 0) ) {
+		// assigned
+		if (assignedOrderDto.getAssignedTo() != null) {
+			for (Long mobileNumberList : assignedOrderDto.getMobileNumber()) {
+				LtAolCallListMaster ltAolCallListMaster = ltAolCallListMasterDao
+						.getAolCallListByMobileNumber(mobileNumberList);
+				if (ltAolCallListMaster != null) {
+					if ((ltAolCallListMaster.getAssignedTo() == null) || (ltAolCallListMaster.getAssignedTo() == 0)) {
 						ltAolCallListMaster.setAssignedTo(assignedOrderDto.getAssignedTo());
 						ltAolCallListMaster.setStatus("Assigned");
 						ltAolCallListMaster.setLastUpdatedBy(assignedOrderDto.getUserId());
@@ -120,16 +121,17 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						ltAolCallListMaster.setLastUpdateLogin(assignedOrderDto.getUserId());
 					}
 				}
-				LtAolCallListMaster ltAolCallListSaved =ltAolCallListMasterDao.save(ltAolCallListMaster);
-						ltAolCallList.add(ltAolCallListSaved);
+				LtAolCallListMaster ltAolCallListSaved = ltAolCallListMasterDao.save(ltAolCallListMaster);
+				ltAolCallList.add(ltAolCallListSaved);
 			}
-		}//unassigned
+		} // unassigned
 		else {
-			
-			for(Long mobileNumberList: assignedOrderDto.getMobileNumber()) {
-				LtAolCallListMaster  ltAolCallListMaster = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumberList); 
-				if(ltAolCallListMaster !=null) {
-					if((ltAolCallListMaster.getAssignedTo() != null)  ) {
+
+			for (Long mobileNumberList : assignedOrderDto.getMobileNumber()) {
+				LtAolCallListMaster ltAolCallListMaster = ltAolCallListMasterDao
+						.getAolCallListByMobileNumber(mobileNumberList);
+				if (ltAolCallListMaster != null) {
+					if ((ltAolCallListMaster.getAssignedTo() != null)) {
 						ltAolCallListMaster.setAssignedTo(null);
 						ltAolCallListMaster.setStatus("New Contact");
 						ltAolCallListMaster.setLastUpdatedBy(assignedOrderDto.getUserId());
@@ -137,26 +139,26 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						ltAolCallListMaster.setLastUpdateLogin(assignedOrderDto.getUserId());
 					}
 				}
-				LtAolCallListMaster ltAolCallListSaved =ltAolCallListMasterDao.save(ltAolCallListMaster);
-						ltAolCallList.add(ltAolCallListSaved);
+				LtAolCallListMaster ltAolCallListSaved = ltAolCallListMasterDao.save(ltAolCallListMaster);
+				ltAolCallList.add(ltAolCallListSaved);
 			}
-		
+
 		}
-		
-		if(!ltAolCallList.isEmpty()) {
-			status.setCode(UPDATE_SUCCESSFULLY); 
+
+		if (!ltAolCallList.isEmpty()) {
+			status.setCode(UPDATE_SUCCESSFULLY);
 			status.setMessage("Update Successfully.");
 			status.setData(ltAolCallList);
 			return status;
-			}else {
+		} else {
 			status.setCode(UPDATE_FAIL);
 			status.setMessage("Update Fail.");
 			status.setData(null);
 			return status;
-			}
-		
+		}
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Status uploadMasterCallingList(Long userId, MultipartFile file) throws ServiceException, IOException {
@@ -185,7 +187,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		}
 
 		status = readExcelFile(userId, imgDownloadPath);
-		
+
 		// TODO Auto-generated method stub
 		if (status.getCode() == SUCCESS) {
 			List<LtAolCallListMaster> list = (List<LtAolCallListMaster>) status.getData();
@@ -210,28 +212,35 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 
 			}
 
-		} 
-		/*
-		 * if (status.getCode() == FAIL) { if (status.getData() != null) {
-		 * System.out.println("-----fail data------" + status.getData().toString());
-		 * Map<Integer, Map<LtMasterCallingListRequestDto, List<String>>> data =
-		 * (Map<Integer, Map<LtMasterCallingListRequestDto, List<String>>>) status
-		 * .getData(); List<LtMasterCallingListErrorDto> errorList =
-		 * getLtMasterCalingListErrorRecordList(data); if (errorList != null) { try {
-		 * status = generateMasterCAllingListErrorReport(errorList, null); if
-		 * (status.getCode() == SUCCESS) { status.setCode(FILE_DOWNLOAD); } } catch
-		 * (IOException | ParseException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } } } }
-		 */
+		}
 		
+		if (status.getCode() == FAIL) {
+			if (status.getData() != null) {
+				System.out.println("-----fail data------" + status.getData().toString());
+				Map<Integer, Map<LtMasterCallingListRequestDto, List<String>>> data = (Map<Integer, Map<LtMasterCallingListRequestDto, List<String>>>) status
+						.getData();
+				List<LtMasterCallingListErrorDto> errorList = getLtMasterCalingListErrorRecordList(data);
+				if (errorList != null) {
+					try {
+						status = generateMasterCAllingListErrorReport(errorList, null);
+						if (status.getCode() == SUCCESS) {
+							status.setCode(FILE_DOWNLOAD);
+						}
+					} catch (IOException | ParseException e) { // TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		 
+
 		return status;
 	}
 
-	
 	public Status readExcelFile(Long userId, String filePath) {
 		List<LtAolCallListMaster> ltMastPriceList = new ArrayList<LtAolCallListMaster>();
 		Status status = new Status();
-		//List<LtAolCallListMaster> histroryList = new ArrayList<LtAolCallListMaster>();
+		
 		Map<Integer, Map<LtMasterCallingListRequestDto, List<String>>> errorcallingListmap = new HashMap<Integer, Map<LtMasterCallingListRequestDto, List<String>>>();
 		String exceptionField = "";
 		try {
@@ -285,53 +294,38 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						row.getCell(5).setCellValue("");
 					}
 
-					if (row.getCell(6) == null ) {
+					if (row.getCell(6) == null) {
 						row.createCell(6);
 						row.getCell(6).setCellValue("");
 					}
-					
-					if (row.getCell(7) == null ) {
+
+					if (row.getCell(7) == null) {
 						row.createCell(7);
 						row.getCell(7).setCellValue("");
 					}
-					/*
-					 * if (row.getCell(8) == null) { row.createCell(8);
-					 * row.getCell(8).setCellValue(""); }
-					 */
-					/*
-					 * if (row.getCell(9) == null) { row.createCell(9);
-					 * row.getCell(9).setCellValue(""); }
-					 */
+					
 					LtAolCallListMaster ltMastCallingListData = new LtAolCallListMaster();
 					LtMasterCallingListRequestDto excelLtMasterCallingListRequestDto = new LtMasterCallingListRequestDto();
 					status = validateData(row);
 					// System.out.println("-->"+status);
 					if (status.getCode() == FAIL) {
 						// System.out.println(row.getRowNum());
-						///errorList.addAll((List<String>) status.getData());
+						errorList.addAll((List<String>) status.getData());
 						excelLtMasterCallingListRequestDto = getErrorMasterCallingListData(row);
 						exceptionField = "";
-//						if (!excelLtMasterCallingListRequestDto.getProductCode().isEmpty())
-//							ltMastCallingListData.setProductCode(excelLtMastPriceListRequestDto.getProductCode());
-//						if (!excelLtMasterCallingListRequestDto.getPriceList().isEmpty())
-//							ltMastCallingListData.setPriceList(excelLtMastPriceListRequestDto.getPriceList());
-//						if ((!excelLtMasterCallingListRequestDto.getListPrice().isEmpty())
-//								&& (row.getCell(5).getCellType() == CellType.NUMERIC))
-//							ltMastCallingListData
-//									.setListPrice(new Double(excelLtMasterCallingListRequestDto.getListPrice().toString()));
-//						if (!excelLtMasterCallingListRequestDto.getStatus().isEmpty())
-//							ltMastCallingListData.setStatus(excelLtMastPriceListRequestDto.getStatus());
+					
 					} else {
 
 						if (!row.getCell(0).toString().isEmpty()) {
-							
-							ltMastCallingListData.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
-							
+
+							ltMastCallingListData
+									.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
+
 						}
 						if (!row.getCell(1).toString().isEmpty()) {
 							ltMastCallingListData.setStudentName(row.getCell(1).toString());
 						}
-						
+
 						if (!row.getCell(3).toString().isEmpty()) {
 							ltMastCallingListData.setEmail(row.getCell(3).toString());
 						}
@@ -344,17 +338,19 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 						if (!row.getCell(6).toString().isEmpty()) {
 							ltMastCallingListData.setCity(row.getCell(6).toString());
 						}
-					
+
 						if (!row.getCell(7).toString().isEmpty()) {
-							
-							ltMastCallingListData.setPinCode(new Double(row.getCell(7).getNumericCellValue()).longValue());
+
+							ltMastCallingListData
+									.setPinCode(new Double(row.getCell(7).getNumericCellValue()).longValue());
 						}
-						
+
 						try {
 							exceptionField = "Date Of Birth";
 							if (!row.getCell(2).toString().isEmpty()) {
 								if (row.getCell(2).getCellType() == CellType.NUMERIC) {
-									ltMastCallingListData.setDob(UtilsMaster.convertDate(row.getCell(2).getDateCellValue()));
+									ltMastCallingListData
+											.setDob(UtilsMaster.convertDate(row.getCell(2).getDateCellValue()));
 								} else {
 									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									Date startDate = sdf.parse(row.getCell(2).toString());
@@ -362,7 +358,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 
 								}
 							}
-							
+
 						} catch (Exception e) {
 							e.printStackTrace();
 							status.setCode(FAIL);
@@ -373,28 +369,27 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 							// return status;
 							// TODO: handle exception
 						}
-						
+
 					}
 					exceptionField = "";
 					if (ltMastCallingListData.getMobileNumber() != null) {
-						//status = checkListAgainstMobileNumber(ltMastCallingListData);
 
-						if (status.getCode() == FAIL) {
-							errorList.addAll((List<String>) status.getData());
-							excelLtMasterCallingListRequestDto = getErrorMasterCallingListData(row);
-							// return status;
-						}
+						/*
+						 * if (status.getCode() == FAIL) { errorList.addAll((List<String>)
+						 * status.getData()); excelLtMasterCallingListRequestDto =
+						 * getErrorMasterCallingListData(row); // return status; }
+						 */
 
 						if (status.getCode() != FAIL) {
 							if (status.getCode() == RECORD_FOUND) {
 								// update priceList
 								LtAolCallListMaster updatedltMastAolCallList = (LtAolCallListMaster) status.getData();
-								//histroryList.add(updatedltMastAolCallList);
+								// histroryList.add(updatedltMastAolCallList);
 								if (updatedltMastAolCallList != null) {
 									ltMastCallingListData.setCallListId(updatedltMastAolCallList.getCallListId());
 									ltMastCallingListData.setCreationDate(updatedltMastAolCallList.getCreationDate());
 									ltMastCallingListData.setCreatedBy(updatedltMastAolCallList.getCreatedBy());
-									
+
 								}
 							}
 							if (status.getCode() == RECORD_NOT_FOUND) {
@@ -457,7 +452,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		}
 		return status;
 	}
-	
+
 	private Status checkHeaderRow(Row headerRow) {
 		Status status = new Status();
 		if (!headerRow.getCell(0).getStringCellValue().isEmpty()) {
@@ -481,25 +476,30 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		}
 		return status;
 	}
-	
-	/*
-	 * private List<LtMasterCallingListErrorDto>
-	 * getLtMasterCalingListErrorRecordList( Map<Integer,
-	 * Map<LtMasterCallingListRequestDto, List<String>>> map) {
-	 * List<LtMasterCallingListErrorDto> list = new
-	 * ArrayList<LtMasterCallingListErrorDto>(); for (Map.Entry<Integer,
-	 * Map<LtMasterCallingListRequestDto, List<String>>> entry : map.entrySet()) {
-	 * LtMasterCallingListErrorDto dto = new LtMasterCallingListErrorDto();
-	 * dto.setRowNo(entry.getKey()); System.out.println(dto.toString());
-	 * Map<LtMasterCallingListRequestDto, List<String>> subMap = entry.getValue();
-	 * if (subMap != null) { for (Map.Entry<LtMasterCallingListRequestDto,
-	 * List<String>> subEntry : subMap.entrySet()) {
-	 * dto.setLtMastcallingList(subEntry.getKey());
-	 * dto.setErrorList(subEntry.getValue()); } list.add(dto); } } return list; }
-	 */
 
-	private Status generateMasterCAllingListErrorReport(List<LtMasterCallingListErrorDto> responceDataList, RequestDto requestDto)
-			throws FileNotFoundException, IOException, ParseException {
+	
+	private List<LtMasterCallingListErrorDto> getLtMasterCalingListErrorRecordList(
+			Map<Integer, Map<LtMasterCallingListRequestDto, List<String>>> map) {
+		List<LtMasterCallingListErrorDto> list = new ArrayList<LtMasterCallingListErrorDto>();
+		for (Map.Entry<Integer, Map<LtMasterCallingListRequestDto, List<String>>> entry : map.entrySet()) {
+			LtMasterCallingListErrorDto dto = new LtMasterCallingListErrorDto();
+			dto.setRowNo(entry.getKey());
+			System.out.println(dto.toString());
+			Map<LtMasterCallingListRequestDto, List<String>> subMap = entry.getValue();
+			if (subMap != null) {
+				for (Map.Entry<LtMasterCallingListRequestDto, List<String>> subEntry : subMap.entrySet()) {
+					dto.setLtMastcallingList(subEntry.getKey());
+					dto.setErrorList(subEntry.getValue());
+				}
+				list.add(dto);
+			}
+		}
+		return list;
+	}
+	
+
+	private Status generateMasterCAllingListErrorReport(List<LtMasterCallingListErrorDto> responceDataList,
+			RequestDto requestDto) throws FileNotFoundException, IOException, ParseException {
 		Status status = new Status();
 		String saveDirectory = null;
 		Workbook workbook = new SXSSFWorkbook();
@@ -517,10 +517,10 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 				System.out.println("Error in directory creation");
 			}
 		}
-		///Sheet sheet = workbook.createSheet("PriceList_Error_Report");
+		Sheet sheet = workbook.createSheet("CallList_Error_Report");
 
 		try {
-		///	PriceListReport.excelErrorData(workbook, sheet, responceDataList, requestDto);
+			CallListReport.excelErrorData(workbook, sheet, responceDataList, requestDto);
 			fileName = "CallList_Error_Report" + "_" + reportDateTime + ".xlsx";
 			String filePath = saveDirectory + fileName;
 			String fileShowPath = reportShowPath + fileName;
@@ -531,7 +531,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			fileOut.close();
 			status.setCode(SUCCESS);
 			status.setMessage("Error File Generated Successfully.");
-		///	status.setUrl(fileShowPath);
+			/// status.setUrl(fileShowPath);
 			return status;
 
 		} catch (Exception e) {
@@ -541,7 +541,6 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		return status;
 	}
 
-	
 	private Status validateData(Row row) {
 		Status status = new Status();
 		List<String> errorList = new ArrayList<String>();
@@ -551,55 +550,34 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 				status.setMessage("Mobile Number Is Empty.");
 				errorList.add(status.getMessage());
 			}
-			
-			//System.out.println("mobile number"+row.getCell(0).toString());
-			//System.out.println("mobile number type"+row.getCell(0).getCellType());
-			//row.getCell(0).setCellType(CellType.NUMERIC);
-			//System.out.println("mobile number after type"+row.getCell(0).getCellType());
+
 			Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
-			//System.out.println("mobileNo."+mobileNumber);
-			//Long mobileNumber = new Long(row.getCell(0).toString());
-			//System.out.println("long"+mobileNumber);
+
 			if (Validation.validatePhoneNumber(mobileNumber.toString())) {
 				System.out.println("valid mobile number.");
-		}else {
-			//System.out.println("hi in else");
-			status.setCode(FAIL);
-			status.setMessage("Enter Valid Mobile Number. ");
-			errorList.add(status.getMessage());
-			//return status;
-		}
-			
-			
-			//Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue())).longValue();
-			 status = checkDuplicate(mobileNumber);
-		     if (status.getCode() == FAIL) {
-		    	 errorList.add(status.getMessage());
-			   return status;
-		      }
+			} else {
+				// System.out.println("hi in else");
+				status.setCode(FAIL);
+				status.setMessage("Enter Valid Mobile Number. ");
+				errorList.add(status.getMessage());
+				// return status;
+			}
 
-			/*
-			 * if (row.getCell(1).toString().isEmpty()) { status.setCode(FAIL);
-			 * status.setMessage("Last Name Is Empty."); errorList.add(status.getMessage());
-			 * } if (row.getCell(2).toString().isEmpty()) { status.setCode(FAIL);
-			 * status.setMessage("Date Of Birth Is Empty.");
-			 * errorList.add(status.getMessage()); } if
-			 * (row.getCell(3).toString().isEmpty()) { status.setCode(FAIL);
-			 * status.setMessage("Gender Is Empty."); errorList.add(status.getMessage()); }
-			 * if (row.getCell(4).toString().isEmpty()) { status.setCode(FAIL);
-			 * status.setMessage("City Is Empty."); errorList.add(status.getMessage()); } //
-			 * start date manadatory check if (row.getCell(5).toString().isEmpty()) { //
-			 * System.out.println("---"+row.getCell(7).toString()); status.setCode(FAIL);
-			 * status.setMessage("Mobile Number Is Empty.");
-			 * errorList.add(status.getMessage()); } if
-			 * (row.getCell(6).toString().isEmpty()) { status.setCode(FAIL);
-			 * status.setMessage("Email Is Empty."); errorList.add(status.getMessage()); }
-			 */
-			/*
-			 * Status status1 = validateDataByTypeAndLength(row); if (status1.getCode() ==
-			 * FAIL) { errorList.addAll((List<String>) status1.getData()); }
-			 */
-			// System.out.println(status1);
+			// Long mobileNumber = (new
+			// Double(row.getCell(0).getNumericCellValue())).longValue();
+			status = checkDuplicate(mobileNumber);
+			if (status.getCode() == FAIL) {
+				status.setCode(FAIL);
+				status.setMessage("Mobile Number Already Exist ");
+				errorList.add(status.getMessage());
+				//return status;
+			}
+			
+			Status status1 = validateDataByTypeAndLength(row);
+			if (status1.getCode() == FAIL) {
+				errorList.addAll((List<String>) status1.getData());
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			status.setCode(FAIL);
@@ -615,220 +593,301 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 		return status;
 
 	}
-	
+
 	private LtMasterCallingListRequestDto getErrorMasterCallingListData(Row row) {
 
 		LtMasterCallingListRequestDto excelLtMasterCallingListRequestDto = new LtMasterCallingListRequestDto();
 		excelLtMasterCallingListRequestDto.setMobileNumber(row.getCell(0).toString());
-		excelLtMasterCallingListRequestDto.setFirstName(row.getCell(2).toString());
-		//excelLtMasterCallingListRequestDto.setDob(row.getCell(2).toString());
+		excelLtMasterCallingListRequestDto.setFirstName(row.getCell(1).toString());
+		// excelLtMasterCallingListRequestDto.setDob(row.getCell(2).toString());
 		excelLtMasterCallingListRequestDto.setGender(row.getCell(4).toString());
 		excelLtMasterCallingListRequestDto.setCity(row.getCell(6).toString());
-		//excelLtMasterCallingListRequestDto.setMobileNumber(row.getCell(5).toString());
+		// excelLtMasterCallingListRequestDto.setMobileNumber(row.getCell(5).toString());
 		excelLtMasterCallingListRequestDto.setEmail(row.getCell(3).toString());
 		excelLtMasterCallingListRequestDto.setAddress(row.getCell(5).toString());
 		excelLtMasterCallingListRequestDto.setPincode(row.getCell(7).toString());
-			
-		if (!row.getCell(1).toString().isEmpty() ) {
-			excelLtMasterCallingListRequestDto.setDob(row.getCell(1).toString());
+
+		if (!row.getCell(1).toString().isEmpty()) {
+			excelLtMasterCallingListRequestDto.setDob(row.getCell(2).toString());
 		} else {
-			excelLtMasterCallingListRequestDto.setDob(row.getCell(1).toString());
+			excelLtMasterCallingListRequestDto.setDob(row.getCell(2).toString());
 		}
-		
+
 		return excelLtMasterCallingListRequestDto;
 
 	}
-	
-@Override
-public Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOException{
-	Status status =new Status();
-	List<ResponseDto> responseDto= ltAolCallListMasterDao.getMyQueueList(requestDto);
-	
-	Long totalCount = ltAolCallListMasterDao.getMyQueueListCount(requestDto); 
-	if(responseDto!= null) {
-		status.setCode(RECORD_FOUND);
-		status.setMessage("Record Found Successfully.");
-		status.setData(responseDto);
-		status.setRecordCount((long) responseDto.size());
-		status.setTotalCount(totalCount);
-		return status;
-	}
-	else {	
-status.setCode(RECORD_NOT_FOUND);
-status.setMessage("Record Not Found.");
-status.setRecordCount((long)0);
-status.setData(null);
-	}
-return status;
-}
 
+	@Override
+	public Status getMyQueueList(RequestDto requestDto) throws ServiceException, IOException {
+		Status status = new Status();
+		List<ResponseDto> responseDto = ltAolCallListMasterDao.getMyQueueList(requestDto);
 
-
-@Override
-public Status getAllCourses(RequestDto requestDto) throws ServiceException, IOException{
-	Status status =new Status();
-	List<LtAolProductMaster> responseDto= ltAolCallListMasterDao.getAllCourses(requestDto);
-	Long totalCount = ltAolCallListMasterDao.getAllCoursesTotalCount(requestDto);
-	if(responseDto!= null) {
-		status.setCode(RECORD_FOUND);
-		status.setMessage("Record Found Successfully.");
-		status.setData(responseDto);
-		status.setRecordCount((long)responseDto.size());
-		status.setTotalCount(totalCount);
-		return status;
-	}
-	else {	
-status.setCode(RECORD_NOT_FOUND);
-status.setMessage("Record Not Found.");
-status.setData(null);
-	}
-return status;
-}
-
-@Override
-public Status saveCourseDetails (LtAolUserProducts ltAolUserProducts)throws ServiceException, IOException{
-	Status status = new Status();
-	if(ltAolUserProducts.getUserCourseId() == null) {
-	ltAolUserProducts.setCreatedBy(ltAolUserProducts.getUserId());
-	ltAolUserProducts.setCreationDate(UtilsMaster.getCurrentDateTime());
-	ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
-	ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
-	ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
-	
-	LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
-	if (ltAolUserProductsUpdated.getUserCourseId() != null) {
-		status.setCode(INSERT_SUCCESSFULLY);
-		status.setMessage("Course Details Added Successfully.");
-		status.setData(ltAolUserProductsUpdated);
-
-	} else {
-		status.setCode(INSERT_FAIL);
-		status.setMessage("Unable To Add Details.");
-	}
-	}else {
-		LtAolUserProducts ltAolUserProduct = ltAolCallListMasterDao.getCourseListAgainstId(ltAolUserProducts.getUserCourseId());
-		
-		ltAolUserProducts.setCreatedBy(ltAolUserProduct.getCreatedBy());
-		ltAolUserProducts.setCreationDate(ltAolUserProduct.getCreationDate());
-		ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
-		ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
-		ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
-		LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
-		if (ltAolUserProductsUpdated.getUserCourseId() != null) {
-			status.setCode(UPDATE_SUCCESSFULLY);
-			status.setMessage("Course Details Update Successfully.");
-			status.setData(ltAolUserProductsUpdated);
-
-		} else {
-			status.setCode(UPDATE_FAIL);
-			status.setMessage("Unable To Update Details.");
-		}
-	}
-	return status;
-}
-
-@Override
-public Status saveNote (LtAolCallNotes ltAolCallNotes)throws ServiceException, IOException{
-	Status status = new Status();
-	if(ltAolCallNotes.getCallNoteId() == null) {
-		ltAolCallNotes.setCreatedBy(ltAolCallNotes.getUserId());
-		ltAolCallNotes.setCreationDate(UtilsMaster.getCurrentDateTime());
-		ltAolCallNotes.setLastUpdatedBy(ltAolCallNotes.getUserId());
-		ltAolCallNotes.setLastUpdateLogin(ltAolCallNotes.getUserId());
-		ltAolCallNotes.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
-	
-		LtAolCallNotes ltAolCallNotesUpdated = ltAolCallListMasterDao.saveNote(ltAolCallNotes);
-	if (ltAolCallNotesUpdated.getCallNoteId() != null) {
-		status.setCode(INSERT_SUCCESSFULLY);
-		status.setMessage("Note Added Successfully.");
-		status.setData(ltAolCallNotesUpdated);
-
-	} else {
-		status.setCode(INSERT_FAIL);
-		status.setMessage("Unable To Add Note.");
-	}
-	}else {
-		LtAolCallNotes ltAolCallNote = ltAolCallListMasterDao.getNoteAgainstId(ltAolCallNotes.getCallNoteId());
-		
-		ltAolCallNotes.setCreatedBy(ltAolCallNote.getCreatedBy());
-		ltAolCallNotes.setCreationDate(ltAolCallNote.getCreationDate());
-		ltAolCallNotes.setLastUpdatedBy(ltAolCallNotes.getUserId());
-		ltAolCallNotes.setLastUpdateLogin(ltAolCallNotes.getUserId());
-		ltAolCallNotes.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
-		LtAolCallNotes ltAolCallNotesUpdated = ltAolCallListMasterDao.saveNote(ltAolCallNotes);
-		if (ltAolCallNotes.getCallNoteId() != null) {
-			status.setCode(UPDATE_SUCCESSFULLY);
-			status.setMessage("Course Details Update Successfully.");
-			status.setData(ltAolCallNotesUpdated);
-
-		} else {
-			status.setCode(UPDATE_FAIL);
-			status.setMessage("Unable To Update Details.");
-		}
-	}
-	return status;
-}
-
-/*
- * private Status checkListAgainstMobileNumber(LtAolCallListMaster
- * ltAolCallListMaster) throws JSONException, IOException { LtAolCallListMaster
- * updatedList = null; List<String> errorList = new ArrayList<String>(); Status
- * status = new Status(); try { // get Products against ProductCode
- * LtAolCallListMaster ltAolCallList =
- * ltAolCallListMasterDao.getAolCallListByMobileNumber(ltAolCallListMaster.
- * getMobileNumber()); if (ltAolCallList != null) { if
- * (ltAolCallList.getStatus().equals(ACTIVE)) {
- * 
- * status.setCode(RECORD_FOUND); status.setData(updatedList); } else {
- * status.setCode(FAIL); status.setMessage("Mobile Number Is Inactive."); }
- * 
- * } else {
- * 
- * status.setCode(FAIL); status.setMessage("Mobile Number Not Found.");
- * 
- * } } catch (ServiceException e) { status.setCode(FAIL);
- * status.setMessage(e.getMessage()); e.printStackTrace(); } if
- * (status.getCode() == FAIL) { errorList.add(status.getMessage());
- * status.setData(errorList); } return status; }
- */
-
-
-
-@Override
-public Status getAllStatus() throws ServiceException, IOException{
-	Status status =new Status();
-	List<LtAolCallListStatus> responseDto= ltAolCallListMasterDao.getAllStatus();
-	Long totalCount = ltAolCallListMasterDao.getAllStatusTotalCount();
-	if(responseDto!= null) {
-		status.setCode(RECORD_FOUND);
-		status.setMessage("Record Found Successfully.");
-		status.setData(responseDto);
-		status.setRecordCount((long)responseDto.size());
-		status.setTotalCount(totalCount);
-		return status;
-	}
-	else {	
-status.setCode(RECORD_NOT_FOUND);
-status.setMessage("Record Not Found.");
-status.setData(null);
-	}
-return status;
-}
-
-private Status checkDuplicate(Long mobileNumber) throws ServiceException, JSONException, IOException {
-	Status status = new Status();
-	System.out.println("mobileNumber in checkduplicate"+mobileNumber);
-	LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
-	System.out.println("ltAolCallListMasters"+ltAolCallListMasters);
-	if (ltAolCallListMasters != null) {
-		if (ltAolCallListMasters.getMobileNumber().equals(mobileNumber)) {
-			status.setCode(FAIL);
-			status.setMessage("Mobile Number Already Exists.");
+		Long totalCount = ltAolCallListMasterDao.getMyQueueListCount(requestDto);
+		if (responseDto != null) {
+			status.setCode(RECORD_FOUND);
+			status.setMessage("Record Found Successfully.");
+			status.setData(responseDto);
+			status.setRecordCount((long) responseDto.size());
+			status.setTotalCount(totalCount);
 			return status;
-		}		
+		} else {
+			status.setCode(RECORD_NOT_FOUND);
+			status.setMessage("Record Not Found.");
+			status.setRecordCount((long) 0);
+			status.setData(null);
+		}
+		return status;
 	}
-	status.setCode(SUCCESS);
-	return status;
-}
 
+	@Override
+	public Status getAllCourses(RequestDto requestDto) throws ServiceException, IOException {
+		Status status = new Status();
+		List<LtAolProductMaster> responseDto = ltAolCallListMasterDao.getAllCourses(requestDto);
+		Long totalCount = ltAolCallListMasterDao.getAllCoursesTotalCount(requestDto);
+		if (responseDto != null) {
+			status.setCode(RECORD_FOUND);
+			status.setMessage("Record Found Successfully.");
+			status.setData(responseDto);
+			status.setRecordCount((long) responseDto.size());
+			status.setTotalCount(totalCount);
+			return status;
+		} else {
+			status.setCode(RECORD_NOT_FOUND);
+			status.setMessage("Record Not Found.");
+			status.setData(null);
+		}
+		return status;
+	}
+
+	@Override
+	public Status saveCourseDetails(LtAolUserProducts ltAolUserProducts) throws ServiceException, IOException {
+		Status status = new Status();
+		if (ltAolUserProducts.getUserCourseId() == null) {
+			ltAolUserProducts.setCreatedBy(ltAolUserProducts.getUserId());
+			ltAolUserProducts.setCreationDate(UtilsMaster.getCurrentDateTime());
+			ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
+			ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
+			ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+
+			LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
+			if (ltAolUserProductsUpdated.getUserCourseId() != null) {
+				status.setCode(INSERT_SUCCESSFULLY);
+				status.setMessage("Course Details Added Successfully.");
+				status.setData(ltAolUserProductsUpdated);
+
+			} else {
+				status.setCode(INSERT_FAIL);
+				status.setMessage("Unable To Add Details.");
+			}
+		} else {
+			LtAolUserProducts ltAolUserProduct = ltAolCallListMasterDao
+					.getCourseListAgainstId(ltAolUserProducts.getUserCourseId());
+
+			ltAolUserProducts.setCreatedBy(ltAolUserProduct.getCreatedBy());
+			ltAolUserProducts.setCreationDate(ltAolUserProduct.getCreationDate());
+			ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
+			ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
+			ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+			LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
+			if (ltAolUserProductsUpdated.getUserCourseId() != null) {
+				status.setCode(UPDATE_SUCCESSFULLY);
+				status.setMessage("Course Details Update Successfully.");
+				status.setData(ltAolUserProductsUpdated);
+
+			} else {
+				status.setCode(UPDATE_FAIL);
+				status.setMessage("Unable To Update Details.");
+			}
+		}
+		return status;
+	}
+
+	@Override
+	public Status saveNote(LtAolCallNotes ltAolCallNotes) throws ServiceException, IOException {
+		Status status = new Status();
+		if (ltAolCallNotes.getCallNoteId() == null) {
+			ltAolCallNotes.setCreatedBy(ltAolCallNotes.getUserId());
+			ltAolCallNotes.setCreationDate(UtilsMaster.getCurrentDateTime());
+			ltAolCallNotes.setLastUpdatedBy(ltAolCallNotes.getUserId());
+			ltAolCallNotes.setLastUpdateLogin(ltAolCallNotes.getUserId());
+			ltAolCallNotes.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+
+			LtAolCallNotes ltAolCallNotesUpdated = ltAolCallListMasterDao.saveNote(ltAolCallNotes);
+			if (ltAolCallNotesUpdated.getCallNoteId() != null) {
+				status.setCode(INSERT_SUCCESSFULLY);
+				status.setMessage("Note Added Successfully.");
+				status.setData(ltAolCallNotesUpdated);
+
+			} else {
+				status.setCode(INSERT_FAIL);
+				status.setMessage("Unable To Add Note.");
+			}
+		} else {
+			LtAolCallNotes ltAolCallNote = ltAolCallListMasterDao.getNoteAgainstId(ltAolCallNotes.getCallNoteId());
+
+			ltAolCallNotes.setCreatedBy(ltAolCallNote.getCreatedBy());
+			ltAolCallNotes.setCreationDate(ltAolCallNote.getCreationDate());
+			ltAolCallNotes.setLastUpdatedBy(ltAolCallNotes.getUserId());
+			ltAolCallNotes.setLastUpdateLogin(ltAolCallNotes.getUserId());
+			ltAolCallNotes.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+			LtAolCallNotes ltAolCallNotesUpdated = ltAolCallListMasterDao.saveNote(ltAolCallNotes);
+			if (ltAolCallNotes.getCallNoteId() != null) {
+				status.setCode(UPDATE_SUCCESSFULLY);
+				status.setMessage("Course Details Update Successfully.");
+				status.setData(ltAolCallNotesUpdated);
+
+			} else {
+				status.setCode(UPDATE_FAIL);
+				status.setMessage("Unable To Update Details.");
+			}
+		}
+		return status;
+	}
+
+	/*
+	 * private Status checkListAgainstMobileNumber(LtAolCallListMaster
+	 * ltAolCallListMaster) throws JSONException, IOException { LtAolCallListMaster
+	 * updatedList = null; List<String> errorList = new ArrayList<String>(); Status
+	 * status = new Status(); try { // get Products against ProductCode
+	 * LtAolCallListMaster ltAolCallList =
+	 * ltAolCallListMasterDao.getAolCallListByMobileNumber(ltAolCallListMaster.
+	 * getMobileNumber()); if (ltAolCallList != null) { if
+	 * (ltAolCallList.getStatus().equals(ACTIVE)) {
+	 * 
+	 * status.setCode(RECORD_FOUND); status.setData(updatedList); } else {
+	 * status.setCode(FAIL); status.setMessage("Mobile Number Is Inactive."); }
+	 * 
+	 * } else {
+	 * 
+	 * status.setCode(FAIL); status.setMessage("Mobile Number Not Found.");
+	 * 
+	 * } } catch (ServiceException e) { status.setCode(FAIL);
+	 * status.setMessage(e.getMessage()); e.printStackTrace(); } if
+	 * (status.getCode() == FAIL) { errorList.add(status.getMessage());
+	 * status.setData(errorList); } return status; }
+	 */
+
+	@Override
+	public Status getAllStatus() throws ServiceException, IOException {
+		Status status = new Status();
+		List<LtAolCallListStatus> responseDto = ltAolCallListMasterDao.getAllStatus();
+		Long totalCount = ltAolCallListMasterDao.getAllStatusTotalCount();
+		if (responseDto != null) {
+			status.setCode(RECORD_FOUND);
+			status.setMessage("Record Found Successfully.");
+			status.setData(responseDto);
+			status.setRecordCount((long) responseDto.size());
+			status.setTotalCount(totalCount);
+			return status;
+		} else {
+			status.setCode(RECORD_NOT_FOUND);
+			status.setMessage("Record Not Found.");
+			status.setData(null);
+		}
+		return status;
+	}
+
+	private Status checkDuplicate(Long mobileNumber) throws ServiceException, JSONException, IOException {
+		Status status = new Status();
+		// System.out.println("mobileNumber in checkduplicate"+mobileNumber);
+		LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
+		// System.out.println("ltAolCallListMasters"+ltAolCallListMasters);
+		if (ltAolCallListMasters != null) {
+			if (ltAolCallListMasters.getMobileNumber().equals(mobileNumber)) {
+				status.setCode(FAIL);
+				status.setMessage("Mobile Number Already Exists.");
+				return status;
+			}
+		}
+		status.setCode(SUCCESS);
+		return status;
+	}
+
+	
+	private Status validateDataByTypeAndLength(Row row) {
+		Status status = new Status();
+		List<String> errorList = new ArrayList<String>();
+
+		Date startDate = null;
+		Date endDate = null;
+
+		if (!row.getCell(0).getCellType().equals(CellType.NUMERIC)) {
+			status.setCode(FAIL);
+			status.setMessage("Mobile Number Should Be Numeric");
+			errorList.add(status.getMessage());
+
+		}
+
+		if (!row.getCell(1).getCellType().equals(CellType.STRING)) {
+			status.setCode(FAIL);
+			status.setMessage("Name Should Be String");
+			errorList.add(status.getMessage());
+
+		}
+		
+		if (!row.getCell(3).getCellType().equals(CellType.STRING)) {
+			status.setCode(FAIL);
+			status.setMessage("Email Should Be String");
+			errorList.add(status.getMessage());
+
+		}
+		if (!row.getCell(4).getCellType().equals(CellType.STRING)) {
+			status.setCode(FAIL);
+			status.setMessage("Gender Should Be String");
+			errorList.add(status.getMessage());
+
+		}
+		if (!row.getCell(5).getCellType().equals(CellType.STRING)) {
+			status.setCode(FAIL);
+			status.setMessage("Address Should Be String");
+			errorList.add(status.getMessage());
+
+		}
+
+		if (!row.getCell(6).getCellType().equals(CellType.STRING)) {
+			status.setCode(FAIL);
+			status.setMessage("City Should Be String");
+			errorList.add(status.getMessage());
+
+		}
+
+		/*
+		 * if (!row.getCell(7).getCellType().equals(CellType.NUMERIC)) {
+		 * status.setCode(FAIL); status.setMessage("PinCode Should Be Numeric");
+		 * errorList.add(status.getMessage());
+		 * 
+		 * }
+		 */
+		
+		/*
+		 * if (!row.getCell(2).toString().isEmpty()) { if (row.getCell(2).getCellType()
+		 * == CellType.NUMERIC || row.getCell(7).getCellType() == CellType.STRING) {
+		 * System.out.println(row.getCell(2).getCellType() + "----date--" +
+		 * row.getCell(2).toString() + "\t");
+		 * 
+		 * try { String dateDetails = ""; if (row.getCell(2).getCellType() ==
+		 * CellType.NUMERIC) { dateDetails =
+		 * UtilsMaster.convertDateFormat(row.getCell(2).getDateCellValue().toString(),
+		 * "dd-MM-yyyy"); } if (row.getCell(2).getCellType() == CellType.STRING) {
+		 * dateDetails = UtilsMaster.convertCustomDateFormat(row.getCell(2).toString(),
+		 * "dd-MM-yyyy", "dd-MM-yyyy"); }
+		 * 
+		 * SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); startDate =
+		 * sdf.parse(dateDetails);
+		 * 
+		 * } catch (Exception e) { e.printStackTrace(); status.setCode(FAIL);
+		 * status.setMessage("Date Format Should Be" +
+		 * " In DD-MM-YYYY For Date Of Birth"); errorList.add(status.getMessage()); } }
+		 * else { status.setCode(FAIL); status.setMessage("Date Format Should Be" +
+		 * " In DD-MM-YYYY For Date Of Birth"); errorList.add(status.getMessage());
+		 * 
+		 * } }
+		 */
+		if ((errorList != null) && (!errorList.isEmpty())) {
+			status.setCode(FAIL);
+			status.setData(errorList);
+		}
+		return status;
+	}
+	
 }
