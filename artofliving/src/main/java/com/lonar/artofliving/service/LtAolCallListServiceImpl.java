@@ -278,7 +278,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 					}
 					if (row.getCell(2) == null) {
 						row.createCell(2);
-						row.getCell(2).setCellValue("`");
+						row.getCell(2).setCellValue("");
 					}
 					if (row.getCell(3) == null) {
 						row.createCell(3);
@@ -348,10 +348,13 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 						try {
 							exceptionField = "Date Of Birth";
 							if (!row.getCell(2).toString().isEmpty()) {
+								
 								if (row.getCell(2).getCellType() == CellType.NUMERIC) {
+									
 									ltMastCallingListData
 											.setDob(UtilsMaster.convertDate(row.getCell(2).getDateCellValue()));
 								} else {
+									
 									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									Date startDate = sdf.parse(row.getCell(2).toString());
 									ltMastCallingListData.setDob(UtilsMaster.convertDate(startDate));
