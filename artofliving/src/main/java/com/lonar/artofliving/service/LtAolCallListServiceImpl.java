@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -552,9 +553,14 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			}
 			
 			//System.out.println("mobile number"+row.getCell(0).toString());
-			//Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
+			//System.out.println("mobile number type"+row.getCell(0).getCellType());
+			//row.getCell(0).setCellType(CellType.NUMERIC);
+			//System.out.println("mobile number after type"+row.getCell(0).getCellType());
+			Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
 			//System.out.println("mobileNo."+mobileNumber);
-			if (Validation.validatePhoneNumber(row.getCell(0).toString())) {
+			//Long mobileNumber = new Long(row.getCell(0).toString());
+			//System.out.println("long"+mobileNumber);
+			if (Validation.validatePhoneNumber(mobileNumber.toString())) {
 				System.out.println("valid mobile number.");
 		}else {
 			//System.out.println("hi in else");
@@ -564,7 +570,9 @@ public class LtAolCallListServiceImpl implements LtAolCallListService,CodeMaster
 			//return status;
 		}
 			
-			 status = checkDuplicate(new Double(row.getCell(0).getNumericCellValue()).longValue());
+			
+			//Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue())).longValue();
+			 status = checkDuplicate(mobileNumber);
 		     if (status.getCode() == FAIL) {
 		    	 errorList.add(status.getMessage());
 			   return status;
