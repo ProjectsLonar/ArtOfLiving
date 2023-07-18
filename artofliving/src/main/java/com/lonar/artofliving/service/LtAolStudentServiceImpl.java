@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dao.LtAolCallListMasterDao;
+import com.lonar.artofliving.model.CallListMasterResponseDto;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolCallListMaster;
-import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.Status;
 import com.lonar.artofliving.utils.UtilsMaster;
 
@@ -50,7 +50,10 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 				//ltAolCallListMasterUpdate.setCallDate(ltAolCallListMasters.getCallDate());
 				ltAolCallListMasterUpdate.setStatus(ltAolCallListMaster.getStatus());
 				ltAolCallListMasterUpdate.setStatusId(ltAolCallListMaster.getStatusId());
-				//ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMaster.getAssignedTo());
+				ltAolCallListMasterUpdate.setStatusId(ltAolCallListMaster.getStatusId());
+				if(ltAolCallListMasters !=null) {
+				ltAolCallListMasterUpdate.setAssignedTo(ltAolCallListMasters.getAssignedTo());
+				}
 				if(ltAolCallListMasters.getCreatedBy()!=  null) {
 					ltAolCallListMasterUpdate.setCreatedBy(ltAolCallListMasters.getCreatedBy());
 				}
@@ -60,11 +63,13 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 				ltAolCallListMasterUpdate.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 				
 				ltAolCallListMasterUpdate = ltAolCallListMasterDao.save(ltAolCallListMasterUpdate);
+				 
+				CallListMasterResponseDto responseDto = ltAolCallListMasterDao.getCallListResponseById(ltAolCallListMasterUpdate.getCallListId());
 				
-				if(ltAolCallListMasterUpdate !=  null) {
+				if(responseDto !=  null) {
 					status.setCode(UPDATE_SUCCESSFULLY);
 					status.setMessage("Student Updated Successfully.");
-					status.setData(ltAolCallListMasterUpdate);
+					status.setData(responseDto);
 					return status;
 				}
 			}else {
@@ -94,10 +99,12 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			     }
 			       ltAolCallListMasterUpdate = ltAolCallListMasterDao.save(ltAolCallListMasterUpdate);
 			 
-			 if(ltAolCallListMasterUpdate != null) {
+			       CallListMasterResponseDto responseDto = ltAolCallListMasterDao.getCallListResponseById(ltAolCallListMasterUpdate.getCallListId());
+			       
+			 if(responseDto != null) {
 				 status.setCode(INSERT_SUCCESSFULLY);
 				 status.setMessage("Student Added Successfully.");
-				 status.setData(ltAolCallListMasterUpdate);
+				 status.setData(responseDto);
 				 return status;
 			 }else {
 				 status.setCode(INSERT_FAIL);

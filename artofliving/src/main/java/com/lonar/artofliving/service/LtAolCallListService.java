@@ -1,6 +1,7 @@
 package com.lonar.artofliving.service;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.json.JSONException;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +26,7 @@ public interface LtAolCallListService {
 	
 	Status getAllCourses(RequestDto requestDto) throws ServiceException, IOException;
 	
-	Status saveCourseDetails (LtAolUserProducts ltAolUserProducts)throws ServiceException, IOException;
+	Status saveCourseDetails (LtAolUserProducts ltAolUserProducts)throws ServiceException, IOException, ParseException;
 	
 	Status saveNote (LtAolCallNotes ltAolCallNotes)throws ServiceException, IOException;
 	

@@ -83,7 +83,21 @@ public class UtilsMaster {
 			}
 		
 		
-		
+		 public static Date getUtcEffectiveDate(Date getDeliveryDate) throws ParseException{
+			
+			 		 Instant instant = getDeliveryDate.toInstant();
+			 			ZonedDateTime jpTime = instant.atZone(ZoneId.of("Asia/Calcutta"));
+			 			
+			 			try {
+			 			Calendar calendar = new GregorianCalendar();
+			 			calendar.set(jpTime.getYear(), jpTime.getMonthValue()-1, jpTime.getDayOfMonth()+1, jpTime.getHour(), jpTime.getMinute(), jpTime.getSecond());
+			 			
+			 			return calendar.getTime();
+			 			} catch (Exception e1) {
+			 			e1.printStackTrace();
+			 			}
+			 			return new Date();
+			 	 }
 		
 		
 }

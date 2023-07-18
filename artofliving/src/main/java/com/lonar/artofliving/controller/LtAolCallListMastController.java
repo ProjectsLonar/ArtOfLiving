@@ -1,6 +1,7 @@
 package com.lonar.artofliving.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class LtAolCallListMastController implements CodeMaster {
 	}
 	
 	@RequestMapping(value = "/saveCourseDetails", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Status> saveCourseDetails(@RequestBody LtAolUserProducts ltAolUserProducts) throws ServiceException, IOException, JSONException  {
+	public ResponseEntity<Status> saveCourseDetails(@RequestBody LtAolUserProducts ltAolUserProducts) throws ServiceException, IOException, JSONException, ParseException  {
 		return new ResponseEntity<Status>(ltAolCallListMasterService.saveCourseDetails(ltAolUserProducts), HttpStatus.OK);
 	}
 	

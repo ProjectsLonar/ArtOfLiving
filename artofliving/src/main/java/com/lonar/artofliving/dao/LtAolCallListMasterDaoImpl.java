@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
+import com.lonar.artofliving.model.CallListMasterResponseDto;
 import com.lonar.artofliving.model.LtAolCallListMaster;
 import com.lonar.artofliving.model.LtAolCallListStatus;
 import com.lonar.artofliving.model.LtAolCallNotes;
@@ -322,5 +323,17 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 			totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getCallListId(),searchField,requestDto.getUserId() }, Long.class);
 			return totalCount;
 		
+	}
+	
+	@Override
+	public CallListMasterResponseDto getCallListResponseById(Long callListId) throws ServiceException, IOException{
+		
+		String query= env.getProperty("getCallListResponseById");
+		List<CallListMasterResponseDto> list =jdbcTemplate.query(query, new Object[] {callListId}, 
+				new BeanPropertyRowMapper<CallListMasterResponseDto>(CallListMasterResponseDto.class));
+		if(!list.isEmpty()) {
+			return list.get(0);
+		}
+			return null;
 	}
 }

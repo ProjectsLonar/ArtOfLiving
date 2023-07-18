@@ -8,6 +8,7 @@ import org.json.JSONException;
 import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.dto.ResponseDto;
+import com.lonar.artofliving.model.CallListMasterResponseDto;
 import com.lonar.artofliving.model.LtAolCallListMaster;
 import com.lonar.artofliving.model.LtAolCallListStatus;
 import com.lonar.artofliving.model.LtAolCallNotes;
@@ -59,5 +60,5 @@ public interface LtAolCallListMasterDao {
 	
 	List<LtAolCallNotes> getAllNOtesAgainstNoteId(Long callListId) throws ServiceException, BusinessException;
 	
-	
+	CallListMasterResponseDto getCallListResponseById(Long callListId) throws ServiceException, IOException;
 }

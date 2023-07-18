@@ -663,7 +663,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 	}
 
 	@Override
-	public Status saveCourseDetails(LtAolUserProducts ltAolUserProducts) throws ServiceException, IOException {
+	public Status saveCourseDetails(LtAolUserProducts ltAolUserProducts) throws ServiceException, IOException, ParseException {
 		Status status = new Status();
 		if (ltAolUserProducts.getUserCourseId() == null) {
 			ltAolUserProducts.setCreatedBy(ltAolUserProducts.getUserId());
@@ -671,6 +671,10 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 			ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
 			ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
 			ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+			if(ltAolUserProducts.getEffectiveDate() !=null) {
+				Date formattedDate = UtilsMaster.getUtcEffectiveDate(ltAolUserProducts.getEffectiveDate());
+			ltAolUserProducts.setEffectiveDate(formattedDate);
+			}
 
 			LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
 			if (ltAolUserProductsUpdated.getUserCourseId() != null) {
@@ -691,6 +695,11 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 			ltAolUserProducts.setLastUpdatedBy(ltAolUserProducts.getUserId());
 			ltAolUserProducts.setLastUpdateLogin(ltAolUserProducts.getUserId());
 			ltAolUserProducts.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
+			
+			if(ltAolUserProducts.getEffectiveDate() !=null) {
+				Date formattedDate = UtilsMaster.getUtcEffectiveDate(ltAolUserProducts.getEffectiveDate());
+			ltAolUserProducts.setEffectiveDate(formattedDate);
+			}
 			LtAolUserProducts ltAolUserProductsUpdated = ltAolCallListMasterDao.saveCourseDetails(ltAolUserProducts);
 			if (ltAolUserProductsUpdated.getUserCourseId() != null) {
 				status.setCode(UPDATE_SUCCESSFULLY);
