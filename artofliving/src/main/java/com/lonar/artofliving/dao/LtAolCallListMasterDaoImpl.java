@@ -138,7 +138,7 @@ public class LtAolCallListMasterDaoImpl implements LtAolCallListMasterDao{
 
 		String query = env.getProperty("getMyQueueList");
 		List<ResponseDto> ltMastMyQueueList = jdbcTemplate.query(query,
-				new Object[] {requestDto.getUserId(),searchField, requestDto.getLimit(), requestDto.getOffset() },
+				new Object[] {requestDto.getCallListId(),requestDto.getUserId(),searchField, requestDto.getLimit(), requestDto.getOffset() },
 				new BeanPropertyRowMapper<ResponseDto>(ResponseDto.class));
 		if (!ltMastMyQueueList.isEmpty()) {
 			return ltMastMyQueueList;

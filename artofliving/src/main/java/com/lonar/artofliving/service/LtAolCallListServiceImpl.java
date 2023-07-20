@@ -317,11 +317,62 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 					} else {
 
 						if (!row.getCell(0).toString().isEmpty()) {
+							status = checkDuplicate(new Double(row.getCell(0).getNumericCellValue()).longValue());
+							LtAolCallListMaster ltAolCallListMasters = null;
+							if(status.getCode() == FAIL) {
+								Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
+								 ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
+							}else {
+								if (row.getCell(0).toString().isEmpty()) {
+									ltMastCallingListData
+									.setMobileNumber(ltAolCallListMasters.getMobileNumber());
+								}else {
+								ltMastCallingListData
+								.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
+								}
+								if (!row.getCell(1).toString().isEmpty()) {
+									ltMastCallingListData.setStudentName(row.getCell(1).toString());
+								}else {
+									ltMastCallingListData.setStudentName(ltAolCallListMasters.getStudentName());
+								}
+								
+								if (!row.getCell(3).toString().isEmpty()) {
+									ltMastCallingListData.setEmail(row.getCell(3).toString());
+								}else {ltMastCallingListData.setEmail(ltAolCallListMasters.getEmail());}
+								if (!row.getCell(4).toString().isEmpty()) {
+									ltMastCallingListData.setGender(row.getCell(4).toString());
+								}else {ltMastCallingListData.setGender(ltAolCallListMasters.getGender());}
+								if (!row.getCell(5).toString().isEmpty()) {
+									ltMastCallingListData.setAddress(row.getCell(5).toString());
+								}else {ltMastCallingListData.setAddress(ltAolCallListMasters.getAddress());}
+								if (!row.getCell(6).toString().isEmpty()) {
+									ltMastCallingListData.setCity(row.getCell(6).toString());
+								}else {ltMastCallingListData.setCity(ltAolCallListMasters.getCity());}
+								if (!row.getCell(7).toString().isEmpty()) {
 
+									ltMastCallingListData
+											.setPinCode(new Double(row.getCell(7).getNumericCellValue()).longValue());
+								}else {ltMastCallingListData.setPinCode(ltAolCallListMasters.getPinCode());}
+								if(!row.getCell(2).toString().isEmpty()) {
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+									Date startDate = sdf.parse(row.getCell(2).toString());
+									ltMastCallingListData.setDob(UtilsMaster.convertDate(startDate));
+								}else {
+									ltMastCallingListData.setDob(ltAolCallListMasters.getDob());
+								}
+								ltMastCallingListData.setCreatedBy(ltAolCallListMasters.getCreatedBy());
+								ltMastCallingListData.setCreationDate(ltAolCallListMasters.getCreationDate());
+							}
+							
+
+						} 
+						else {
+						
+						if (!row.getCell(0).toString().isEmpty()) {
 							ltMastCallingListData
-									.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
-
+							.setMobileNumber(new Double(row.getCell(0).getNumericCellValue()).longValue());
 						}
+						
 						if (!row.getCell(1).toString().isEmpty()) {
 							ltMastCallingListData.setStudentName(row.getCell(1).toString());
 						}
@@ -374,6 +425,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 						}
 
 					}
+					}
 					exceptionField = "";
 					if (ltMastCallingListData.getMobileNumber() != null) {
 
@@ -401,8 +453,14 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 								ltMastCallingListData.setLastUpdatedBy(userId);
 								ltMastCallingListData.setCreationDate(UtilsMaster.getCurrentDateTime());
 							}
+							
+							if(ltMastCallingListData.getCreatedBy() ==null) {
 							ltMastCallingListData.setCreationDate(UtilsMaster.getCurrentDateTime());
-							ltMastCallingListData.setCreatedBy(userId);
+							}
+							if(ltMastCallingListData.getCreationDate() == null) {
+								ltMastCallingListData.setCreatedBy(userId);	
+							}
+							
 							ltMastCallingListData.setLastUpdatedBy(userId);
 							ltMastCallingListData.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 							ltMastCallingListData.setLastUpdateLogin(userId);
@@ -568,13 +626,13 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 
 			// Long mobileNumber = (new
 			// Double(row.getCell(0).getNumericCellValue())).longValue();
-			status = checkDuplicate(mobileNumber);
-			if (status.getCode() == FAIL) {
-				status.setCode(FAIL);
-				status.setMessage("Mobile Number Already Exist ");
-				errorList.add(status.getMessage());
+			//status = checkDuplicate(mobileNumber);
+			//if (status.getCode() == FAIL) {
+				//status.setCode(FAIL);
+				//status.setMessage("Mobile Number Already Exist ");
+				//errorList.add(status.getMessage());
 				//return status;
-			}
+			//}
 			
 			Status status1 = validateDataByTypeAndLength(row);
 			if (status1.getCode() == FAIL) {
@@ -626,6 +684,21 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 		List<ResponseDto> responseDto = ltAolCallListMasterDao.getMyQueueList(requestDto);
 
 		Long totalCount = ltAolCallListMasterDao.getMyQueueListCount(requestDto);
+		
+		
+		if (requestDto.getCallListId() != null) {
+			List<LtAolUserProducts> listOfCourses = ltAolCallListMasterDao
+					.getAllCoursesAgainstListId(requestDto.getCallListId());
+
+			responseDto.get(0).setCoursesList(listOfCourses);
+			// System.out.println("responseDto addres course" +responseDto);
+			List<LtAolCallNotes> listOfNotes = ltAolCallListMasterDao
+					.getAllNOtesAgainstNoteId(requestDto.getCallListId());
+
+			responseDto.get(0).setNotesHistoryList(listOfNotes);
+			// System.out.println("responseDto addes note" +responseDto);
+
+		}
 		if (responseDto != null) {
 			status.setCode(RECORD_FOUND);
 			status.setMessage("Record Found Successfully.");
