@@ -31,7 +31,7 @@ public class LtAolStudentServiceImpl implements LtAolStudentService,CodeMaster {
 			   
 			   status = checkDuplicate(ltAolCallListMaster);
 			     if (status.getCode() == FAIL) {
-			    	 LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getLtAolCallList(ltAolCallListMaster.getCallListId()); 
+			    	 LtAolCallListMaster ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(ltAolCallListMaster.getMobileNumber());
 			    	  ltAolCallListMasterUpdate.setCallListId(ltAolCallListMasters.getCallListId());
 						ltAolCallListMasterUpdate.setMobileNumber(ltAolCallListMasters.getMobileNumber());
 						

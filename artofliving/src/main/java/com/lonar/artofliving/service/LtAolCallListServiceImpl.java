@@ -316,7 +316,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 					
 					} else {
 
-						if (!row.getCell(0).toString().isEmpty()) {
+						
 							status = checkDuplicate(new Double(row.getCell(0).getNumericCellValue()).longValue());
 							LtAolCallListMaster ltAolCallListMasters = null;
 							if(status.getCode() == FAIL) {
@@ -366,7 +366,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 							
 							
 							}
-						} 
+						 
 						else {
 						
 						if (!row.getCell(0).toString().isEmpty()) {
@@ -455,12 +455,12 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 								ltMastCallingListData.setCreationDate(UtilsMaster.getCurrentDateTime());
 							}
 							
-							if(ltMastCallingListData.getCreatedBy() ==null) {
+							//if(ltMastCallingListData.getCreatedBy() == null) {
 							ltMastCallingListData.setCreationDate(UtilsMaster.getCurrentDateTime());
-							}
-							if(ltMastCallingListData.getCreationDate() == null) {
+							//}
+							//if(ltMastCallingListData.getCreationDate() == null) {
 								ltMastCallingListData.setCreatedBy(userId);	
-							}
+							
 							
 							ltMastCallingListData.setLastUpdatedBy(userId);
 							ltMastCallingListData.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
