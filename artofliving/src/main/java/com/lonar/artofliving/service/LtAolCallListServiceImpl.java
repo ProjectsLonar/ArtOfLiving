@@ -322,7 +322,8 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 							if(status.getCode() == FAIL) {
 								Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
 								 ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
-							}else {
+								 ltMastCallingListData.setCallListId(ltAolCallListMasters.getCallListId());
+								 
 								if (row.getCell(0).toString().isEmpty()) {
 									ltMastCallingListData
 									.setMobileNumber(ltAolCallListMasters.getMobileNumber());
@@ -362,9 +363,9 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 								}
 								ltMastCallingListData.setCreatedBy(ltAolCallListMasters.getCreatedBy());
 								ltMastCallingListData.setCreationDate(ltAolCallListMasters.getCreationDate());
-							}
 							
-
+							
+							}
 						} 
 						else {
 						
@@ -435,7 +436,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 						 * getErrorMasterCallingListData(row); // return status; }
 						 */
 
-						if (status.getCode() != FAIL) {
+						if (status.getCode() != FAIL || ( status.getCode() == FAIL && status.getMessage().equalsIgnoreCase("Mobile Number Already Exists."))) {
 							if (status.getCode() == RECORD_FOUND) {
 								// update priceList
 								LtAolCallListMaster updatedltMastAolCallList = (LtAolCallListMaster) status.getData();
