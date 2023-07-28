@@ -116,6 +116,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 					if ((ltAolCallListMaster.getAssignedTo() == null) || (ltAolCallListMaster.getAssignedTo() == 0)) {
 						ltAolCallListMaster.setAssignedTo(assignedOrderDto.getAssignedTo());
 						ltAolCallListMaster.setStatus("Assigned");
+						ltAolCallListMaster.setStatusId(5L);
 						ltAolCallListMaster.setLastUpdatedBy(assignedOrderDto.getUserId());
 						ltAolCallListMaster.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 						ltAolCallListMaster.setLastUpdateLogin(assignedOrderDto.getUserId());
@@ -134,6 +135,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 					if ((ltAolCallListMaster.getAssignedTo() != null)) {
 						ltAolCallListMaster.setAssignedTo(null);
 						ltAolCallListMaster.setStatus("New Contact");
+						ltAolCallListMaster.setStatusId(1L);
 						ltAolCallListMaster.setLastUpdatedBy(assignedOrderDto.getUserId());
 						ltAolCallListMaster.setLastUpdatedDate(UtilsMaster.getCurrentDateTime());
 						ltAolCallListMaster.setLastUpdateLogin(assignedOrderDto.getUserId());
