@@ -372,9 +372,9 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 											.setPinCode(new Double(row.getCell(7).getNumericCellValue()).longValue());
 								}else {ltMastCallingListData.setPinCode(ltAolCallListMasters.getPinCode());}
 								if(!row.getCell(2).toString().isEmpty()) {
-									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-									Date startDate = sdf.parse(row.getCell(2).toString());
-									ltMastCallingListData.setDob(UtilsMaster.convertDate(startDate));
+									//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+									//Date startDate = sdf.parse(row.getCell(2).toString());
+									ltMastCallingListData.setDob(UtilsMaster.convertDate(row.getCell(2).getDateCellValue()));
 								}else {
 									ltMastCallingListData.setDob(ltAolCallListMasters.getDob());
 								}
@@ -954,13 +954,13 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 
 		}
 
-		/*
-		 * if (!row.getCell(7).getCellType().equals(CellType.NUMERIC)) {
-		 * status.setCode(FAIL); status.setMessage("PinCode Should Be Numeric");
-		 * errorList.add(status.getMessage());
-		 * 
-		 * }
-		 */
+		
+		  if (!row.getCell(7).getCellType().equals(CellType.NUMERIC)) {
+		  status.setCode(FAIL); status.setMessage("PinCode Should Be Numeric");
+		  errorList.add(status.getMessage());
+		  
+		  }
+		 
 		
 		/*
 		 * if (!row.getCell(2).toString().isEmpty()) { if (row.getCell(2).getCellType()
