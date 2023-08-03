@@ -55,6 +55,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 			if (mobileNumber != null) {
 				user = ltMastUsersDao.getLtMastUsersByMobileNumber(mobileNumber);
+				
 			} else {
 				status.setCode(FAIL);
 				status.setMessage("Enter Valid Mobile Number. ");
@@ -64,34 +65,28 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		
 
 		if (user == null) {
-			LtAolUsersMaster ltMastUser = new LtAolUsersMaster();
-
-			ltMastUser.setMobileNumber(mobileNumber);
-			ltMastUser.setStatus(INPROCESS);
-
-			ltMastUser.setCreatedBy(-1L);
-			ltMastUser.setCreationDate(new Date());
-			ltMastUser.setLastUpdatedDate(new Date()); 
-			ltMastUser.setLastUpdatedBy(-1L);
-			ltMastUser.setLastUpdateLogin(-1L);
-			ltMastUser.setRoleId(1L);
-			ltMastUser.setUserName(""); 
-			ltMastUser = ltMastUsersDao.saveLtMastUsers(ltMastUser);
-
-			if (ltMastUser.getUserId() != null) {
-				LtMastLogins mastLogins = this.generateAndSendOtp(ltMastUser);
-				if (mastLogins != null) {
-					status.setCode(SUCCESS);
-					status.setMessage("OTP Send Successfully.");
-
-				} else {
+			/*
+			 * LtAolUsersMaster ltMastUser = new LtAolUsersMaster();
+			 * 
+			 * ltMastUser.setMobileNumber(mobileNumber); ltMastUser.setStatus(INPROCESS);
+			 * 
+			 * ltMastUser.setCreatedBy(-1L); ltMastUser.setCreationDate(new Date());
+			 * ltMastUser.setLastUpdatedDate(new Date()); ltMastUser.setLastUpdatedBy(-1L);
+			 * ltMastUser.setLastUpdateLogin(-1L); ltMastUser.setRoleId(1L);
+			 * ltMastUser.setUserName(""); ltMastUser =
+			 * ltMastUsersDao.saveLtMastUsers(ltMastUser);
+			 * 
+			 * if (ltMastUser.getUserId() != null) { LtMastLogins mastLogins =
+			 * this.generateAndSendOtp(ltMastUser); if (mastLogins != null) {
+			 * status.setCode(SUCCESS); status.setMessage("OTP Send Successfully.");
+			 * 
+			 * } else { status.setCode(FAIL); status.setMessage("OTP Not Send."); } } else {
+			 * status.setCode(FAIL); status.setMessage("OTP Not Send."); }
+			 */
 					status.setCode(FAIL);
-					status.setMessage("OTP Not Send.");
-				}
-			} else {
-				status.setCode(FAIL);
-				status.setMessage("OTP Not Send.");
-			}
+					status.setMessage("You are not a authorized user,Please Contact Admin.");
+					return status;
+				
 
 		} else {
 			      if(!user.getStatus().equalsIgnoreCase(INACTIVE)) {
@@ -115,27 +110,16 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 	private LtMastLogins generateAndSendOtp(LtAolUsersMaster ltMastUser) throws IOException, ServiceException {
 		// we have to implememt OTP logic
 		Status status = new Status();
-		String otp = null;
+		String otp = "1234";
 		
-		 // Generated default OTP 1234 for UAT
-		boolean isOtpForUAT = false;
-		// if(isOtpForUAT = Boolean.parseBoolean(env.getProperty("generatedOtpForUat"))) {
-		if(isOtpForUAT = true) {
-            if(isOtpForUAT) {
-       		 otp = "" + "1234";
-             }
-            }
-		 
-		 // Generated Random OTP for Production
-		 else {
+	
 		   
-			 if (ltMastUser.getMobileNumber().equalsIgnoreCase("7038631545")) {
-					otp = "" + "1234";
-				   } else {
-					otp = "" + getRandomNumberInRange(1000, 9999);
-				 }	 
+		/*  for production
+		 * if (ltMastUser.getMobileNumber().equalsIgnoreCase("7038631545")) { otp = "" +
+		 * "1234"; } else { otp = "" + getRandomNumberInRange(1000, 9999); }
+		 */	 
 		       
-		     }
+		 
 		 
 		LtMastLogins ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
 
@@ -164,7 +148,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 		if (ltMastLogins.getLoginId() != null) {
 			if (ltMastUser.getMobileNumber() != null) {
-				//status = sendMessage(ltMastLogins, ltMastUser.getMobileNumber());
+				status = sendMessage(ltMastLogins, ltMastUser.getMobileNumber());
 				status.setCode(SUCCESS);
 			}
 
