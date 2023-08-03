@@ -128,12 +128,12 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 			
 			if (!ltAolCallList.isEmpty()) {
 				status.setCode(UPDATE_SUCCESSFULLY);
-				status.setMessage("Student Assigned Successfully.");
+				status.setMessage("Assigned Successfully.");
 				status.setData(ltAolCallList);
 				return status;
 			} else {
 				status.setCode(UPDATE_FAIL);
-				status.setMessage("Update Fail.");
+				status.setMessage("Assigned Fail.");
 				status.setData(null);
 				return status;
 			}
@@ -160,12 +160,12 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 
 			if (!ltAolCallList.isEmpty()) {
 				status.setCode(UPDATE_SUCCESSFULLY);
-				status.setMessage("Student Unassigned Successfully.");
+				status.setMessage("Unassigned Successfully.");
 				status.setData(ltAolCallList);
 				return status;
 			} else {
 				status.setCode(UPDATE_FAIL);
-				status.setMessage("Update Fail.");
+				status.setMessage("Unassigned Fail.");
 				status.setData(null);
 				return status;
 			}
@@ -610,7 +610,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 			fileOut.close();
 			status.setCode(SUCCESS);
 			status.setMessage("Error File Generated Successfully.");
-			/// status.setUrl(fileShowPath);
+			status.setUrl(fileShowPath);
 			return status;
 
 		} catch (Exception e) {

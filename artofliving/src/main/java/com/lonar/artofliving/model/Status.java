@@ -1,3 +1,4 @@
+
 package com.lonar.artofliving.model;
 
 
@@ -7,6 +8,7 @@ public class Status {
 	private Object data;
 	private Long recordCount;
 	private Long totalCount;
+	private Object url;
 	//private Long allRecordsCount;
 	
 	
@@ -41,10 +43,18 @@ public class Status {
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "Status [code=" + code + ", message=" + message + ", data=" + data + ", recordCount=" + recordCount
 				+ ", totalCount=" + totalCount + "]";
+	}
+	public Object getUrl() {
+		return url;
+	}
+	public void setUrl(Object url) {
+		this.url = url;
 	}
 	
 
