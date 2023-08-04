@@ -227,8 +227,8 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		
 		
 		if (ltMastLogin != null) {
-			ltMastLogin.setOtp(1234L);
-			ltMastLogins.setOtp(1234L);
+			//ltMastLogin.setOtp(1234L);
+			//ltMastLogins.setOtp(1234L);
 			if (ltMastLogin.getOtp().equals(ltMastLogins.getOtp())) {
 				ltMastLogin.setStatus(INPROCESS);
 				ltMastLogin.setLoginDate(new Date());
