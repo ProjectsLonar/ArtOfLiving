@@ -961,6 +961,20 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 		  
 		  }
 		 
+		  if (row.getCell(1).toString().length() >35) {
+				status.setCode(FAIL);
+				status.setMessage("Name Should Be Less Than 35 Characters");
+				errorList.add(status.getMessage());
+
+			}
+		  
+		  if (row.getCell(3).toString().length() >40) {
+				status.setCode(FAIL);
+				status.setMessage("Email Should Be Less Than 40 Characters");
+				errorList.add(status.getMessage());
+
+			}
+		  
 		
 		/*
 		 * if (!row.getCell(2).toString().isEmpty()) { if (row.getCell(2).getCellType()
