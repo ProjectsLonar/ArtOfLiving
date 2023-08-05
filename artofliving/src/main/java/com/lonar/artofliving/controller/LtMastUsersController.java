@@ -78,7 +78,7 @@ public class LtMastUsersController implements CodeMaster {
 		e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Login Fail", e);
 		}
-		return new ResponseEntity<>(responseEntity,null,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(responseEntity,null,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/getallactiveroles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
