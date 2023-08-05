@@ -339,6 +339,10 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 							if(status.getCode() == FAIL) {
 								Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
 								 ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
+								 
+								 if(ltAolCallListMasters.getStatus().equalsIgnoreCase("Do Not Disturb")) {
+									System.out.println("cant update do not disturb."); 
+								 }else {
 								 ltMastCallingListData.setCallListId(ltAolCallListMasters.getCallListId());
 								 
 								if (row.getCell(0).toString().isEmpty()) {
@@ -380,7 +384,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 								}
 								ltMastCallingListData.setCreatedBy(ltAolCallListMasters.getCreatedBy());
 								ltMastCallingListData.setCreationDate(ltAolCallListMasters.getCreationDate());
-							
+								 }
 							
 							}
 						 
