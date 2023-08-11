@@ -339,6 +339,10 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 							if(status.getCode() == FAIL) {
 								Long mobileNumber = (new Double(row.getCell(0).getNumericCellValue()).longValue());
 								 ltAolCallListMasters = ltAolCallListMasterDao.getAolCallListByMobileNumber(mobileNumber);
+								 
+								 if(ltAolCallListMasters.getStatus().equalsIgnoreCase("Do Not Disturb")) {
+									System.out.println("cant update do not disturb."); 
+								 }else {
 								 ltMastCallingListData.setCallListId(ltAolCallListMasters.getCallListId());
 								 
 								if (row.getCell(0).toString().isEmpty()) {
@@ -380,7 +384,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 								}
 								ltMastCallingListData.setCreatedBy(ltAolCallListMasters.getCreatedBy());
 								ltMastCallingListData.setCreationDate(ltAolCallListMasters.getCreationDate());
-							
+								 }
 							
 							}
 						 
@@ -961,6 +965,20 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 		  
 		  }
 		 
+		  if (row.getCell(1).toString().length() >35) {
+				status.setCode(FAIL);
+				status.setMessage("Name Should Be Less Than 35 Characters");
+				errorList.add(status.getMessage());
+
+			}
+		  
+		  if (row.getCell(3).toString().length() >40) {
+				status.setCode(FAIL);
+				status.setMessage("Email Should Be Less Than 40 Characters");
+				errorList.add(status.getMessage());
+
+			}
+		  
 		
 		/*
 		 * if (!row.getCell(2).toString().isEmpty()) { if (row.getCell(2).getCellType()

@@ -58,7 +58,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				
 			} else {
 				status.setCode(FAIL);
-				status.setMessage("Enter Valid Mobile Number. ");
+				status.setMessage("Enter Valid Mobile Number");
 				return status;
 			}
 	}
@@ -84,7 +84,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 			 * status.setCode(FAIL); status.setMessage("OTP Not Send."); }
 			 */
 					status.setCode(FAIL);
-					status.setMessage("You are not a authorized user,Please Contact Admin.");
+					status.setMessage("You Are Not A Authorized User,Please Contact Admin");
 					return status;
 				
 
@@ -95,11 +95,11 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				      
 			if (mastLogins != null) {
 				status.setCode(SUCCESS);
-				status.setMessage("OTP Send Successfully.");
+				status.setMessage("OTP Sent Successfully");
 			}
 			} else {
 				status.setCode(FAIL);
-				status.setMessage("Your Account Has Been Deleted. ");
+				status.setMessage("Your Account Has Been Deleted");
 				//status.setMessage(env.getProperty("lonar.users.sentOTPnotsuccess"));
 			}
 		}
@@ -110,16 +110,28 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 	private LtMastLogins generateAndSendOtp(LtAolUsersMaster ltMastUser) throws IOException, ServiceException {
 		// we have to implememt OTP logic
 		Status status = new Status();
-		String otp = "1234";
-		
-	
-		   
-		/*  for production
-		 * if (ltMastUser.getMobileNumber().equalsIgnoreCase("7038631545")) { otp = "" +
-		 * "1234"; } else { otp = "" + getRandomNumberInRange(1000, 9999); }
-		 */	 
-		       
+		String otp = null;
+		 // Generated default OTP 1234 for UAT
+		boolean isOtpForUAT = false;
+		 if(isOtpForUAT = Boolean.parseBoolean(env.getProperty("generatedOtpForUat"))) {
+            if(isOtpForUAT) {
+            	//String otp1 = null;
+       		 otp = "" + "1234";
+             }
+            }
 		 
+		 // Generated Random OTP for Production
+		 else {
+		   
+			 if (ltMastUser.getMobileNumber().equalsIgnoreCase("8888885243") ||
+					 ltMastUser.getMobileNumber().equalsIgnoreCase("7721888834") ||
+					 ltMastUser.getMobileNumber().equalsIgnoreCase("7721888839") ) {
+					otp = "" + "1234";
+				   } else {
+					otp = "" + getRandomNumberInRange(1000, 9999);
+				 }	 
+		       
+		     }
 		 
 		LtMastLogins ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
 
@@ -163,7 +175,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 	private static int getRandomNumberInRange(int min, int max) {
 		if (min >= max) {
-			throw new IllegalArgumentException("max must be greater than min");
+			throw new IllegalArgumentException("Max Must Be Greater Than Min");
 		}
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
@@ -190,7 +202,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		List<LtMastSmsToken> ltMastSmsTokenListOp = ltMastSmsTokenDao.saveall(ltMastSmsTokenList);
 
 		if (ltMastSmsTokenListOp.isEmpty()) {
-			status.setMessage("Message OTP send failed");
+			status.setMessage("Message OTP Send Failed");
 			status.setCode(INSERT_FAIL);
 
 		} else {
@@ -227,8 +239,8 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		
 		
 		if (ltMastLogin != null) {
-			ltMastLogin.setOtp(1234L);
-			ltMastLogins.setOtp(1234L);
+			//ltMastLogin.setOtp(1234L);
+			//ltMastLogins.setOtp(1234L);
 			if (ltMastLogin.getOtp().equals(ltMastLogins.getOtp())) {
 				ltMastLogin.setStatus(INPROCESS);
 				ltMastLogin.setLoginDate(new Date());
@@ -256,7 +268,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 			} else {
 				entity.setCode(FAIL);
-				entity.setMessage("Please Enter Valid OTP.");
+				entity.setMessage("Please Enter Valid OTP");
 			}
 		} else {
 			status.setCode(SUCCESS);
@@ -334,7 +346,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		{
 		  status.setCode(DELETE_SUCCESSFULLY);
 	      //status.setData(ltMastUser);
-	      status.setMessage("User Deleted Successfully.");
+	      status.setMessage("User Deleted Successfully");
 	      return status;
         } 
 		else {
@@ -369,7 +381,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				if (ltAolUsersMastersUpdated != null) {
 					status.setCode(INSERT_SUCCESSFULLY);
 					status.setData(ltAolUsersMastersUpdated);
-					status.setMessage("User Added Successfully.");
+					status.setMessage("User Added Successfully");
 					return status;
 				} else {
 					status.setCode(INSERT_FAIL);
@@ -391,7 +403,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 				if (ltAolUsersMastersUpdated != null) {
 					status.setCode(UPDATE_SUCCESSFULLY);
 					status.setData(ltAolUsersMastersUpdated);
-					status.setMessage("User Updated Successfully.");
+					status.setMessage("User Updated Successfully");
 					return status;
 				} else {
 					status.setCode(UPDATE_FAIL);
@@ -412,7 +424,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		if (ltAolUsersMasters != null) {
 			if (!ltAolUsersMasters.getUserId().equals(ltAolUsersMaster.getUserId())) {
 				status.setCode(FAIL);
-				status.setMessage("Mobile Number Already Exists.");
+				status.setMessage("Mobile Number Already Exists");
 				return status;
 			}
 		}
