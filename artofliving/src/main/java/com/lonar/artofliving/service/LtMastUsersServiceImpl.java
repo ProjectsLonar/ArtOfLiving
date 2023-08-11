@@ -500,6 +500,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 
 		responseDto.setBuildNumber(Long.parseLong(buildString));
 		responseDto.setForceUpdate(found);
+		responseDto.setUrl("http://67.211.211.146:6001/excel/template.xlsx");
 		return responseDto;
 	}
 
