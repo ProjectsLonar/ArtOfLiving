@@ -110,16 +110,28 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 	private LtMastLogins generateAndSendOtp(LtAolUsersMaster ltMastUser) throws IOException, ServiceException {
 		// we have to implememt OTP logic
 		Status status = new Status();
-		String otp = "1234";
-		
-	
-		   
-		/*  for production
-		 * if (ltMastUser.getMobileNumber().equalsIgnoreCase("7038631545")) { otp = "" +
-		 * "1234"; } else { otp = "" + getRandomNumberInRange(1000, 9999); }
-		 */	 
-		       
+		String otp = null;
+		 // Generated default OTP 1234 for UAT
+		boolean isOtpForUAT = false;
+		 if(isOtpForUAT = Boolean.parseBoolean(env.getProperty("generatedOtpForUat"))) {
+            if(isOtpForUAT) {
+            	//String otp1 = null;
+       		 otp = "" + "1234";
+             }
+            }
 		 
+		 // Generated Random OTP for Production
+		 else {
+		   
+			 if (ltMastUser.getMobileNumber().equalsIgnoreCase("8888885243") ||
+					 ltMastUser.getMobileNumber().equalsIgnoreCase("7721888834") ||
+					 ltMastUser.getMobileNumber().equalsIgnoreCase("7721888839") ) {
+					otp = "" + "1234";
+				   } else {
+					otp = "" + getRandomNumberInRange(1000, 9999);
+				 }	 
+		       
+		     }
 		 
 		LtMastLogins ltMastLogin = ltMastUsersDao.getLoginDetailsByUserId(ltMastUser.getUserId());
 
