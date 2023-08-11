@@ -2,7 +2,9 @@ package com.lonar.artofliving.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -19,8 +21,11 @@ import com.lonar.artofliving.dao.LtMastUsersDao;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
+import com.lonar.artofliving.model.LtConfigurartion;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.LtMastSmsToken;
+import com.lonar.artofliving.model.MobileSupportedVersionRequestDto;
+import com.lonar.artofliving.model.MobileSupportedVersionResponseDto;
 import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
@@ -431,4 +436,74 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 		status.setCode(SUCCESS);
 		return status;
 	}
+	
+	@Override
+	public MobileSupportedVersionResponseDto isMobileSupportedVersion(MobileSupportedVersionRequestDto requestDto)
+			throws ServiceException {
+		MobileSupportedVersionResponseDto responseDto = new MobileSupportedVersionResponseDto();
+		List<LtConfigurartion> configList = ltMastUsersDao.getAllConfiguration();
+
+		String latestAndroidVersion = null;
+		String latestIOSVersion = null;
+
+		for (Iterator iterator = configList.iterator(); iterator.hasNext();) {
+			LtConfigurartion ltConfigurartion = (LtConfigurartion) iterator.next();
+
+			if (ltConfigurartion.getKey().trim().equalsIgnoreCase("LatestAndroidVersion")) {
+				latestAndroidVersion = ltConfigurartion.getValue();
+			}
+
+			if (ltConfigurartion.getKey().trim().equalsIgnoreCase("LatestIOSVersion")) {
+				latestIOSVersion = ltConfigurartion.getValue();
+			}
+		}
+
+		boolean found = false;
+		String platformString = requestDto.getPlatform().trim().toUpperCase();
+		String buildString = requestDto.getBuildNumber().toString();
+		if (platformString.equals("ANDROID")) {
+			if (!configList.isEmpty()) {
+				for (Iterator iterator = configList.iterator(); iterator.hasNext();) {
+					LtConfigurartion ltConfigurartion = (LtConfigurartion) iterator.next();
+					if (ltConfigurartion.getKey().trim().equalsIgnoreCase("supportedVersionAndoid")) {
+						String androidSupporedVersion = ltConfigurartion.getValue();
+						String[] andVersionArray = androidSupporedVersion.trim().split(",");
+						System.out.println("andVersionArray :: " + andVersionArray.toString());
+						List<String> list = Arrays.asList(andVersionArray);
+						if (!list.contains(buildString)) {
+							found = true;
+							responseDto.setBuildNumber(Long.parseLong(latestAndroidVersion));
+							responseDto.setForceUpdate(found);
+							return responseDto;
+						}
+					}
+				}
+			}
+		} else {// IOS
+			if (!configList.isEmpty()) {
+				for (Iterator iterator = configList.iterator(); iterator.hasNext();) {
+					LtConfigurartion ltConfigurartion = (LtConfigurartion) iterator.next();
+					if (ltConfigurartion.getKey().trim().equalsIgnoreCase("supportedVersionIOS")) {
+						String iosSupporedVersion = ltConfigurartion.getValue();
+						String[] iosVersionArray = iosSupporedVersion.trim().split(",");
+						List<String> list = Arrays.asList(iosVersionArray);
+						if (!list.contains(buildString)) {
+							found = true;
+							responseDto.setBuildNumber(Long.parseLong(latestIOSVersion));
+							responseDto.setForceUpdate(found);
+							return responseDto;
+						}
+					}
+				}
+			}
+		}
+
+		responseDto.setBuildNumber(Long.parseLong(buildString));
+		responseDto.setForceUpdate(found);
+		responseDto.setUrl("http://67.211.211.146:6001/excel/template.xlsx");
+		return responseDto;
+	}
+
+	
+	
 }//end of class

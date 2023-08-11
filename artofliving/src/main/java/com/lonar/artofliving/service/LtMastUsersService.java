@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
+import com.lonar.artofliving.model.MobileSupportedVersionRequestDto;
+import com.lonar.artofliving.model.MobileSupportedVersionResponseDto;
 import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
@@ -24,4 +26,6 @@ public interface LtMastUsersService {
 	Status deleteUser(Long userId) throws ServiceException, IOException;
 	
 	Status saveUserDetails(LtAolUsersMaster ltAolUsersMaster) throws ServiceException,IOException;
+	
+	MobileSupportedVersionResponseDto isMobileSupportedVersion(MobileSupportedVersionRequestDto requestDto)throws ServiceException;
 }

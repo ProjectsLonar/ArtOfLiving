@@ -7,6 +7,7 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
+import com.lonar.artofliving.model.LtConfigurartion;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.RequestDto;
 
@@ -29,4 +30,6 @@ public interface LtMastUsersDao {
 	 Long getAllActiveRolesCount( ) throws ServiceException, BusinessException ;
 	 
 	 Long getAllUsersCount( RequestDto requestDto) throws ServiceException, BusinessException;
+	 
+	 List<LtConfigurartion> getAllConfiguration() throws ServiceException;
 }

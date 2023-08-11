@@ -20,6 +20,8 @@ import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.CodeMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
 import com.lonar.artofliving.model.LtMastLogins;
+import com.lonar.artofliving.model.MobileSupportedVersionRequestDto;
+import com.lonar.artofliving.model.MobileSupportedVersionResponseDto;
 import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.model.ResponceEntity;
 import com.lonar.artofliving.model.Status;
@@ -125,4 +127,22 @@ public class LtMastUsersController implements CodeMaster {
 		
 		
 	}
+    
+    @RequestMapping(value = "/isMobileSupportedVersion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public MobileSupportedVersionResponseDto isMobileSupportedVersion(@RequestBody MobileSupportedVersionRequestDto requestDto)
+			throws ServiceException {
+		try {
+			String requestURL = "/isMobileSupportedVersion/" + requestDto;
+			//Logging.setRequestLog(null, "isMobileSupportedVersion()", requestURL, "POST");
+			MobileSupportedVersionResponseDto response = ltMastUsersService.isMobileSupportedVersion(requestDto);
+			//Logging.setResponceLog(response, "isMobileSupportedVersion()", requestURL, "POST");
+			return response;
+		} catch (Exception e) {
+			e.printStackTrace();
+			//log.error("Error Description :", e);
+			throw new BusinessException(INTERNAL_SERVER_ERROR, null, e);
+		}
+	}
+	
+    
 }
