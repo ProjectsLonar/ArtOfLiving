@@ -17,9 +17,11 @@ import com.lonar.artofliving.common.BusinessException;
 import com.lonar.artofliving.common.ServiceException;
 import com.lonar.artofliving.model.LtAolRolesMaster;
 import com.lonar.artofliving.model.LtAolUsersMaster;
+import com.lonar.artofliving.model.LtConfigurartion;
 import com.lonar.artofliving.model.LtMastLogins;
 import com.lonar.artofliving.model.RequestDto;
 import com.lonar.artofliving.repository.LtAolMastRepository;
+import com.lonar.artofliving.repository.LtConfigurationRepository;
 
 @Repository
 @PropertySource(value = "classpath:queries/aolUsersQueries.properties", ignoreResourceNotFound = true)
@@ -32,6 +34,9 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 	
 	@Autowired 
 	LtAolMastRepository  ltAolMastRepository;
+	
+	@Autowired
+	LtConfigurationRepository ltConfigurationRepository;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -158,4 +163,12 @@ public class LtMastUsersDaoImpl implements LtMastUsersDao {
 		totalCount = jdbcTemplate.queryForObject(sql, new Object[] {requestDto.getUserId(),searchField,status }, Long.class);
 		return totalCount;
 	}
+	
+	
+	@Override
+	public List<LtConfigurartion> getAllConfiguration() throws ServiceException {
+		List<LtConfigurartion> list = (List<LtConfigurartion>) ltConfigurationRepository.findAll();
+		return list;
+	}
+	
 }
