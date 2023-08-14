@@ -959,7 +959,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 		}
 
 		
-		  if (!row.getCell(7).getCellType().equals(CellType.NUMERIC)) {
+		if( (!(row.getCell(7).getCellType().equals(CellType.NUMERIC))) && (!(row.getCell(7).toString().isEmpty())) ){
 		  status.setCode(FAIL); status.setMessage("PinCode Should Be Numeric");
 		  errorList.add(status.getMessage());
 		  
