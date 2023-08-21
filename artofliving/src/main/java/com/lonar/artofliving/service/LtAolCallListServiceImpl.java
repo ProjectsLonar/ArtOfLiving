@@ -65,7 +65,7 @@ public class LtAolCallListServiceImpl implements LtAolCallListService, CodeMaste
 
 		List<ResponseDto> responseDto = null;
 		Long totalCount = (long) 0;
-		if (requestDto.getRole().equalsIgnoreCase("Admin")) {
+		if (requestDto.getRole().equalsIgnoreCase("Admin") || requestDto.getRole().equalsIgnoreCase("Supervisor")) {
 			responseDto = ltAolCallListMasterDao.getAllCallListById(requestDto);
 			totalCount = ltAolCallListMasterDao.getCallListCount(requestDto);
 		} else {

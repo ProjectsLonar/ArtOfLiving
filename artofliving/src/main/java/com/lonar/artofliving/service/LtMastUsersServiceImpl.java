@@ -474,7 +474,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 							found = true;
 							responseDto.setBuildNumber(Long.parseLong(latestAndroidVersion));
 							responseDto.setForceUpdate(found);
-							responseDto.setUrl("http://67.211.211.146:6001/excel/template.xlsx");
+							responseDto.setUrl("https://play.google.com/store/apps/details?id=com.aolcontactcenter.artofliving");
 							return responseDto;
 						}
 					}
@@ -492,7 +492,7 @@ public class LtMastUsersServiceImpl implements LtMastUsersService,CodeMaster  {
 							found = true;
 							responseDto.setBuildNumber(Long.parseLong(latestIOSVersion));
 							responseDto.setForceUpdate(found);
-							responseDto.setUrl("http://67.211.211.146:6001/excel/template.xlsx");
+							responseDto.setUrl("https://play.google.com/store/apps/details?id=com.aolcontactcenter.artofliving");
 							return responseDto;
 						}
 					}
